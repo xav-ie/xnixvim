@@ -1,26 +1,27 @@
-{pkgs, ...}: {
+{ pkgs, lib, helpers, ... }: {
   # TODO:
   # [ ] checkout ts-auto-tag:
   #     https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
   # [ ] checkout these other plugins:
-  # 	https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/appearance/treesitter.nix#L2
+  #  https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/appearance/treesitter.nix#L2
   # [ ] lsp code actions with telescope?
-  #	https://github.com/nvim-telescope/telescope-ui-select.nvim
-  # 	https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L306
+  # https://github.com/nvim-telescope/telescope-ui-select.nvim
+  #  https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L306
   # [ ] read through these config(s) fully:
-  # 	https://github.com/Builditluc/dotfiles/blob/0989f7bf0d147232b4133d9fe4fb166465e93b94/dotnix/hm/nvim.nix#L95
-  # 	https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
-  #	https://github.com/evccyr/dotfiles/blob/main/nix/neovim/default.nix
+  #  https://github.com/Builditluc/dotfiles/blob/0989f7bf0d147232b4133d9fe4fb166465e93b94/dotnix/hm/nvim.nix#L95
+  #  https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
+  # https://github.com/evccyr/dotfiles/blob/main/nix/neovim/default.nix
   # [ ] would git blame floating messages be helpful? https://github.com/rhysd/git-messenger.vim
   # [ ] what about clipboard management in vim? https://github.com/gbprod/yanky.nvim
   # [ ] is lspsaga any good? looks kind of bloated and feature creeped.
   # [ ] write my own or find someone else's snippets for ts. specifically all the map, reduce, forEach should have snippets
-  # 	https://www.youtube.com/watch?v=Dn800rlPIho
-  # 	https://github.com/L3MON4D3/LuaSnip#resources-for-new-users
-  # 	https://www.youtube.com/watch?v=FmHhonPjvvA
+  #  https://www.youtube.com/watch?v=Dn800rlPIho
+  #  https://github.com/L3MON4D3/LuaSnip#resources-for-new-users
+  #  https://www.youtube.com/watch?v=FmHhonPjvvA
   # [ ] harpoon?
   # [ ] flash nvim for faster jumping
   # [ ] eslint with conform? or none-ls? idk the real differences yet
+
 
 
   # Import all your configuration modules here
@@ -92,18 +93,18 @@
       }
 
       -- set up osc52 as clipboard provider
-      local function copy(lines, _)
-	require('osc52').copy(table.concat(lines, '\n'))
+      local function copy(lines, _) 
+       require('osc52').copy(table.concat(lines, '\n'))
       end
 
       local function paste()
-	return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
+       return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
       end
 
       vim.g.clipboard = {
-	name = 'osc52',
-	copy = {['+'] = copy, ['*'] = copy},
-	paste = {['+'] = paste, ['*'] = paste},
+       name = 'osc52',
+       copy = {['+'] = copy, ['*'] = copy},
+       paste = {['+'] = paste, ['*'] = paste},
       }
 
       -- Now the '+' register will copy to system clipboard using OSC52
@@ -137,7 +138,6 @@
       PmenuSel = { bg = "#504945"; fg = "NONE"; };
       Pmenu = { fg = "#ebdbb2"; bg = "#282828"; };
 
-      
       CmpItemAbbrDeprecated = { fg = "#d79921"; bg = "NONE"; strikethrough = true; };
       CmpItemAbbrMatch = { fg = "#83a598"; bg = "NONE"; bold = true; };
       CmpItemAbbrMatchFuzzy = { fg = "#83a598"; bg = "NONE"; bold = true; };
@@ -179,26 +179,114 @@
       FloatBorder = { fg = "#a89984"; };
     };
 
-    keymaps = [
-      {
-        action = "<cmd>Telescope live_grep<CR>";
-        key = "<leader>g";
-      }
-      # Equivalent to nnoremap ; :
-      {
-        action = ":";
-        key = ";";
-      }
-      # Equivalent to nmap <silent> <buffer> <leader>gg <cmd>Man<CR>
-      {
-        action = "<cmd>Man<CR>";
-        key = "<leader>gg";
-        options = {
-          silent = true;
-          remap = false;
-        };
-      }
-    ];
+    keymaps =
+      # taken from https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
+      let
+        modeKeys = mode:
+          lib.attrsets.mapAttrsToList (key: action:
+            {
+              inherit key mode;
+            }
+            // (
+              if builtins.isString action
+              then { inherit action; }
+              else action
+            ));
+        nm = modeKeys [ "n" ];
+        vs = modeKeys [ "v" ];
+        im = modeKeys [ "i" ];
+      in
+      helpers.keymaps.mkKeymaps { options.silent = true; }
+        (nm {
+          "ft" = "<cmd>Neotree<CR>";
+          "fG" = "<cmd>Neotree git_status<CR>";
+          "fR" = "<cmd>Neotree remote<CR>";
+          "fc" = "<cmd>Neotree close<CR>";
+          "bp" = "<cmd>Telescope buffers<CR>";
+
+          "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
+          "mk" = "<cmd>Telescope keymaps<CR>";
+          "fg" = "<cmd>Telescope git_files<CR>";
+
+          "gr" = "<cmd>Telescope lsp_references<CR>";
+          "gI" = "<cmd>Telescope lsp_implementations<CR>";
+          "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
+          "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
+          "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
+          "gE" = "<cmd>Telescope diagnostics<CR>";
+
+          "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
+          "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
+          "<leader>zt" = "<Cmd>ZkTags<CR>";
+          "<leader>zf" = "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
+          "yH" = {
+            action = "<Cmd>Telescope yank_history<CR>";
+            options.desc = "history";
+          };
+
+          "<Esc>" = ":noh <CR>";
+
+          "<C-h>" = "<C-w>h";
+          "<C-l>" = "<C-w>l";
+          "<C-j>" = "<C-w>j";
+          "<C-k>" = "<C-w>k";
+
+          "<tab>" = ":bnext <CR>";
+          "<S-tab>" = ":bprevious <CR>";
+          "<leader>x" = ":bdelete <CR>";
+        })
+      ++ (vs {
+        "<leader>zf" = "'<,'>ZkMatch<CR>";
+        "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
+      })
+      ++ (im {
+        "<C-e>" = "<End>";
+        "<C-b>" = "<ESC>^i";
+        "<C-h>" = "<Left>";
+        "<C-j>" = "<Down>";
+        "<C-k>" = "<Up>";
+        "<C-l>" = "<Right>";
+      })
+      ++ [
+        {
+          key = "<leader>/";
+          mode = [ "n" ];
+          action = ''
+            function() 
+             require("Comment.api").toggle.linewise.current()
+            end
+          '';
+          lua = true;
+          options.expr = true;
+        }
+        {
+          key = "<leader>rn";
+          mode = [ "n" ];
+          action = ''
+            function()
+             return ":IncRename " .. vim.fn.expand("<cword>")
+            end
+          '';
+          lua = true;
+          options.expr = true;
+        }
+        {
+          key = "<leader>fm";
+          mode = [ "n" ];
+          action = ''
+            function()
+              vim.lsp.buf.format { async = true }
+            end
+          '';
+          lua = true;
+          options = {
+            desc = "LSP formatting";
+            expr = true;
+
+          };
+        }
+
+      ];
 
     match = {
       ColorColumn = "\\%101v";
@@ -208,6 +296,10 @@
       number = true; # Show line numbers
       relativenumber = true; # Show relative line numbers
       shiftwidth = 2; # Tab width should be 2
+      tabstop = 2;
+      softtabstop = 2;
+      smartindent = true;
+      expandtab = true;
     };
 
     plugins = {
@@ -223,6 +315,30 @@
       # smart comment/uncomment
       comment-nvim.enable = true;
 
+      # auto-formatting
+      conform-nvim = {
+        enable = true;
+        formatOnSave = {
+          timeoutMs = 500;
+          lspFallback = true;
+        };
+        # Map of filetype to formatters
+        formattersByFt = {
+          lua = [ "stylua" ];
+          # Conform will run multiple formatters sequentially
+          #python = [ "isort" "black" ];
+          # Use a sub-list to run only the first available formatter
+          javascript = [ [ "prettierd" "prettier" ] ];
+          nix = [ "nixfmt" ];
+          # Use the "*" filetype to run formatters on all filetypes.
+          #"*" = [ "codespell" ];
+          # Use the "_" filetype to run formatters on filetypes that don't
+          # have other formatters configured.
+          "_" = [ "trim_whitespace" ];
+        };
+      };
+
+
       # luasnip expansions in cmp
       cmp_luasnip.enable = true;
 
@@ -236,7 +352,7 @@
       indent-blankline.enable = true;
 
       # finally, normal behaving tabs
-      intellitab.enable = true;
+      # intellitab.enable = true;
 
       lsp = {
         enable = true;
@@ -258,8 +374,12 @@
             "<leader>r" = "rename";
           };
         };
+        #onAttach = ''
+        #  vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+        #'';
         servers = {
-          nixd.enable = true;
+          nil_ls.enable = true;
+          rnix-lsp.enable = true;
           eslint.enable = true;
           tsserver.enable = true;
           lua-ls.enable = true;
@@ -295,12 +415,12 @@
 
       # useful code expansions
       luasnip = {
-	enable = true;
-	extraConfig = {
-#	  enable_autosnippets = true;
-#	  store_selection_keys = “<Tab>”;
-	};
-	fromVscode = [{}];
+        enable = true;
+        extraConfig = {
+          #   enable_autosnippets = true;
+          #   store_selection_keys = “<Tab>”;
+        };
+        fromVscode = [{ }];
       };
 
       # TODO: figure out if this is possible with just treesitter?
@@ -337,14 +457,14 @@
         enable = true;
         autoEnableSources = true;
         sources = [
-          {name = "nvim_lsp";}
-          {name = "path";}
+          { name = "nvim_lsp"; }
+          { name = "path"; }
           {
             name = "buffer";
             # Words from other open buffers can also be suggested.
             option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
           }
-          {name = "luasnip";}
+          { name = "luasnip"; }
           # TODO: {name = "neorg";}
         ];
 
@@ -354,11 +474,11 @@
           "<C-Space>" = "cmp.mapping.complete()";
           "<tab>" = "cmp.mapping.close()";
           "<c-n>" = {
-            modes = ["i" "s"];
+            modes = [ "i" "s" ];
             action = "cmp.mapping.select_next_item()";
           };
           "<c-p>" = {
-            modes = ["i" "s"];
+            modes = [ "i" "s" ];
             action = "cmp.mapping.select_prev_item()";
           };
           "<CR>" = "cmp.mapping.confirm({ select = true })";
