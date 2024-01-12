@@ -17,6 +17,7 @@
   # [ ] write my own or find someone else's snippets for ts. specifically all the map, reduce, forEach should have snippets
   # 	https://www.youtube.com/watch?v=Dn800rlPIho
   # 	https://github.com/L3MON4D3/LuaSnip#resources-for-new-users
+  # 	https://www.youtube.com/watch?v=FmHhonPjvvA
   # [ ] harpoon?
   # [ ] flash nvim for faster jumping
   # [ ] eslint with conform? or none-ls? idk the real differences yet
@@ -27,6 +28,8 @@
     ./bufferline.nix
   ];
   config = {
+    # use clipboard for all operations
+    clipboard.register = "unnamedplus";
     colorschemes = {
       base16 = {
         enable = true;
@@ -87,6 +90,25 @@
       vim.diagnostic.config {
         float = { border = _border },
       }
+
+      -- set up osc52 as clipboard provider
+      local function copy(lines, _)
+	require('osc52').copy(table.concat(lines, '\n'))
+      end
+
+      local function paste()
+	return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
+      end
+
+      vim.g.clipboard = {
+	name = 'osc52',
+	copy = {['+'] = copy, ['*'] = copy},
+	paste = {['+'] = paste, ['*'] = paste},
+      }
+
+      -- Now the '+' register will copy to system clipboard using OSC52
+      vim.keymap.set('n', '<leader>c', '"+y')
+      vim.keymap.set('n', '<leader>cc', '"+yy')
     '';
 
     extraPlugins = with pkgs.vimPlugins; [
@@ -354,6 +376,9 @@
       #   enable = true;
       #   autocmd.enabled = true;
       # };
+
+      # copy to clipboard through terminal escape sequences
+      nvim-osc52.enable = true;
 
       # better folding ui
       #nvim-ufo.enable = true;
