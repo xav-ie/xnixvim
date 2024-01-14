@@ -378,16 +378,17 @@
         #  vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
         #'';
         servers = {
+          eslint.enable = true;
+          gopls.enable = true;
+          lua-ls.enable = true;
           nil_ls.enable = true;
           rnix-lsp.enable = true;
-          eslint.enable = true;
-          tsserver.enable = true;
-          lua-ls.enable = true;
           rust-analyzer = {
             enable = true;
             installCargo = true;
             installRustc = true;
           };
+          tsserver.enable = true;
         };
       };
 
