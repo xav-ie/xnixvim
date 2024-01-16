@@ -198,39 +198,41 @@
       in
       helpers.keymaps.mkKeymaps { options.silent = true; }
         (nm {
+          # ???
           "ft" = "<cmd>Neotree<CR>";
           "fG" = "<cmd>Neotree git_status<CR>";
           "fR" = "<cmd>Neotree remote<CR>";
           "fc" = "<cmd>Neotree close<CR>";
           "bp" = "<cmd>Telescope buffers<CR>";
-
+          # ???
           "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
           "mk" = "<cmd>Telescope keymaps<CR>";
           "fg" = "<cmd>Telescope git_files<CR>";
-
+          # ???
+          "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
+          "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
+          "<leader>zt" = "<Cmd>ZkTags<CR>";
+          "<leader>zf" = "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
+          # needs a yank_history command...
+          "yH" = {
+            action = "<Cmd>Telescope yank_history<CR>";
+            options.desc = "history";
+          };
+          # lsp navigation
           "gr" = "<cmd>Telescope lsp_references<CR>";
           "gI" = "<cmd>Telescope lsp_implementations<CR>";
           "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
           "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
           "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
           "gE" = "<cmd>Telescope diagnostics<CR>";
-
-          "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
-          "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
-          "<leader>zt" = "<Cmd>ZkTags<CR>";
-          "<leader>zf" = "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
-          "yH" = {
-            action = "<Cmd>Telescope yank_history<CR>";
-            options.desc = "history";
-          };
-
+          # remove highlights
           "<Esc>" = ":noh <CR>";
-
+          # window navigation
           "<C-h>" = "<C-w>h";
           "<C-l>" = "<C-w>l";
           "<C-j>" = "<C-w>j";
           "<C-k>" = "<C-w>k";
-
+          # buffer navigation
           "<tab>" = ":bnext <CR>";
           "<S-tab>" = ":bprevious <CR>";
           "<leader>x" = ":bdelete <CR>";
