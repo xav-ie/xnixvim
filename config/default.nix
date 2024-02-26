@@ -433,6 +433,11 @@
       # TODO: figure out if this is possible with just treesitter?
       # nix.enable = true;
 
+      ollama = {
+        enable = true;
+        model = "codellama";
+      };
+
       noice = {
         enable = true;
         messages = {
