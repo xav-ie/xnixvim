@@ -112,9 +112,9 @@
       vim.keymap.set('n', '<leader>cc', '"+yy')
     '';
 
-    extraPlugins = with pkgs.vimPlugins; [
-      friendly-snippets
-    ];
+    # extraPlugins = with pkgs.vimPlugins; [
+    #   friendly-snippets
+    # ];
 
     globals = {
       # merge statusbar into command bar
@@ -207,7 +207,6 @@
           # ???
           "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
           "mk" = "<cmd>Telescope keymaps<CR>";
-          "fg" = "<cmd>Telescope git_files<CR>";
           # ???
           "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
           "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
@@ -219,6 +218,8 @@
             options.desc = "history";
           };
           # lsp navigation
+          "<leader>fu" = "<cmd>Telescope undo<CR>";
+
           "gr" = "<cmd>Telescope lsp_references<CR>";
           "gI" = "<cmd>Telescope lsp_implementations<CR>";
           "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
@@ -341,17 +342,18 @@
       };
 
 
-      # luasnip expansions in cmp
-      cmp_luasnip.enable = true;
 
       # the best git plugin
       fugitive.enable = true;
+
+      # amazing snippets for every language
+      friendly-snippets.enable = true;
 
       # git indicators in the left gutter
       gitsigns.enable = true;
 
       # indentation lines ui guides
-      indent-blankline.enable = true;
+      # indent-blankline.enable = true;
 
       # finally, normal behaving tabs
       # intellitab.enable = true;
@@ -411,7 +413,7 @@
       # statusline
       lualine = {
         enable = true;
-        theme = "powerline_dark";
+        theme = lib.mkForce "powerline_dark";
         # TODO: figure out the components
         # https://github.com/nvim-lualine/lualine.nvim/blob/566b7036f717f3d676362742630518a47f132fff/examples/evil_lualine.lua
       };
@@ -425,9 +427,16 @@
         };
         fromVscode = [{ }];
       };
+      # luasnip expansions in cmp
+      cmp_luasnip.enable = true;
 
       # TODO: figure out if this is possible with just treesitter?
       # nix.enable = true;
+
+      ollama = {
+        enable = true;
+        model = "codellama";
+      };
 
       noice = {
         enable = true;
@@ -460,6 +469,7 @@
         enable = true;
         autoEnableSources = true;
         sources = [
+          { name = "luasnip"; }
           { name = "nvim_lsp"; }
           { name = "path"; }
           {
@@ -467,7 +477,6 @@
             # Words from other open buffers can also be suggested.
             option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
           }
-          { name = "luasnip"; }
           # TODO: {name = "neorg";}
         ];
 
@@ -513,6 +522,7 @@
       surround.enable = true;
 
       # fzf client
+      # https://github.com/BenjaminTalbi/nixos-configurations/blob/0f160eaa0eae5a0417bc3eafae5e5e389614bda2/home/nixvim/telescope.nix
       telescope = {
         enable = true;
         defaults = {
@@ -521,8 +531,42 @@
             "^.mypy_cache/"
             "^__pycache__/"
             "%.ipynb"
+            "^node_modules/"
           ];
           set_env.COLORTERM = "truecolor";
+          mappings = {
+            i =
+              let
+                actions = "require('telescope.actions')";
+              in
+              {
+                "<C-j>".__raw = "${actions}.move_selection_next";
+                "<C-k>".__raw = "${actions}.move_selection_previous";
+                "<C-q>".__raw = "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
+                "<A-q>".__raw = "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
+              };
+          };
+        };
+
+        keymaps = {
+          "<leader>ff" = { action = "find_files"; desc = "find_[f]iles"; };
+          "<leader>fg" = { action = "git_files"; desc = "[g]it_files"; };
+          "<leader>fl" = { action = "live_grep"; desc = "[l]ive_grep"; };
+          "<leader>fo" = { action = "oldfiles"; desc = "[o]ldfiles"; };
+          "<leader>fr" = { action = "resume"; desc = "[R]esume Previous Seasch"; };
+          "<leader>fs" = { action = "lsp_document_symbols"; desc = "lsp_document_[s]ymbols"; };
+          # "<leader>fu" = { action = "undo"; desc = "undo"; };
+          "<leader>fw" = { action = "grep_string"; desc = "grep_string"; };
+        };
+        extensions = {
+          fzf-native = {
+            enable = true;
+            fuzzy = true;
+            overrideFileSorter = true;
+          };
+          undo = {
+            enable = true;
+          };
         };
       };
 
