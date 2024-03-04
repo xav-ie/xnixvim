@@ -315,6 +315,12 @@
         indicator.icon = "▌";
       };
 
+      # freeeeee auto-complete at least
+      # TODO: replace with local version
+      codeium-nvim = {
+        enable = true;
+      };
+
       # smart comment/uncomment
       comment-nvim.enable = true;
 
@@ -471,6 +477,7 @@
         sources = [
           { name = "luasnip"; }
           { name = "nvim_lsp"; }
+          { name = "codeium"; }
           { name = "path"; }
           {
             name = "buffer";
@@ -497,6 +504,9 @@
         };
 
         snippet.expand = "luasnip";
+        experimental = {
+          ghost_text = true;
+        };
       };
 
       # colors in neovim
