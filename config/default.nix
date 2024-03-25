@@ -357,7 +357,17 @@
       friendly-snippets.enable = true;
 
       # git indicators in the left gutter
-      gitsigns.enable = true;
+      gitsigns = {
+        enable = true;
+        currentLineBlame = true;
+        currentLineBlameOpts = {
+          virtText = true;
+          virtTextPos = "right_align";
+          delay = 0;
+          ignoreWhitespace = false;
+          virtTextPriority = 100;
+        };
+      };
 
       # indentation lines ui guides
       # indent-blankline.enable = true;
