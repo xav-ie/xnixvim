@@ -199,6 +199,7 @@
       helpers.keymaps.mkKeymaps { options.silent = true; }
         (nm {
           # ???
+          "-" = "<cmd>Oil<CR>";
           "ft" = "<cmd>Neotree<CR>";
           "fG" = "<cmd>Neotree git_status<CR>";
           "fR" = "<cmd>Neotree remote<CR>";
@@ -526,7 +527,12 @@
       #nvim-ufo.enable = true;
 
       # easily browse directories
-      oil.enable = true;
+      oil = {
+        enable = true;
+        viewOptions = {
+          showHidden = true;
+        };
+      };
 
       # tpope === goat
       surround.enable = true;
