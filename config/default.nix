@@ -447,6 +447,44 @@
       lualine = {
         enable = true;
         theme = lib.mkForce "powerline_dark";
+        globalstatus = true;
+        componentSeparators = {
+          left = "|"; # "";
+          right = "|"; # "";
+        };
+        sectionSeparators = {
+          left = ""; # "";
+          right = ""; # "";
+        };
+
+
+        # Available Sections:
+        # branch, buffers, diagnostics, diff, encoding, fileformat, 
+        # filename, filesize, filetype, hostname, location, mode, 
+        # progress, searchcount, selectioncount, tabs, windows
+        sections = {
+          lualine_a = [ "mode" ];
+          lualine_b = [ "branch" "diff" ];
+          lualine_c = [ "filename" ];
+          lualine_x = [ "searchcount" "selectioncount" ];
+          lualine_y = [ "progress" ];
+          lualine_z = [ "location" ];
+        };
+
+        inactiveSections = {
+          lualine_a = [ "" ];
+          lualine_b = [ "" ];
+          lualine_c = [ "filename" ];
+          lualine_x = [ "location" ];
+          lualine_y = [ "" ];
+          lualine_z = [ "" ];
+        };
+
+        # it would be cool to add a nyan cat like mentioned in this repo:
+        # https://github.com/mattn/vim-nyancat/commit/aa88cfadfaf84fd2242a0c044e28e7557acd7ddb
+        # but you need libsixel support.
+        # alacritty is the only terminal that is decent on hyprland
+
         # TODO: figure out the components
         # https://github.com/nvim-lualine/lualine.nvim/blob/566b7036f717f3d676362742630518a47f132fff/examples/evil_lualine.lua
       };
