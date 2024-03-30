@@ -409,7 +409,23 @@
             installCargo = true;
             installRustc = true;
           };
-          tsserver.enable = true;
+          denols = {
+            enable = true;
+            rootDir = ''
+              require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
+            '';
+            extraOptions.init_options = {
+              lint = true;
+              unstable = true;
+            };
+          };
+          tsserver = {
+            enable = true;
+            extraOptions.single_file_support = false;
+            rootDir = ''
+              require('lspconfig').util.root_pattern("package.json")
+            '';
+          };
         };
       };
 
