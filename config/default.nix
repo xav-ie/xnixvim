@@ -1,4 +1,4 @@
-{ pkgs, lib, helpers, ... }: {
+{ lib, helpers, ... }: {
   # TODO:
   # [ ] checkout ts-auto-tag:
   #     https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
@@ -457,20 +457,99 @@
           right = ""; # "";
         };
 
-
         # Available Sections:
+        # A lot of these include reasonable extra logos/logic for display:
         # branch, buffers, diagnostics, diff, encoding, fileformat, 
         # filename, filesize, filetype, hostname, location, mode, 
         # progress, searchcount, selectioncount, tabs, windows
+        # Raw things:
+        # %t (filename), %c (column), %l (line), %p (percentage), %{any expression}
         sections = {
-          lualine_a = [ "mode" ];
-          lualine_b = [ "branch" "diff" ];
-          lualine_c = [ "filename" ];
-          lualine_x = [ "searchcount" "selectioncount" ];
-          lualine_y = [ "progress" ];
-          lualine_z = [ "location" ];
+          lualine_a = [
+            # https://github.com/i077/system/blob/0a1e04f7f476c3158af0bfd7dcea75ee1969229b/modules/home/neovim/plugins.nix#L89
+            {
+              name = "mode";
+              extraConfig.fmt.__raw = "function(str) return str:sub(1,1) end";
+            }
+          ];
+          lualine_b = [{ name = "branch"; icons_enabled = false; }];
+          lualine_c = [
+            {
+              name = "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; #%{&modified?'*':''}
+              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              extraConfig.cond.__raw = "function() return vim.bo.filetype ~= 'oil' end";
+            }
+            # IDK why, but the extension does not seem to work properly
+            {
+              name = "";
+              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              extraConfig.fmt.__raw = "
+              function()
+                local ok, oil = pcall(require, 'oil')
+                if ok then
+                  return vim.fn.fnamemodify(oil.get_current_dir(), ':~')
+                else
+                  return ''
+                end
+              end
+              ";
+              extraConfig.cond.__raw = "function() return vim.bo.filetype == 'oil' end";
+            }
+          ];
+          lualine_x = [
+            "searchcount"
+            "selectioncount"
+            {
+              name = "diff";
+              # use gitsigns diff instead of manually recalculating it
+              # https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets
+              extraConfig.source.__raw = "
+              function() 
+                local gitsigns = vim.b.gitsigns_status_dict
+                  if gitsigns then
+                    return {
+                      added = gitsigns.added,
+                      modified = gitsigns.changed,
+                      removed = gitsigns.removed
+                    }
+                  end
+              end
+              ";
+            }
+            "diagnostics"
+          ];
+          lualine_y = [
+            {
+              name = "filetype";
+              color = {
+                bg = "Black"; # some icons are hard to see
+              };
+            }
+          ];
+          lualine_z = [
+            {
+              name = "";
+              extraConfig.fmt.__raw = "
+              function(str)
+                local function progress()
+                  local cur = vim.fn.line('.')
+                  local total = vim.fn.line('$')
+                  if cur == 1 then
+                    return ' 0'
+                  elseif cur == total then
+                    return '00'
+                  else
+                    return string.format('%2d', math.floor(cur / total * 100))
+                  end
+                end
+                return ('%2c:' .. progress())
+              end
+              ";
+            }
+          ];
         };
 
+        # I still don't really understand this:
         inactiveSections = {
           lualine_a = [ "" ];
           lualine_b = [ "" ];
@@ -479,14 +558,6 @@
           lualine_y = [ "" ];
           lualine_z = [ "" ];
         };
-
-        # it would be cool to add a nyan cat like mentioned in this repo:
-        # https://github.com/mattn/vim-nyancat/commit/aa88cfadfaf84fd2242a0c044e28e7557acd7ddb
-        # but you need libsixel support.
-        # alacritty is the only terminal that is decent on hyprland
-
-        # TODO: figure out the components
-        # https://github.com/nvim-lualine/lualine.nvim/blob/566b7036f717f3d676362742630518a47f132fff/examples/evil_lualine.lua
       };
 
       # useful code expansions
