@@ -549,15 +549,9 @@
           ];
         };
 
-        # I still don't really understand this:
-        inactiveSections = {
-          lualine_a = [ "" ];
-          lualine_b = [ "" ];
-          lualine_c = [ "filename" ];
-          lualine_x = [ "location" ];
-          lualine_y = [ "" ];
-          lualine_z = [ "" ];
-        };
+        # what sections to show in inactive windows
+        # N/A bc I disabled it on other subwindows
+        # inactiveSections = { };
       };
 
       # useful code expansions
