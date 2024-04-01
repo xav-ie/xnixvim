@@ -9,6 +9,16 @@ let
       hash = "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=";
     };
   };
+  # idk what the difference is in package builders 
+  oil-git-status = pkgs.vimUtils.buildVimPlugin {
+    name = "oil-git-status.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "refractalize";
+      repo = "oil-git-status.nvim";
+      rev = "839a1a287f5eb3ce1b07b50323032398e63f7ffa";
+      hash = "sha256-pTAvkJPmT3eD3XWrYl6nyKSzeRFEHOi8iDCamF1D1Cg=";
+    };
+  };
 in
 {
   # TODO:
@@ -122,9 +132,14 @@ in
       -- Now the '+' register will copy to system clipboard using OSC52
       vim.keymap.set('n', '<leader>c', '"+y')
       vim.keymap.set('n', '<leader>cc', '"+yy')
+
+      require('oil-git-status').setup()
     '';
 
-    extraPlugins = [ oatmeal-nvim ];
+    extraPlugins = [
+      oatmeal-nvim
+      oil-git-status
+    ];
     # with pkgs.vimPlugins; [
     # friendly-snippets
     # ];
@@ -701,6 +716,9 @@ in
         settings = {
           view_options = {
             show_hidden = true;
+          };
+          win_options = {
+            signcolumn = "yes:2";
           };
         };
       };
