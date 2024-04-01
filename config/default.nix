@@ -40,7 +40,7 @@
         # somehow, gatekeeper theme from nvchad is based on pico
         # but this looks bad, but I love gatekeeper
         #colorscheme = "pico";
-        customColorScheme = {
+        colorscheme = {
           # background
           base00 = "NONE";
           # active tab, ui tab foreground
@@ -296,7 +296,7 @@
       ColorColumn = "\\%101v";
     };
 
-    options = {
+    opts = {
       number = true; # Show line numbers
       relativenumber = true; # Show relative line numbers
       shiftwidth = 2; # Tab width should be 2
@@ -323,7 +323,7 @@
       };
 
       # smart comment/uncomment
-      comment-nvim.enable = true;
+      comment.enable = true;
 
       # auto-formatting
       conform-nvim = {
@@ -359,13 +359,16 @@
       # git indicators in the left gutter
       gitsigns = {
         enable = true;
-        currentLineBlame = true;
-        currentLineBlameOpts = {
-          virtText = true;
-          virtTextPos = "right_align";
-          delay = 0;
-          ignoreWhitespace = false;
-          virtTextPriority = 100;
+        settings = {
+          current_line_blame = true;
+          current_line_blame_opts = {
+            virt_text = true;
+            virt_text_pos = "right_align";
+            delay = 0;
+            ignore_whitespace = false;
+            virt_text_priority = 100;
+          };
+
         };
       };
 
@@ -403,7 +406,12 @@
           gopls.enable = true;
           lua-ls.enable = true;
           nil_ls.enable = true;
-          rnix-lsp.enable = true;
+          nixd = {
+            enable = true;
+            settings.formatting.command = "nixpkgs-fmt";
+          };
+          # went out of maintenace
+          # rnix-lsp.enable = true;
           rust-analyzer = {
             enable = true;
             installCargo = true;
@@ -601,42 +609,61 @@
       nvim-autopairs.enable = true;
 
       # completions
-      nvim-cmp = {
+      cmp = {
         enable = true;
-        autoEnableSources = true;
-        sources = [
-          { name = "luasnip"; }
-          { name = "nvim_lsp"; }
-          { name = "codeium"; }
-          { name = "path"; }
-          {
-            name = "buffer";
-            # Words from other open buffers can also be suggested.
-            option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
-          }
-          # TODO: {name = "neorg";}
-        ];
-
-        mapping = {
-          "<C-u>" = "cmp.mapping.scroll_docs(-3)";
-          "<C-d>" = "cmp.mapping.scroll_docs(3)";
-          "<C-Space>" = "cmp.mapping.complete()";
-          "<tab>" = "cmp.mapping.close()";
-          "<c-n>" = {
-            modes = [ "i" "s" ];
-            action = "cmp.mapping.select_next_item()";
+        # only works when sources is not set with __raw
+        autoEnableSources = false;
+        # sources = [
+        #   { name = "luasnip"; }
+        #   { name = "nvim_lsp"; }
+        #   { name = "codeium"; }
+        #   { name = "path"; }
+        #   {
+        #     name = "buffer";
+        #     # Words from other open buffers can also be suggested.
+        #     option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
+        #   }
+        #   # TODO: {name = "neorg";}
+        # ];
+        settings = {
+          sources.__raw = "
+          cmp.config.sources({
+            { name = 'luasnip'; },
+            { name = 'nvim_lsp'; },
+            { name = 'codeium'; },
+            { name = 'path'; }
+            -- {
+            --   name = 'buffer';
+            --   -- Words from other open buffers can also be suggested.
+            --   option.get_bufnrs.__raw = 'vim.api.nvim_list_bufs';
+            -- },
+            -- TODO: {name = 'neorg';}
+          })
+          ";
+          mapping = {
+            "<C-u>" = "cmp.mapping.scroll_docs(-3)";
+            "<C-d>" = "cmp.mapping.scroll_docs(3)";
+            "<C-Space>" = "cmp.mapping.complete()";
+            "<tab>" = "cmp.mapping.close()";
+            # "<c-n>" = {
+            #   modes = [ "i" "s" ];
+            #   action = "cmp.mapping.select_next_item()";
+            # };
+            # "<c-p>" = {
+            #   modes = [ "i" "s" ];
+            #   action = "cmp.mapping.select_prev_item()";
+            # };
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
-          "<c-p>" = {
-            modes = [ "i" "s" ];
-            action = "cmp.mapping.select_prev_item()";
-          };
-          "<CR>" = "cmp.mapping.confirm({ select = true })";
+          snippet.expand = "
+          function(args)
+            require('luasnip').lsp_expand(args.body)
+          end
+          ";
         };
-
-        snippet.expand = "luasnip";
-        experimental = {
-          ghost_text = true;
-        };
+        # extraOptions.experimental = {
+        #   ghost_text = true;
+        # };
       };
 
       # colors in neovim
@@ -658,8 +685,10 @@
       # easily browse directories
       oil = {
         enable = true;
-        viewOptions = {
-          showHidden = true;
+        settings = {
+          view_options = {
+            show_hidden = true;
+          };
         };
       };
 
@@ -755,6 +784,17 @@
 
       # TODO: see https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/which-key.nix#L4
       which-key.enable = true;
+
+      # zellij = {
+      #   enable = true;
+      #
+      #   settings = {
+      #     debug = true;
+      #     vimTmuxNavigatorKeybinds = true;
+      #     whichKeyEnabled = true;
+      #     replaceVimWindowNavigationKeybinds = true;
+      #   };
+      # };
     };
   };
 }
