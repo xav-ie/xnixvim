@@ -1,4 +1,16 @@
-{ lib, helpers, ... }: {
+{ lib, helpers, pkgs, ... }:
+let
+  oatmeal-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    name = "oatmeal.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "dustinblackman";
+      repo = "oatmeal.nvim";
+      rev = "c8cdd0a182cf77f88ea5fa4703229ddb3f47c1f7";
+      hash = "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=";
+    };
+  };
+in
+{
   # TODO:
   # [ ] checkout ts-auto-tag:
   #     https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
@@ -112,8 +124,9 @@
       vim.keymap.set('n', '<leader>cc', '"+yy')
     '';
 
-    # extraPlugins = with pkgs.vimPlugins; [
-    #   friendly-snippets
+    extraPlugins = [ oatmeal-nvim ];
+    # with pkgs.vimPlugins; [
+    # friendly-snippets
     # ];
 
     globals = {
