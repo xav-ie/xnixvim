@@ -134,6 +134,7 @@ in
       vim.keymap.set('n', '<leader>cc', '"+yy')
 
       require('oil-git-status').setup()
+      require('oatmeal').setup({backend='ollama', model='codellama:latest'})
     '';
 
     extraPlugins = [
