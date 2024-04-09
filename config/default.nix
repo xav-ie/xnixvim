@@ -662,14 +662,8 @@ in
             "<C-d>" = "cmp.mapping.scroll_docs(3)";
             "<C-Space>" = "cmp.mapping.complete()";
             "<tab>" = "cmp.mapping.close()";
-            # "<c-n>" = {
-            #   modes = [ "i" "s" ];
-            #   action = "cmp.mapping.select_next_item()";
-            # };
-            # "<c-p>" = {
-            #   modes = [ "i" "s" ];
-            #   action = "cmp.mapping.select_prev_item()";
-            # };
+            "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
+            "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           snippet.expand = "
