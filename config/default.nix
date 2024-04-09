@@ -434,13 +434,10 @@ in
           eslint.enable = true;
           gopls.enable = true;
           lua-ls.enable = true;
-          nil_ls.enable = true;
           nixd = {
             enable = true;
             settings.formatting.command = "nixpkgs-fmt";
           };
-          # went out of maintenace
-          # rnix-lsp.enable = true;
           rust-analyzer = {
             enable = true;
             installCargo = true;
