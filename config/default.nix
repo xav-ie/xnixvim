@@ -455,10 +455,28 @@ in
           };
           tsserver = {
             enable = true;
-            extraOptions.single_file_support = false;
-            rootDir = ''
-              require('lspconfig').util.root_pattern("package.json")
-            '';
+            extraOptions = {
+              single_file_support = false;
+              commands = {
+                # TODO: figure out how to use this
+                # https://github.com/jakehamilton/neovim/blob/9375031a8da6a654bf0f971d23c302f2fb555b35/modules/nixvim/lsp/default.nix#L95
+                OrganizeImports.__raw = ''
+                  {
+                    function()
+                      vim.lsp.buf.execute_command {
+                        title = "",
+                        command = "_typescript.organizeImports",
+                        arguments = { vim.api.nvim_buf_get_name(0) },
+                      }
+                    end,
+                    description = "Organize Imports",
+                  }
+                '';
+              };
+              rootDir = ''
+                require('lspconfig').util.root_pattern("package.json")
+              '';
+            };
           };
         };
       };
