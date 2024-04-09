@@ -641,34 +641,22 @@ in
       cmp = {
         enable = true;
         # only works when sources is not set with __raw
-        autoEnableSources = false;
-        # sources = [
-        #   { name = "luasnip"; }
-        #   { name = "nvim_lsp"; }
-        #   { name = "codeium"; }
-        #   { name = "path"; }
-        #   {
-        #     name = "buffer";
-        #     # Words from other open buffers can also be suggested.
-        #     option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
-        #   }
-        #   # TODO: {name = "neorg";}
-        # ];
+        autoEnableSources = true;
         settings = {
-          sources.__raw = "
-          cmp.config.sources({
-            { name = 'luasnip'; },
-            { name = 'nvim_lsp'; },
-            { name = 'codeium'; },
-            { name = 'path'; }
-            -- {
-            --   name = 'buffer';
-            --   -- Words from other open buffers can also be suggested.
-            --   option.get_bufnrs.__raw = 'vim.api.nvim_list_bufs';
-            -- },
-            -- TODO: {name = 'neorg';}
-          })
-          ";
+          sources = [
+            { name = "luasnip"; }
+            { name = "nvim_lsp"; }
+            { name = "codeium"; }
+            { name = "path"; }
+            {
+              name = "buffer";
+              # Words from other open buffers can also be suggested.
+              option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
+            }
+            # idk what this one is
+            # { name = "calc"; }
+            # TODO: {name = "neorg";}
+          ];
           mapping = {
             "<C-u>" = "cmp.mapping.scroll_docs(-3)";
             "<C-d>" = "cmp.mapping.scroll_docs(3)";
