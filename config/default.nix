@@ -1,6 +1,6 @@
 { lib, helpers, pkgs, ... }:
 let
-  oatmeal-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  oatmeal-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "oatmeal.nvim";
     src = pkgs.fetchFromGitHub {
       owner = "dustinblackman";
