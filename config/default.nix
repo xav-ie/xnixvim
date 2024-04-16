@@ -19,6 +19,16 @@ let
       hash = "sha256-pTAvkJPmT3eD3XWrYl6nyKSzeRFEHOi8iDCamF1D1Cg=";
     };
   };
+  SchemaStore-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "SchemaStore.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "b0o";
+      repo = "SchemaStore.nvim";
+      rev = "cf82be744f4dba56d5d0c13d7fe429dd1d4c02e7";
+      hash = "sha256-bAsSHBdxdwfHZ3HiU/wyeoS/FiQNb3a/TB2lQOz/glA=";
+    };
+
+  };
 in
 {
   # TODO:
@@ -140,6 +150,7 @@ in
     extraPlugins = [
       oatmeal-nvim
       oil-git-status
+      SchemaStore-nvim
     ];
     # with pkgs.vimPlugins; [
     # friendly-snippets
@@ -475,6 +486,13 @@ in
         servers = {
           eslint.enable = true;
           gopls.enable = true;
+          jsonls = {
+            enable = true;
+            extraOptions.settings.json = {
+              schemas.__raw = "require(\"schemastore\").json.schemas()";
+              validate.enable = true;
+            };
+          };
           lua-ls.enable = true;
           nixd = {
             enable = true;
