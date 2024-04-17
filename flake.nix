@@ -7,29 +7,15 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs =
-    { nixvim
-    , flake-parts
-    , ...
-    } @ inputs:
-    let
-      config = import ./config; # import the module directly
-    in
-    flake-parts.lib.mkFlake { inherit inputs; } {
+  outputs = { nixvim, flake-parts, ... }@inputs:
+    let config = import ./config; # import the module directly
+    in flake-parts.lib.mkFlake { inherit inputs; } {
       # TODO: copy this excellent nixvim config:
       # https://github.com/asungy/nixim/blob/979643e6a13d1803915b379a0e974b86cbcd77ea/flake.nix
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+      systems =
+        [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
 
-      perSystem =
-        { pkgs
-        , system
-        , ...
-        }:
+      perSystem = { pkgs, system, ... }:
         let
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
@@ -42,8 +28,7 @@
               # inherit (inputs) foo;
             };
           };
-        in
-        {
+        in {
           checks = {
             # Run `nix flake check .` to verify that your config is not broken
             default = nixvimLib.check.mkTestDerivationFromNvim {

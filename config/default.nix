@@ -29,8 +29,7 @@ let
     };
 
   };
-in
-{
+in {
   # TODO:
   # [ ] checkout ts-auto-tag:
   #     https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
@@ -54,12 +53,8 @@ in
   # [ ] flash nvim for faster jumping
   # [ ] eslint with conform? or none-ls? idk the real differences yet
 
-
-
   # Import all your configuration modules here
-  imports = [
-    ./bufferline.nix
-  ];
+  imports = [ ./bufferline.nix ];
   config = {
     # use clipboard for all operations
     clipboard.register = "unnamedplus";
@@ -109,57 +104,48 @@ in
       };
     };
 
-    extraConfigLua = ''
-      vim.opt.cmdheight = 0;
+    extraConfigLua = # lua
+      ''
+        vim.opt.cmdheight = 0;
 
-      -- add border to diagnostic windows
-      local _border = "single"
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = _border,
-      })
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = _border,
-      })
-      vim.diagnostic.config {
-        float = { border = _border },
-      }
+        -- add border to diagnostic windows
+        local _border = "single"
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+          border = _border,
+        })
+        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+          border = _border,
+        })
+        vim.diagnostic.config {
+          float = { border = _border },
+        }
 
-      -- set up osc52 as clipboard provider
-      local function copy(lines, _) 
-       require('osc52').copy(table.concat(lines, '\n'))
-      end
+        -- set up osc52 as clipboard provider
+        local function copy(lines, _) 
+         require('osc52').copy(table.concat(lines, '\n'))
+        end
 
-      local function paste()
-       return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
-      end
+        local function paste()
+         return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
+        end
 
-      vim.g.clipboard = {
-       name = 'osc52',
-       copy = {['+'] = copy, ['*'] = copy},
-       paste = {['+'] = paste, ['*'] = paste},
-      }
+        vim.g.clipboard = {
+         name = 'osc52',
+         copy = {['+'] = copy, ['*'] = copy},
+         paste = {['+'] = paste, ['*'] = paste},
+        }
 
-      -- Now the '+' register will copy to system clipboard using OSC52
-      vim.keymap.set('n', '<leader>c', '"+y')
-      vim.keymap.set('n', '<leader>cc', '"+yy')
+        -- Now the '+' register will copy to system clipboard using OSC52
+        vim.keymap.set('n', '<leader>c', '"+y')
+        vim.keymap.set('n', '<leader>cc', '"+yy')
 
-      require('oil-git-status').setup()
-      require('oatmeal').setup({backend='ollama', model='codellama:latest'})
-    '';
+        require('oil-git-status').setup()
+        require('oatmeal').setup({backend='ollama', model='codellama:latest'})
+      '';
 
-    extraPlugins = [
-      oatmeal-nvim
-      oil-git-status
-      SchemaStore-nvim
-    ];
+    extraPlugins = [ oatmeal-nvim oil-git-status SchemaStore-nvim ];
 
-    extraPackages = with pkgs; [
-      git
-      ripgrep
-      prettierd
-      nixfmt
-      stylua
-    ];
+    extraPackages = with pkgs; [ git ripgrep prettierd nixfmt stylua ];
     # with pkgs.vimPlugins; [
     # friendly-snippets
     # ];
@@ -179,50 +165,145 @@ in
 
     # TODO: clean this up
     highlight = {
-      ColorColumn = {
-        underline = true;
+      ColorColumn = { underline = true; };
+
+      PmenuSel = {
+        bg = "#504945";
+        fg = "NONE";
+      };
+      Pmenu = {
+        fg = "#ebdbb2";
+        bg = "#282828";
       };
 
-      PmenuSel = { bg = "#504945"; fg = "NONE"; };
-      Pmenu = { fg = "#ebdbb2"; bg = "#282828"; };
+      CmpItemAbbrDeprecated = {
+        fg = "#d79921";
+        bg = "NONE";
+        strikethrough = true;
+      };
+      CmpItemAbbrMatch = {
+        fg = "#83a598";
+        bg = "NONE";
+        bold = true;
+      };
+      CmpItemAbbrMatchFuzzy = {
+        fg = "#83a598";
+        bg = "NONE";
+        bold = true;
+      };
+      CmpItemMenu = {
+        fg = "#b16286";
+        bg = "NONE";
+        italic = true;
+      };
 
-      CmpItemAbbrDeprecated = { fg = "#d79921"; bg = "NONE"; strikethrough = true; };
-      CmpItemAbbrMatch = { fg = "#83a598"; bg = "NONE"; bold = true; };
-      CmpItemAbbrMatchFuzzy = { fg = "#83a598"; bg = "NONE"; bold = true; };
-      CmpItemMenu = { fg = "#b16286"; bg = "NONE"; italic = true; };
+      CmpItemKindField = {
+        fg = "#fbf1c7";
+        bg = "#fb4934";
+      };
+      CmpItemKindProperty = {
+        fg = "#fbf1c7";
+        bg = "#fb4934";
+      };
+      CmpItemKindEvent = {
+        fg = "#fbf1c7";
+        bg = "#fb4934";
+      };
 
-      CmpItemKindField = { fg = "#fbf1c7"; bg = "#fb4934"; };
-      CmpItemKindProperty = { fg = "#fbf1c7"; bg = "#fb4934"; };
-      CmpItemKindEvent = { fg = "#fbf1c7"; bg = "#fb4934"; };
+      CmpItemKindText = {
+        fg = "#fbf1c7";
+        bg = "#b8bb26";
+      };
+      CmpItemKindEnum = {
+        fg = "#fbf1c7";
+        bg = "#b8bb26";
+      };
+      CmpItemKindKeyword = {
+        fg = "#fbf1c7";
+        bg = "#b8bb26";
+      };
 
-      CmpItemKindText = { fg = "#fbf1c7"; bg = "#b8bb26"; };
-      CmpItemKindEnum = { fg = "#fbf1c7"; bg = "#b8bb26"; };
-      CmpItemKindKeyword = { fg = "#fbf1c7"; bg = "#b8bb26"; };
+      CmpItemKindConstant = {
+        fg = "#fbf1c7";
+        bg = "#fe8019";
+      };
+      CmpItemKindConstructor = {
+        fg = "#fbf1c7";
+        bg = "#fe8019";
+      };
+      CmpItemKindReference = {
+        fg = "#fbf1c7";
+        bg = "#fe8019";
+      };
 
-      CmpItemKindConstant = { fg = "#fbf1c7"; bg = "#fe8019"; };
-      CmpItemKindConstructor = { fg = "#fbf1c7"; bg = "#fe8019"; };
-      CmpItemKindReference = { fg = "#fbf1c7"; bg = "#fe8019"; };
+      CmpItemKindFunction = {
+        fg = "#fbf1c7";
+        bg = "#b16286";
+      };
+      CmpItemKindStruct = {
+        fg = "#fbf1c7";
+        bg = "#b16286";
+      };
+      CmpItemKindClass = {
+        fg = "#fbf1c7";
+        bg = "#b16286";
+      };
+      CmpItemKindModule = {
+        fg = "#fbf1c7";
+        bg = "#b16286";
+      };
+      CmpItemKindOperator = {
+        fg = "#fbf1c7";
+        bg = "#b16286";
+      };
 
-      CmpItemKindFunction = { fg = "#fbf1c7"; bg = "#b16286"; };
-      CmpItemKindStruct = { fg = "#fbf1c7"; bg = "#b16286"; };
-      CmpItemKindClass = { fg = "#fbf1c7"; bg = "#b16286"; };
-      CmpItemKindModule = { fg = "#fbf1c7"; bg = "#b16286"; };
-      CmpItemKindOperator = { fg = "#fbf1c7"; bg = "#b16286"; };
+      CmpItemKindVariable = {
+        fg = "#fbf1c7";
+        bg = "#458588";
+      };
+      CmpItemKindFile = {
+        fg = "#fbf1c7";
+        bg = "#458588";
+      };
 
-      CmpItemKindVariable = { fg = "#fbf1c7"; bg = "#458588"; };
-      CmpItemKindFile = { fg = "#fbf1c7"; bg = "#458588"; };
+      CmpItemKindUnit = {
+        fg = "#fbf1c7";
+        bg = "#d79921";
+      };
+      CmpItemKindSnippet = {
+        fg = "#fbf1c7";
+        bg = "#d79921";
+      };
+      CmpItemKindFolder = {
+        fg = "#fbf1c7";
+        bg = "#d79921";
+      };
 
-      CmpItemKindUnit = { fg = "#fbf1c7"; bg = "#d79921"; };
-      CmpItemKindSnippet = { fg = "#fbf1c7"; bg = "#d79921"; };
-      CmpItemKindFolder = { fg = "#fbf1c7"; bg = "#d79921"; };
+      CmpItemKindMethod = {
+        fg = "#fbf1c7";
+        bg = "#8ec07c";
+      };
+      CmpItemKindValue = {
+        fg = "#fbf1c7";
+        bg = "#8ec07c";
+      };
+      CmpItemKindEnumMember = {
+        fg = "#fbf1c7";
+        bg = "#8ec07c";
+      };
 
-      CmpItemKindMethod = { fg = "#fbf1c7"; bg = "#8ec07c"; };
-      CmpItemKindValue = { fg = "#fbf1c7"; bg = "#8ec07c"; };
-      CmpItemKindEnumMember = { fg = "#fbf1c7"; bg = "#8ec07c"; };
-
-      CmpItemKindInterface = { fg = "#fbf1c7"; bg = "#83a598"; };
-      CmpItemKindColor = { fg = "#fbf1c7"; bg = "#83a598"; };
-      CmpItemKindTypeParameter = { fg = "#fbf1c7"; bg = "#83a598"; };
+      CmpItemKindInterface = {
+        fg = "#fbf1c7";
+        bg = "#83a598";
+      };
+      CmpItemKindColor = {
+        fg = "#fbf1c7";
+        bg = "#83a598";
+      };
+      CmpItemKindTypeParameter = {
+        fg = "#fbf1c7";
+        bg = "#83a598";
+      };
 
       FloatBorder = { fg = "#a89984"; };
     };
@@ -234,72 +315,67 @@ in
           lib.attrsets.mapAttrsToList (key: action:
             {
               inherit key mode;
-            }
-            // (
-              if builtins.isString action
-              then { inherit action; }
-              else action
-            ));
+            } // (if builtins.isString action then {
+              inherit action;
+            } else
+              action));
         nm = modeKeys [ "n" ];
         vs = modeKeys [ "v" ];
         im = modeKeys [ "i" ];
-      in
-      helpers.keymaps.mkKeymaps { options.silent = true; }
-        (nm {
-          # ???
-          "-" = "<cmd>Oil<CR>";
-          "ft" = "<cmd>Neotree<CR>";
-          "fG" = "<cmd>Neotree git_status<CR>";
-          "fR" = "<cmd>Neotree remote<CR>";
-          "fc" = "<cmd>Neotree close<CR>";
-          "bp" = "<cmd>Telescope buffers<CR>";
-          # ???
-          "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
-          "mk" = "<cmd>Telescope keymaps<CR>";
-          # ???
-          "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
-          "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
-          "<leader>zt" = "<Cmd>ZkTags<CR>";
-          "<leader>zf" = "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
-          # needs a yank_history command...
-          "yH" = {
-            action = "<Cmd>Telescope yank_history<CR>";
-            options.desc = "history";
-          };
-          # lsp navigation
-          "<leader>fu" = "<cmd>Telescope undo<CR>";
+      in helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
+        # ???
+        "-" = "<cmd>Oil<CR>";
+        "ft" = "<cmd>Neotree<CR>";
+        "fG" = "<cmd>Neotree git_status<CR>";
+        "fR" = "<cmd>Neotree remote<CR>";
+        "fc" = "<cmd>Neotree close<CR>";
+        "bp" = "<cmd>Telescope buffers<CR>";
+        # ???
+        "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
+        "mk" = "<cmd>Telescope keymaps<CR>";
+        # ???
+        "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
+        "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
+        "<leader>zt" = "<Cmd>ZkTags<CR>";
+        "<leader>zf" =
+          "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
+        # needs a yank_history command...
+        "yH" = {
+          action = "<Cmd>Telescope yank_history<CR>";
+          options.desc = "history";
+        };
+        # lsp navigation
+        "<leader>fu" = "<cmd>Telescope undo<CR>";
 
-          "gr" = "<cmd>Telescope lsp_references<CR>";
-          "gI" = "<cmd>Telescope lsp_implementations<CR>";
-          "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
-          "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
-          "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
-          "gE" = "<cmd>Telescope diagnostics<CR>";
-          # remove highlights
-          "<Esc>" = ":noh <CR>";
-          # window navigation
-          "<C-h>" = "<C-w>h";
-          "<C-l>" = "<C-w>l";
-          "<C-j>" = "<C-w>j";
-          "<C-k>" = "<C-w>k";
-          # buffer navigation
-          "<tab>" = ":bnext <CR>";
-          "<S-tab>" = ":bprevious <CR>";
-          "<leader>x" = ":bdelete <CR>";
-        })
-      ++ (vs {
+        "gr" = "<cmd>Telescope lsp_references<CR>";
+        "gI" = "<cmd>Telescope lsp_implementations<CR>";
+        "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
+        "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
+        "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
+        "gE" = "<cmd>Telescope diagnostics<CR>";
+        # remove highlights
+        "<Esc>" = ":noh <CR>";
+        # window navigation
+        "<C-h>" = "<C-w>h";
+        "<C-l>" = "<C-w>l";
+        "<C-j>" = "<C-w>j";
+        "<C-k>" = "<C-w>k";
+        # buffer navigation
+        "<tab>" = ":bnext <CR>";
+        "<S-tab>" = ":bprevious <CR>";
+        "<leader>x" = ":bdelete <CR>";
+      }) ++ (vs {
         "<leader>zf" = "'<,'>ZkMatch<CR>";
-        "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
-      })
-      ++ (im {
+        "<leader>/" =
+          "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
+      }) ++ (im {
         "<C-e>" = "<End>";
         "<C-b>" = "<ESC>^i";
         "<C-h>" = "<Left>";
         "<C-j>" = "<Down>";
         "<C-k>" = "<Up>";
         "<C-l>" = "<Right>";
-      })
-      ++ [
+      }) ++ [
         {
           key = "<leader>/";
           mode = [ "n" ];
@@ -340,9 +416,7 @@ in
 
       ];
 
-    match = {
-      ColorColumn = "\\%101v";
-    };
+    match = { ColorColumn = "\\%101v"; };
 
     opts = {
       number = true; # Show line numbers
@@ -366,9 +440,7 @@ in
 
       # freeeeee auto-complete at least
       # TODO: replace with local version
-      codeium-nvim = {
-        enable = true;
-      };
+      codeium-nvim = { enable = true; };
 
       # smart comment/uncomment
       comment.enable = true;
@@ -380,10 +452,11 @@ in
         formattersByFt = {
           lua = [ "stylua" ];
           # It is kind of weird that you can't reference the actual bin formatter... or can you?
-          javascript = [ [ "prettierd" "prettier" ] ];
-          javascriptreact = [ [ "prettierd" "prettier" ] ];
-          typescriptreact = [ [ "prettierd" "prettier" ] ]; # "${pkgs.prettierd}/bin/prettierd"
-          typescript = [ [ "prettierd" "prettier" ] ];
+          javascript = [[ "prettierd" "prettier" ]];
+          javascriptreact = [[ "prettierd" "prettier" ]];
+          typescriptreact =
+            [[ "prettierd" "prettier" ]]; # "${pkgs.prettierd}/bin/prettierd"
+          typescript = [[ "prettierd" "prettier" ]];
           nix = [ "nixfmt" ];
           # Use the "*" filetype to run formatters on all filetypes.
           #"*" = [ "codespell" ];
@@ -396,8 +469,6 @@ in
           lspFallback = true;
         };
       };
-
-
 
       # the best git plugin
       fugitive.enable = true;
@@ -419,46 +490,47 @@ in
           };
           # TODO: comb through and make better
           # https://github.com/fpletz/flake/blob/f97512e2f7cfb555bcebefd96f8cf61155b8dc42/home/nixvim/gitsigns.nix#L21
-          on_attach = ''
-            function(bufnr)
-              local gs = package.loaded.gitsigns
+          on_attach = # lua
+            ''
+              function(bufnr)
+                local gs = package.loaded.gitsigns
 
-              local function map(mode, l, r, opts)
-                opts = opts or {}
-                opts.buffer = bufnr
-                vim.keymap.set(mode, l, r, opts)
+                local function map(mode, l, r, opts)
+                  opts = opts or {}
+                  opts.buffer = bufnr
+                  vim.keymap.set(mode, l, r, opts)
+                end
+
+                -- Navigation
+                map('n', ']c', function()
+                  if vim.wo.diff then return ']c' end
+                  vim.schedule(function() gs.next_hunk() end)
+                  return '<Ignore>'
+                end, {expr=true})
+
+                map('n', '[c', function()
+                  if vim.wo.diff then return '[c' end
+                  vim.schedule(function() gs.prev_hunk() end)
+                  return '<Ignore>'
+                end, {expr=true})
+
+                -- Actions
+                map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+                map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+                map('n', '<leader>hS', gs.stage_buffer)
+                map('n', '<leader>hu', gs.undo_stage_hunk)
+                map('n', '<leader>hR', gs.reset_buffer)
+                map('n', '<leader>hp', gs.preview_hunk)
+                map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+                map('n', '<leader>tb', gs.toggle_current_line_blame)
+                map('n', '<leader>hd', gs.diffthis)
+                map('n', '<leader>hD', function() gs.diffthis('~') end)
+                map('n', '<leader>td', gs.toggle_deleted)
+
+                -- Text object
+                map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
               end
-
-              -- Navigation
-              map('n', ']c', function()
-                if vim.wo.diff then return ']c' end
-                vim.schedule(function() gs.next_hunk() end)
-                return '<Ignore>'
-              end, {expr=true})
-
-              map('n', '[c', function()
-                if vim.wo.diff then return '[c' end
-                vim.schedule(function() gs.prev_hunk() end)
-                return '<Ignore>'
-              end, {expr=true})
-
-              -- Actions
-              map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-              map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-              map('n', '<leader>hS', gs.stage_buffer)
-              map('n', '<leader>hu', gs.undo_stage_hunk)
-              map('n', '<leader>hR', gs.reset_buffer)
-              map('n', '<leader>hp', gs.preview_hunk)
-              map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-              map('n', '<leader>tb', gs.toggle_current_line_blame)
-              map('n', '<leader>hd', gs.diffthis)
-              map('n', '<leader>hD', function() gs.diffthis('~') end)
-              map('n', '<leader>td', gs.toggle_deleted)
-
-              -- Text object
-              map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-            end
-          '';
+            '';
 
         };
       };
@@ -498,19 +570,20 @@ in
           jsonls = {
             enable = true;
             extraOptions.settings.json = {
-              schemas.__raw = /*lua*/''
-                require('schemastore').json.schemas {
-                  replace = {
-                    -- Micro editor config is currently too greedy
-                    ['A micro editor config'] = {
-                      description = "A micro editor config",
-                      fileMatch = { "settings.json" },
-                      name = "A micro editor config",
-                      url = "https://json.schemastore.org/micro.json"
+              schemas.__raw = # lua
+                ''
+                  require('schemastore').json.schemas {
+                    replace = {
+                      -- Micro editor config is currently too greedy
+                      ['A micro editor config'] = {
+                        description = "A micro editor config",
+                        fileMatch = { "settings.json" },
+                        name = "A micro editor config",
+                        url = "https://json.schemastore.org/micro.json"
+                      },
                     },
-                  },
-                }
-              '';
+                  }
+                '';
               validate.enable = true;
             };
           };
@@ -526,9 +599,10 @@ in
           };
           denols = {
             enable = true;
-            rootDir = ''
-              require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
-            '';
+            rootDir = # lua
+              ''
+                require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
+              '';
             extraOptions.init_options = {
               lint = true;
               unstable = true;
@@ -541,22 +615,24 @@ in
               commands = {
                 # TODO: figure out how to use this
                 # https://github.com/jakehamilton/neovim/blob/9375031a8da6a654bf0f971d23c302f2fb555b35/modules/nixvim/lsp/default.nix#L95
-                OrganizeImports.__raw = ''
-                  {
-                    function()
-                      vim.lsp.buf.execute_command {
-                        title = "",
-                        command = "_typescript.organizeImports",
-                        arguments = { vim.api.nvim_buf_get_name(0) },
-                      }
-                    end,
-                    description = "Organize Imports",
-                  }
-                '';
+                OrganizeImports.__raw = # lua
+                  ''
+                    {
+                      function()
+                        vim.lsp.buf.execute_command {
+                          title = "",
+                          command = "_typescript.organizeImports",
+                          arguments = { vim.api.nvim_buf_get_name(0) },
+                        }
+                      end,
+                      description = "Organize Imports",
+                    }
+                  '';
               };
-              rootDir = ''
-                require('lspconfig').util.root_pattern("package.json")
-              '';
+              rootDir = # lua
+                ''
+                  require('lspconfig').util.root_pattern("package.json")
+                '';
             };
           };
         };
@@ -565,9 +641,7 @@ in
       # completion icons
       lspkind = {
         enable = true;
-        cmp = {
-          enable = true;
-        };
+        cmp = { enable = true; };
       };
 
       # better diagnostics ui
@@ -605,28 +679,37 @@ in
               extraConfig.fmt.__raw = "function(str) return str:sub(1,1) end";
             }
           ];
-          lualine_b = [{ name = "branch"; icons_enabled = false; }];
+          lualine_b = [{
+            name = "branch";
+            icons_enabled = false;
+          }];
           lualine_c = [
             {
-              name = "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; #%{&modified?'*':''}
-              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
-              extraConfig.cond.__raw = "function() return vim.bo.filetype ~= 'oil' end";
+              name =
+                "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; # %{&modified?'*':''}
+              extraConfig.color.__raw =
+                "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              extraConfig.cond.__raw =
+                "function() return vim.bo.filetype ~= 'oil' end";
             }
             # IDK why, but the extension does not seem to work properly
             {
               name = "";
-              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
-              extraConfig.fmt.__raw = "
-              function()
-                local ok, oil = pcall(require, 'oil')
-                if ok then
-                  return vim.fn.fnamemodify(oil.get_current_dir(), ':~')
-                else
-                  return ''
-                end
-              end
-              ";
-              extraConfig.cond.__raw = "function() return vim.bo.filetype == 'oil' end";
+              extraConfig.color.__raw =
+                "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              extraConfig.fmt.__raw = # lua
+                ''
+                  function()
+                    local ok, oil = pcall(require, 'oil')
+                    if ok then
+                      return vim.fn.fnamemodify(oil.get_current_dir(), ':~')
+                    else
+                      return ""
+                    end
+                  end
+                '';
+              extraConfig.cond.__raw =
+                "function() return vim.bo.filetype == 'oil' end";
             }
           ];
           lualine_x = [
@@ -636,50 +719,48 @@ in
               name = "diff";
               # use gitsigns diff instead of manually recalculating it
               # https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets
-              extraConfig.source.__raw = "
-              function() 
-                local gitsigns = vim.b.gitsigns_status_dict
-                  if gitsigns then
-                    return {
-                      added = gitsigns.added,
-                      modified = gitsigns.changed,
-                      removed = gitsigns.removed
-                    }
+              extraConfig.source.__raw = # lua
+                ''
+                  function() 
+                    local gitsigns = vim.b.gitsigns_status_dict
+                      if gitsigns then
+                        return {
+                          added = gitsigns.added,
+                          modified = gitsigns.changed,
+                          removed = gitsigns.removed
+                        }
+                      end
                   end
-              end
-              ";
+                '';
             }
             "diagnostics"
           ];
-          lualine_y = [
-            {
-              name = "filetype";
-              color = {
-                bg = "Black"; # some icons are hard to see
-              };
-            }
-          ];
-          lualine_z = [
-            {
-              name = "";
-              extraConfig.fmt.__raw = "
-              function(str)
-                local function progress()
-                  local cur = vim.fn.line('.')
-                  local total = vim.fn.line('$')
-                  if cur == 1 then
-                    return ' 0'
-                  elseif cur == total then
-                    return '00'
-                  else
-                    return string.format('%2d', math.floor(cur / total * 100))
+          lualine_y = [{
+            name = "filetype";
+            color = {
+              bg = "Black"; # some icons are hard to see
+            };
+          }];
+          lualine_z = [{
+            name = "";
+            extraConfig.fmt.__raw = # lua
+              ''
+                function(str)
+                  local function progress()
+                    local cur = vim.fn.line('.')
+                    local total = vim.fn.line('$')
+                    if cur == 1 then
+                      return ' 0'
+                    elseif cur == total then
+                      return '00'
+                    else
+                      return string.format('%2d', math.floor(cur / total * 100))
+                    end
                   end
+                  return ('%2c:' .. progress())
                 end
-                return ('%2c:' .. progress())
-              end
-              ";
-            }
-          ];
+              '';
+          }];
         };
 
         # what sections to show in inactive windows
@@ -694,7 +775,7 @@ in
           #   enable_autosnippets = true;
           #   store_selection_keys = “<Tab>”;
         };
-        fromVscode = [{ }];
+        fromVscode = [ { } ];
       };
       # luasnip expansions in cmp
       cmp_luasnip.enable = true;
@@ -758,15 +839,18 @@ in
             "<C-d>" = "cmp.mapping.scroll_docs(3)";
             "<C-Space>" = "cmp.mapping.complete()";
             "<tab>" = "cmp.mapping.close()";
-            "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
-            "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
+            "<c-n>" =
+              "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
+            "<c-p>" =
+              "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
-          snippet.expand = "
-          function(args)
-            require('luasnip').lsp_expand(args.body)
-          end
-          ";
+          snippet.expand = # lua
+            ''
+              function(args)
+                require('luasnip').lsp_expand(args.body)
+              end
+            '';
         };
         # extraOptions.experimental = {
         #   ghost_text = true;
@@ -793,12 +877,8 @@ in
       oil = {
         enable = true;
         settings = {
-          view_options = {
-            show_hidden = true;
-          };
-          win_options = {
-            signcolumn = "yes:2";
-          };
+          view_options = { show_hidden = true; };
+          win_options = { signcolumn = "yes:2"; };
         };
       };
 
@@ -819,28 +899,48 @@ in
           ];
           set_env.COLORTERM = "truecolor";
           mappings = {
-            i =
-              let
-                actions = "require('telescope.actions')";
-              in
-              {
-                "<C-j>".__raw = "${actions}.move_selection_next";
-                "<C-k>".__raw = "${actions}.move_selection_previous";
-                "<C-q>".__raw = "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
-                "<A-q>".__raw = "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
-              };
+            i = let actions = "require('telescope.actions')";
+            in {
+              "<C-j>".__raw = "${actions}.move_selection_next";
+              "<C-k>".__raw = "${actions}.move_selection_previous";
+              "<C-q>".__raw =
+                "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
+              "<A-q>".__raw =
+                "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
+            };
           };
         };
 
         keymaps = {
-          "<leader>ff" = { action = "find_files"; desc = "find_[f]iles"; };
-          "<leader>fg" = { action = "git_files"; desc = "[g]it_files"; };
-          "<leader>fl" = { action = "live_grep"; desc = "[l]ive_grep"; };
-          "<leader>fo" = { action = "oldfiles"; desc = "[o]ldfiles"; };
-          "<leader>fr" = { action = "resume"; desc = "[R]esume Previous Seasch"; };
-          "<leader>fs" = { action = "lsp_document_symbols"; desc = "lsp_document_[s]ymbols"; };
+          "<leader>ff" = {
+            action = "find_files";
+            desc = "find_[f]iles";
+          };
+          "<leader>fg" = {
+            action = "git_files";
+            desc = "[g]it_files";
+          };
+          "<leader>fl" = {
+            action = "live_grep";
+            desc = "[l]ive_grep";
+          };
+          "<leader>fo" = {
+            action = "oldfiles";
+            desc = "[o]ldfiles";
+          };
+          "<leader>fr" = {
+            action = "resume";
+            desc = "[R]esume Previous Seasch";
+          };
+          "<leader>fs" = {
+            action = "lsp_document_symbols";
+            desc = "lsp_document_[s]ymbols";
+          };
           # "<leader>fu" = { action = "undo"; desc = "undo"; };
-          "<leader>fw" = { action = "grep_string"; desc = "grep_string"; };
+          "<leader>fw" = {
+            action = "grep_string";
+            desc = "grep_string";
+          };
         };
         extensions = {
           fzf-native = {
@@ -848,9 +948,7 @@ in
             fuzzy = true;
             overrideFileSorter = true;
           };
-          undo = {
-            enable = true;
-          };
+          undo = { enable = true; };
         };
       };
 
