@@ -1,4 +1,10 @@
-{ lib, helpers, pkgs, ... }:
+{
+  lib,
+  helpers,
+  pkgs,
+  neovim-nightly-overlay,
+  ...
+}:
 let
   oatmeal-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "oatmeal.nvim";
@@ -27,9 +33,9 @@ let
       rev = "cf82be744f4dba56d5d0c13d7fe429dd1d4c02e7";
       hash = "sha256-bAsSHBdxdwfHZ3HiU/wyeoS/FiQNb3a/TB2lQOz/glA=";
     };
-
   };
-in {
+in
+{
   # TODO:
   # [ ] checkout ts-auto-tag:
   #     https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
@@ -104,6 +110,7 @@ in {
       };
     };
 
+    package = neovim-nightly-overlay.packages."x86_64-linux".default;
     extraConfigLua = # lua
       ''
         vim.opt.cmdheight = 0;
@@ -143,9 +150,19 @@ in {
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
       '';
 
-    extraPlugins = [ oatmeal-nvim oil-git-status SchemaStore-nvim ];
+    extraPlugins = [
+      oatmeal-nvim
+      oil-git-status
+      SchemaStore-nvim
+    ];
 
-    extraPackages = with pkgs; [ git ripgrep prettierd nixfmt stylua ];
+    extraPackages = with pkgs; [
+      git
+      ripgrep
+      prettierd
+      nixfmt-rfc-style
+      stylua
+    ];
     # with pkgs.vimPlugins; [
     # friendly-snippets
     # ];
@@ -165,7 +182,9 @@ in {
 
     # TODO: clean this up
     highlight = {
-      ColorColumn = { underline = true; };
+      ColorColumn = {
+        underline = true;
+      };
 
       PmenuSel = {
         bg = "#504945";
@@ -305,24 +324,25 @@ in {
         bg = "#83a598";
       };
 
-      FloatBorder = { fg = "#a89984"; };
+      FloatBorder = {
+        fg = "#a89984";
+      };
     };
 
     keymaps =
       # taken from https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
       let
-        modeKeys = mode:
-          lib.attrsets.mapAttrsToList (key: action:
-            {
-              inherit key mode;
-            } // (if builtins.isString action then {
-              inherit action;
-            } else
-              action));
+        modeKeys =
+          mode:
+          lib.attrsets.mapAttrsToList (
+            key: action:
+            { inherit key mode; } // (if builtins.isString action then { inherit action; } else action)
+          );
         nm = modeKeys [ "n" ];
         vs = modeKeys [ "v" ];
         im = modeKeys [ "i" ];
-      in helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
+      in
+      helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
         # ???
         "-" = "<cmd>Oil<CR>";
         "ft" = "<cmd>Neotree<CR>";
@@ -337,8 +357,7 @@ in {
         "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
         "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
         "<leader>zt" = "<Cmd>ZkTags<CR>";
-        "<leader>zf" =
-          "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
+        "<leader>zf" = "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
         # needs a yank_history command...
         "yH" = {
           action = "<Cmd>Telescope yank_history<CR>";
@@ -364,18 +383,20 @@ in {
         "<tab>" = ":bnext <CR>";
         "<S-tab>" = ":bprevious <CR>";
         "<leader>x" = ":bdelete <CR>";
-      }) ++ (vs {
+      })
+      ++ (vs {
         "<leader>zf" = "'<,'>ZkMatch<CR>";
-        "<leader>/" =
-          "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
-      }) ++ (im {
+        "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
+      })
+      ++ (im {
         "<C-e>" = "<End>";
         "<C-b>" = "<ESC>^i";
         "<C-h>" = "<Left>";
         "<C-j>" = "<Down>";
         "<C-k>" = "<Up>";
         "<C-l>" = "<Right>";
-      }) ++ [
+      })
+      ++ [
         {
           key = "<leader>/";
           mode = [ "n" ];
@@ -410,13 +431,13 @@ in {
           options = {
             desc = "LSP formatting";
             expr = true;
-
           };
         }
-
       ];
 
-    match = { ColorColumn = "\\%101v"; };
+    match = {
+      ColorColumn = "\\%101v";
+    };
 
     opts = {
       number = true; # Show line numbers
@@ -440,7 +461,9 @@ in {
 
       # freeeeee auto-complete at least
       # TODO: replace with local version
-      codeium-nvim = { enable = true; };
+      codeium-nvim = {
+        enable = true;
+      };
 
       # smart comment/uncomment
       comment.enable = true;
@@ -449,27 +472,35 @@ in {
       conform-nvim = {
         enable = true;
         # Map of filetype to formatters
-        formattersByFt = let prettierFormat = [[ "prettierd" "prettier" ]];
-        in {
-          lua = [ "stylua" ];
-          # It is kind of weird that you can't reference the actual bin formatter... or can you?
-          # I think you can do it this way, but the current way seems to work okay.
-          # "${pkgs.prettierd}/bin/prettierd"
-          html = prettierFormat;
-          markdown = prettierFormat;
-          javascript = prettierFormat;
-          javascriptreact = prettierFormat;
-          # Should I be using jsonc?
-          json = prettierFormat;
-          typescript = prettierFormat;
-          typescriptreact = prettierFormat;
-          nix = [ "nixfmt" ];
-          # Use the "*" filetype to run formatters on all filetypes.
-          #"*" = [ "codespell" ];
-          # Use the "_" filetype to run formatters on filetypes that don't
-          # have other formatters configured.
-          "_" = [ "trim_whitespace" ];
-        };
+        formattersByFt =
+          let
+            prettierFormat = [
+              [
+                "prettierd"
+                "prettier"
+              ]
+            ];
+          in
+          {
+            lua = [ "stylua" ];
+            # It is kind of weird that you can't reference the actual bin formatter... or can you?
+            # I think you can do it this way, but the current way seems to work okay.
+            # "${pkgs.prettierd}/bin/prettierd"
+            html = prettierFormat;
+            markdown = prettierFormat;
+            javascript = prettierFormat;
+            javascriptreact = prettierFormat;
+            # Should I be using jsonc?
+            json = prettierFormat;
+            typescript = prettierFormat;
+            typescriptreact = prettierFormat;
+            nix = [ "nixfmt" ];
+            # Use the "*" filetype to run formatters on all filetypes.
+            #"*" = [ "codespell" ];
+            # Use the "_" filetype to run formatters on filetypes that don't
+            # have other formatters configured.
+            "_" = [ "trim_whitespace" ];
+          };
         formatOnSave = {
           timeoutMs = 500;
           lspFallback = true;
@@ -537,7 +568,6 @@ in {
                 map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
               end
             '';
-
         };
       };
 
@@ -647,7 +677,9 @@ in {
       # completion icons
       lspkind = {
         enable = true;
-        cmp = { enable = true; };
+        cmp = {
+          enable = true;
+        };
       };
 
       # better diagnostics ui
@@ -685,24 +717,22 @@ in {
               extraConfig.fmt.__raw = "function(str) return str:sub(1,1) end";
             }
           ];
-          lualine_b = [{
-            name = "branch";
-            icons_enabled = false;
-          }];
+          lualine_b = [
+            {
+              name = "branch";
+              icons_enabled = false;
+            }
+          ];
           lualine_c = [
             {
-              name =
-                "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; # %{&modified?'*':''}
-              extraConfig.color.__raw =
-                "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
-              extraConfig.cond.__raw =
-                "function() return vim.bo.filetype ~= 'oil' end";
+              name = "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; # %{&modified?'*':''}
+              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              extraConfig.cond.__raw = "function() return vim.bo.filetype ~= 'oil' end";
             }
             # IDK why, but the extension does not seem to work properly
             {
               name = "";
-              extraConfig.color.__raw =
-                "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
               extraConfig.fmt.__raw = # lua
                 ''
                   function()
@@ -714,8 +744,7 @@ in {
                     end
                   end
                 '';
-              extraConfig.cond.__raw =
-                "function() return vim.bo.filetype == 'oil' end";
+              extraConfig.cond.__raw = "function() return vim.bo.filetype == 'oil' end";
             }
           ];
           lualine_x = [
@@ -741,32 +770,36 @@ in {
             }
             "diagnostics"
           ];
-          lualine_y = [{
-            name = "filetype";
-            color = {
-              bg = "Black"; # some icons are hard to see
-            };
-          }];
-          lualine_z = [{
-            name = "";
-            extraConfig.fmt.__raw = # lua
-              ''
-                function(str)
-                  local function progress()
-                    local cur = vim.fn.line('.')
-                    local total = vim.fn.line('$')
-                    if cur == 1 then
-                      return ' 0'
-                    elseif cur == total then
-                      return '00'
-                    else
-                      return string.format('%2d', math.floor(cur / total * 100))
+          lualine_y = [
+            {
+              name = "filetype";
+              color = {
+                bg = "Black"; # some icons are hard to see
+              };
+            }
+          ];
+          lualine_z = [
+            {
+              name = "";
+              extraConfig.fmt.__raw = # lua
+                ''
+                  function(str)
+                    local function progress()
+                      local cur = vim.fn.line('.')
+                      local total = vim.fn.line('$')
+                      if cur == 1 then
+                        return ' 0'
+                      elseif cur == total then
+                        return '00'
+                      else
+                        return string.format('%2d', math.floor(cur / total * 100))
+                      end
                     end
+                    return ('%2c:' .. progress())
                   end
-                  return ('%2c:' .. progress())
-                end
-              '';
-          }];
+                '';
+            }
+          ];
         };
 
         # what sections to show in inactive windows
@@ -845,10 +878,8 @@ in {
             "<C-d>" = "cmp.mapping.scroll_docs(3)";
             "<C-Space>" = "cmp.mapping.complete()";
             "<tab>" = "cmp.mapping.close()";
-            "<c-n>" =
-              "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
-            "<c-p>" =
-              "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
+            "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
+            "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
             "<CR>" = "cmp.mapping.confirm({ select = true })";
           };
           snippet.expand = # lua
@@ -883,8 +914,12 @@ in {
       oil = {
         enable = true;
         settings = {
-          view_options = { show_hidden = true; };
-          win_options = { signcolumn = "yes:2"; };
+          view_options = {
+            show_hidden = true;
+          };
+          win_options = {
+            signcolumn = "yes:2";
+          };
         };
       };
 
@@ -895,24 +930,27 @@ in {
       # https://github.com/BenjaminTalbi/nixos-configurations/blob/0f160eaa0eae5a0417bc3eafae5e5e389614bda2/home/nixvim/telescope.nix
       telescope = {
         enable = true;
-        defaults = {
-          file_ignore_patterns = [
-            "^.git/"
-            "^.mypy_cache/"
-            "^__pycache__/"
-            "%.ipynb"
-            "^node_modules/"
-          ];
-          set_env.COLORTERM = "truecolor";
-          mappings = {
-            i = let actions = "require('telescope.actions')";
-            in {
-              "<C-j>".__raw = "${actions}.move_selection_next";
-              "<C-k>".__raw = "${actions}.move_selection_previous";
-              "<C-q>".__raw =
-                "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
-              "<A-q>".__raw =
-                "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
+        settings = {
+          defaults = {
+            file_ignore_patterns = [
+              "^.git/"
+              "^.mypy_cache/"
+              "^__pycache__/"
+              "%.ipynb"
+              "^node_modules/"
+            ];
+            set_env.COLORTERM = "truecolor";
+            mappings = {
+              i =
+                let
+                  actions = "require('telescope.actions')";
+                in
+                {
+                  "<C-j>".__raw = "${actions}.move_selection_next";
+                  "<C-k>".__raw = "${actions}.move_selection_previous";
+                  "<C-q>".__raw = "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
+                  "<A-q>".__raw = "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
+                };
             };
           };
         };
@@ -920,41 +958,45 @@ in {
         keymaps = {
           "<leader>ff" = {
             action = "find_files";
-            desc = "find_[f]iles";
+            options.desc = "find_[f]iles";
           };
           "<leader>fg" = {
             action = "git_files";
-            desc = "[g]it_files";
+            options.desc = "[g]it_files";
           };
           "<leader>fl" = {
             action = "live_grep";
-            desc = "[l]ive_grep";
+            options.desc = "[l]ive_grep";
           };
           "<leader>fo" = {
             action = "oldfiles";
-            desc = "[o]ldfiles";
+            options.desc = "[o]ldfiles";
           };
           "<leader>fr" = {
             action = "resume";
-            desc = "[R]esume Previous Seasch";
+            options.desc = "[R]esume Previous Seasch";
           };
           "<leader>fs" = {
             action = "lsp_document_symbols";
-            desc = "lsp_document_[s]ymbols";
+            options.desc = "lsp_document_[s]ymbols";
           };
           # "<leader>fu" = { action = "undo"; desc = "undo"; };
           "<leader>fw" = {
             action = "grep_string";
-            desc = "grep_string";
+            options.desc = "grep_string";
           };
         };
         extensions = {
           fzf-native = {
             enable = true;
-            fuzzy = true;
-            overrideFileSorter = true;
+            settings = {
+              fuzzy = true;
+              override_files_sorter = true;
+            };
           };
-          undo = { enable = true; };
+          undo = {
+            enable = true;
+          };
         };
       };
 
