@@ -646,8 +646,34 @@ in
           };
           tsserver = {
             enable = true;
+            onAttach.function = # lua
+              ''
+                if client.server_capabilities.inlayHintProvider then
+                  vim.lsp.inlay_hint.enable(bufnr, true)
+                end
+              '';
             extraOptions = {
               single_file_support = false;
+              settings =
+                let
+                  inlayHints = {
+                    includeInlayEnumMemberValueHints = true;
+                    includeInlayFunctionLikeReturnTypeHints = true;
+                    includeInlayFunctionParameterTypeHints = true;
+                    includeInlayParameterNameHints = "all";
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = true;
+                    includeInlayPropertyDeclarationTypeHints = true;
+                    includeInlayVariableTypeHints = true;
+                  };
+                in
+                {
+                  javascript = {
+                    inherit inlayHints;
+                  };
+                  typescript = {
+                    inherit inlayHints;
+                  };
+                };
               commands = {
                 # TODO: figure out how to use this
                 # https://github.com/jakehamilton/neovim/blob/9375031a8da6a654bf0f971d23c302f2fb555b35/modules/nixvim/lsp/default.nix#L95
