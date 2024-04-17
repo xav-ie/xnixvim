@@ -449,14 +449,20 @@ in {
       conform-nvim = {
         enable = true;
         # Map of filetype to formatters
-        formattersByFt = {
+        formattersByFt = let prettierFormat = [[ "prettierd" "prettier" ]];
+        in {
           lua = [ "stylua" ];
           # It is kind of weird that you can't reference the actual bin formatter... or can you?
-          javascript = [[ "prettierd" "prettier" ]];
-          javascriptreact = [[ "prettierd" "prettier" ]];
-          typescriptreact =
-            [[ "prettierd" "prettier" ]]; # "${pkgs.prettierd}/bin/prettierd"
-          typescript = [[ "prettierd" "prettier" ]];
+          # I think you can do it this way, but the current way seems to work okay.
+          # "${pkgs.prettierd}/bin/prettierd"
+          html = prettierFormat;
+          markdown = prettierFormat;
+          javascript = prettierFormat;
+          javascriptreact = prettierFormat;
+          # Should I be using jsonc?
+          json = prettierFormat;
+          typescript = prettierFormat;
+          typescriptreact = prettierFormat;
           nix = [ "nixfmt" ];
           # Use the "*" filetype to run formatters on all filetypes.
           #"*" = [ "codespell" ];
