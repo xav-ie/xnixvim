@@ -152,6 +152,14 @@ in
       oil-git-status
       SchemaStore-nvim
     ];
+
+    extraPackages = with pkgs; [
+      git
+      ripgrep
+      prettierd
+      nixfmt
+      stylua
+    ];
     # with pkgs.vimPlugins; [
     # friendly-snippets
     # ];
@@ -368,23 +376,24 @@ in
       # auto-formatting
       conform-nvim = {
         enable = true;
-        formatOnSave = {
-          timeoutMs = 500;
-          lspFallback = true;
-        };
         # Map of filetype to formatters
         formattersByFt = {
           lua = [ "stylua" ];
-          # Conform will run multiple formatters sequentially
-          #python = [ "isort" "black" ];
-          # Use a sub-list to run only the first available formatter
+          # It is kind of weird that you can't reference the actual bin formatter... or can you?
           javascript = [ [ "prettierd" "prettier" ] ];
+          javascriptreact = [ [ "prettierd" "prettier" ] ];
+          typescriptreact = [ [ "prettierd" "prettier" ] ]; # "${pkgs.prettierd}/bin/prettierd"
+          typescript = [ [ "prettierd" "prettier" ] ];
           nix = [ "nixfmt" ];
           # Use the "*" filetype to run formatters on all filetypes.
           #"*" = [ "codespell" ];
           # Use the "_" filetype to run formatters on filetypes that don't
           # have other formatters configured.
           "_" = [ "trim_whitespace" ];
+        };
+        formatOnSave = {
+          timeoutMs = 500;
+          lspFallback = true;
         };
       };
 

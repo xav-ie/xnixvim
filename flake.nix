@@ -16,6 +16,8 @@
       config = import ./config; # import the module directly
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
+      # TODO: copy this excellent nixvim config:
+      # https://github.com/asungy/nixim/blob/979643e6a13d1803915b379a0e974b86cbcd77ea/flake.nix
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -35,6 +37,7 @@
             inherit pkgs;
             module = config;
             # You can use `extraSpecialArgs` to pass additional arguments to your module files
+            # idk how to use this
             extraSpecialArgs = {
               # inherit (inputs) foo;
             };
