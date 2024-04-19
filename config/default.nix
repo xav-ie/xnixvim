@@ -492,6 +492,8 @@ in
             javascriptreact = prettierFormat;
             # Should I be using jsonc?
             json = prettierFormat;
+            # idek
+            jsonc = prettierFormat;
             typescript = prettierFormat;
             typescriptreact = prettierFormat;
             nix = [ "nixfmt" ];
