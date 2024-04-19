@@ -729,9 +729,10 @@ in
         enable = true;
         theme = lib.mkForce "powerline_dark";
         globalstatus = true;
+        # idk if this does anything
         componentSeparators = {
-          left = "|"; # "";
-          right = "|"; # "";
+          left = ""; # "";
+          right = ""; # "";
         };
         sectionSeparators = {
           left = ""; # "";
@@ -747,10 +748,9 @@ in
         # %t (filename), %c (column), %l (line), %p (percentage), %{any expression}
         sections = {
           lualine_a = [
-            # https://github.com/i077/system/blob/0a1e04f7f476c3158af0bfd7dcea75ee1969229b/modules/home/neovim/plugins.nix#L89
             {
               name = "mode";
-              extraConfig.fmt.__raw = "function(str) return str:sub(1,1) end";
+              fmt = "function(str) return str:sub(1,1) end";
             }
           ];
           lualine_b = [
@@ -762,14 +762,14 @@ in
           lualine_c = [
             {
               name = "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; # %{&modified?'*':''}
-              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
               extraConfig.cond.__raw = "function() return vim.bo.filetype ~= 'oil' end";
             }
             # IDK why, but the extension does not seem to work properly
             {
               name = "";
-              extraConfig.color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
-              extraConfig.fmt.__raw = # lua
+              color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
+              fmt = # lua
                 ''
                   function()
                     local ok, oil = pcall(require, 'oil')
@@ -817,7 +817,7 @@ in
           lualine_z = [
             {
               name = "";
-              extraConfig.fmt.__raw = # lua
+              fmt = # lua
                 ''
                   function(str)
                     local function progress()
