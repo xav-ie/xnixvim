@@ -634,9 +634,9 @@ in
             };
           };
           lua-ls.enable = true;
-          nixd = {
+          nil_ls = {
             enable = true;
-            settings.formatting.command = "nixpkgs-fmt";
+            settings.formatting.command = [ "nixpkgs-fmt" ];
           };
           rust-analyzer = {
             enable = true;
