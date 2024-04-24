@@ -457,6 +457,7 @@ in
         separatorStyle = "thin";
         showBufferCloseIcons = false;
         indicator.icon = "▌";
+        tabSize = 0;
       };
 
       # freeeeee auto-complete at least
