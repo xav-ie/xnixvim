@@ -614,6 +614,7 @@ in
         servers = {
           eslint.enable = true;
           gopls.enable = true;
+          graphql.enable = true;
           jsonls = {
             enable = true;
             extraOptions.settings.json = {
