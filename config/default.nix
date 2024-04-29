@@ -898,9 +898,9 @@ in
         autoEnableSources = true;
         settings = {
           sources = [
-            { name = "luasnip"; }
             { name = "nvim_lsp"; }
             { name = "codeium"; }
+            { name = "luasnip"; }
             { name = "path"; }
             {
               name = "buffer";
