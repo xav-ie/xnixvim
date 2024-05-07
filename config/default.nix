@@ -3,6 +3,7 @@
   helpers,
   pkgs,
   neovim-nightly-overlay,
+  system,
   ...
 }:
 let
@@ -110,7 +111,7 @@ in
       };
     };
 
-    package = neovim-nightly-overlay.packages."x86_64-linux".default;
+    package = neovim-nightly-overlay.packages."${system}".default;
     extraConfigLua = # lua
       ''
         vim.opt.cmdheight = 0;
