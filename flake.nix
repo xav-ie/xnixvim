@@ -40,6 +40,7 @@
             # idk how to use this
             extraSpecialArgs = {
               inherit neovim-nightly-overlay;
+              inherit system;
               # inherit (inputs) foo;
             };
           };
