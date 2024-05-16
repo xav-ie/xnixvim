@@ -158,7 +158,11 @@ in
 
         require('oil-git-status').setup()
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
-        require('octo').setup()
+        require('octo').setup({
+          suppress_missing_scope = {
+            projects_v2 = true,
+          },
+        })
       '';
 
     extraPlugins = [
