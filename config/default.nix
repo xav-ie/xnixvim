@@ -7,6 +7,15 @@
   ...
 }:
 let
+  octo-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "octo.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "pwntester";
+      repo = "octo.nvim";
+      rev = "5646539320cd62af6ff28f48ec92aeb724c68e18";
+      hash = "sha256-EK05b72/ekNcA7RBauiKZ27/rF4YX6IXnzRpODzXduI=";
+    };
+  };
   oatmeal-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "oatmeal.nvim";
     src = pkgs.fetchFromGitHub {
@@ -149,9 +158,11 @@ in
 
         require('oil-git-status').setup()
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
+        require('octo').setup()
       '';
 
     extraPlugins = [
+      octo-nvim
       oatmeal-nvim
       oil-git-status
       SchemaStore-nvim
