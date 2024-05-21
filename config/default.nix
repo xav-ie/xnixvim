@@ -156,6 +156,11 @@ in
         vim.keymap.set('n', '<leader>c', '"+y')
         vim.keymap.set('n', '<leader>cc', '"+yy')
 
+        -- TODO: how to use colorscheme
+        vim.cmd('highlight TSProperty guifg=#FFD242')
+        vim.cmd('highlight TSType guifg=#00a0f0')
+        vim.cmd('highlight TSNumber guifg=#be620a')
+
         require('oil-git-status').setup()
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
         require('octo').setup({
