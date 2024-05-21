@@ -44,6 +44,10 @@ let
       hash = "sha256-bAsSHBdxdwfHZ3HiU/wyeoS/FiQNb3a/TB2lQOz/glA=";
     };
   };
+  markdown-table-sorter = pkgs.vimUtils.buildVimPlugin {
+    name = "markdown-table-sorter";
+    src = ./custom-plugins/markdown-table-sorter;
+  };
 in
 {
   # TODO:
@@ -161,6 +165,8 @@ in
         vim.cmd('highlight TSType guifg=#00a0f0')
         vim.cmd('highlight TSNumber guifg=#be620a')
 
+        -- TODO: improve docs and package
+        require('markdown-table-sorter')
         require('oil-git-status').setup()
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
         require('octo').setup({
@@ -171,6 +177,7 @@ in
       '';
 
     extraPlugins = [
+      markdown-table-sorter
       octo-nvim
       oatmeal-nvim
       oil-git-status
