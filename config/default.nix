@@ -615,9 +615,6 @@ in
         };
       };
 
-      # indentation lines ui guides
-      # indent-blankline.enable = true;
-
       lsp = {
         enable = true;
         keymaps = {
