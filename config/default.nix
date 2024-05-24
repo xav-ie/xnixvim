@@ -382,29 +382,12 @@ in
         im = modeKeys [ "i" ];
       in
       helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
-        # ???
         "-" = "<cmd>Oil<CR>";
-        "ft" = "<cmd>Neotree<CR>";
-        "fG" = "<cmd>Neotree git_status<CR>";
-        "fR" = "<cmd>Neotree remote<CR>";
-        "fc" = "<cmd>Neotree close<CR>";
         "bp" = "<cmd>Telescope buffers<CR>";
-        # ???
         "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
         "mk" = "<cmd>Telescope keymaps<CR>";
-        # ???
-        "<leader>zn" = "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>";
-        "<leader>zo" = "<Cmd>ZkNotes { sort = { 'modified' } }<CR>";
-        "<leader>zt" = "<Cmd>ZkTags<CR>";
-        "<leader>zf" = "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>";
-        # needs a yank_history command...
-        "yH" = {
-          action = "<Cmd>Telescope yank_history<CR>";
-          options.desc = "history";
-        };
-        # lsp navigation
         "<leader>fu" = "<cmd>Telescope undo<CR>";
-
+        # lsp navigation
         "gr" = "<cmd>Telescope lsp_references<CR>";
         "gI" = "<cmd>Telescope lsp_implementations<CR>";
         "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
@@ -424,7 +407,6 @@ in
         "<leader>x" = ":bdelete <CR>";
       })
       ++ (vs {
-        "<leader>zf" = "'<,'>ZkMatch<CR>";
         "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
       })
       ++ (im {
