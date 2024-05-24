@@ -618,9 +618,6 @@ in
       # indentation lines ui guides
       # indent-blankline.enable = true;
 
-      # finally, normal behaving tabs
-      # intellitab.enable = true;
-
       lsp = {
         enable = true;
         keymaps = {
