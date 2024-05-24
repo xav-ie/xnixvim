@@ -408,6 +408,7 @@ in
       })
       ++ (vs {
         "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
+        "<leader>?" = "<ESC><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>";
       })
       ++ (im {
         "<C-e>" = "<End>";
@@ -424,6 +425,17 @@ in
           action = ''
             function() 
              require("Comment.api").toggle.linewise.current()
+            end
+          '';
+          lua = true;
+          options.expr = true;
+        }
+        {
+          key = "<leader>?";
+          mode = [ "n" ];
+          action = ''
+            function() 
+             require("Comment.api").toggle.blockwise.current()
             end
           '';
           lua = true;
