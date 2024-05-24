@@ -714,8 +714,6 @@ in
                   };
                 };
               commands = {
-                # TODO: figure out how to use this
-                # https://github.com/jakehamilton/neovim/blob/9375031a8da6a654bf0f971d23c302f2fb555b35/modules/nixvim/lsp/default.nix#L95
                 OrganizeImports.__raw = # lua
                   ''
                     {
