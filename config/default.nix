@@ -63,7 +63,6 @@ in
   #  https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
   # https://github.com/evccyr/dotfiles/blob/main/nix/neovim/default.nix
   # [ ] would git blame floating messages be helpful? https://github.com/rhysd/git-messenger.vim
-  # [ ] what about clipboard management in vim? https://github.com/gbprod/yanky.nvim
   # [ ] is lspsaga any good? looks kind of bloated and feature creeped.
   # [ ] write my own or find someone else's snippets for ts. specifically all the map, reduce, forEach should have snippets
   #  https://www.youtube.com/watch?v=Dn800rlPIho
@@ -76,8 +75,6 @@ in
   # Import all your configuration modules here
   imports = [ ./bufferline.nix ];
   config = {
-    # use clipboard for all operations
-    clipboard.register = "unnamedplus";
     colorschemes = {
       base16 = {
         enable = true;
@@ -141,24 +138,38 @@ in
           float = { border = _border },
         }
 
-        -- set up osc52 as clipboard provider
-        local function copy(lines, _) 
-         require('osc52').copy(table.concat(lines, '\n'))
-        end
-
         local function paste()
+         -- this is inaccurate and not correct, but it is okay enough
          return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
         end
 
         vim.g.clipboard = {
-         name = 'osc52',
-         copy = {['+'] = copy, ['*'] = copy},
-         paste = {['+'] = paste, ['*'] = paste},
+          name = 'OSC 52',
+          copy = {
+            ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+            ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+          },
+          paste = {
+            ['+'] = paste,
+            ['*'] = paste,
+            -- TODO: get osc paste working for zellij first
+            -- ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+            -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+          },
         }
 
-        -- Now the '+' register will copy to system clipboard using OSC52
-        vim.keymap.set('n', '<leader>c', '"+y')
-        vim.keymap.set('n', '<leader>cc', '"+yy')
+        -- I always want yanks syncronized with system and "selection" (idk what that is) clipboard
+        -- https://github.com/ch3n9w/dev/blob/319deb662ff50b58f5b643fbd9327ecb00919886/nvim/lua/autocmd.lua#L26-L34
+        vim.api.nvim_create_autocmd('TextYankPost', {
+            callback = function()
+                vim.highlight.on_yank()
+                local copy_to_unnamedplus = require('vim.ui.clipboard.osc52').copy('+')
+                copy_to_unnamedplus(vim.v.event.regcontents)
+                local copy_to_unnamed = require('vim.ui.clipboard.osc52').copy('*')
+                copy_to_unnamed(vim.v.event.regcontents)
+            end
+        })
+        -- I also want paste syncronized, too, but zellij is preventing this >:(
 
         -- TODO: how to use colorscheme
         vim.cmd('highlight TSProperty guifg=#FFD242')
@@ -969,9 +980,6 @@ in
       #   enable = true;
       #   autocmd.enabled = true;
       # };
-
-      # copy to clipboard through terminal escape sequences
-      nvim-osc52.enable = true;
 
       # better folding ui
       #nvim-ufo.enable = true;
