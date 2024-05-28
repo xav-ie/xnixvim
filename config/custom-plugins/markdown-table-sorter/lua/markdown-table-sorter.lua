@@ -102,17 +102,25 @@ function sort_markdown_table_by_current_column(reverse)
 
 		if num_a and num_b then
 			-- Numeric comparison
-			if reverse then
-				return num_a > num_b
+			if num_a == num_b then
+				return a:start() < b:start()
 			else
-				return num_a < num_b
+				if reverse then
+					return num_a > num_b
+				else
+					return num_a < num_b
+				end
 			end
 		else
 			-- String comparison
-			if reverse then
-				return field_a > field_b
+			if field_a == field_b then
+				return a:start() < b:start()
 			else
-				return field_a < field_b
+				if reverse then
+					return field_a > field_b
+				else
+					return field_a < field_b
+				end
 			end
 		end
 	end)
