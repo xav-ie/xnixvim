@@ -48,6 +48,17 @@ let
     name = "markdown-table-sorter";
     src = ./custom-plugins/markdown-table-sorter;
   };
+  prr = pkgs.vimUtils.buildVimPlugin {
+    name = "prr";
+    src =
+      pkgs.fetchFromGitHub {
+        owner = "danobi";
+        repo = "prr";
+        rev = "0a947caf8fe4dc32faff3ed6f6f59b8ae41e6769";
+        hash = "sha256-+YVAFm9S06CufAQjqJBVb1nGCezH+Eti2zNUA+r5vU4=";
+      }
+      + "/vim";
+  };
 in
 {
   # TODO:
@@ -192,6 +203,28 @@ in
         vim.api.nvim_set_keymap('v', 'gt', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>:<C-u>silent! '<,'>s/\%V\<\(A\|An\|The\|And\|But\|Or\|Nor\|So\|Yet\|At\|By\|In\|Of\|On\|To\|Up\|For\|About\|Above\|Across\|After\|Against\|Along\|Among\|Around\|Before\|Behind\|Below\|Beneath\|Beside\|Between\|Beyond\|Down\|During\|Except\|From\|Inside\|Into\|Like\|Near\|Off\|Onto\|Out\|Outside\|Over\|Past\|Since\|Through\|Throughout\|Under\|Underneath\|Until\|With\|Within\|Without\|Is\|Be\|Am\|Are\|Was\|Were\|Has\|Have\|Had\)\>/\L&/g<CR>]], { noremap = true, silent = true })
         -- Sentence case
         vim.api.nvim_set_keymap('v', 'gs', [[:<C-u>try | '<,'>s/\%V\(\(^\|[.!?]\s*\)\)\zs\w/\u&/g | catch | endtry<CR>:<C-u>'<,'>normal! _vgU<CR>]], { noremap = true, silent = true })
+
+
+        -- Automatically set up highlighting for .prr review files
+        -- Use :hi to see the various definitions we kinda abuse here
+        vim.cmd([[
+        augroup Prr
+          autocmd!
+          autocmd BufRead,BufNewFile *.prr set syntax=on
+
+          autocmd BufRead,BufNewFile *.prr hi! link prrAdded Function
+          autocmd BufRead,BufNewFile *.prr hi! link prrRemoved Keyword
+          autocmd BufRead,BufNewFile *.prr hi! link prrFile Special
+
+          autocmd BufRead,BufNewFile *.prr hi! link prrHeader Directory
+
+          autocmd BufRead,BufNewFile *.prr hi! link prrIndex Special
+          autocmd BufRead,BufNewFile *.prr hi! link prrChunk Special
+          autocmd BufRead,BufNewFile *.prr hi! link prrChunkH Special
+          autocmd BufRead,BufNewFile *.prr hi! link prrTagName Special
+          autocmd BufRead,BufNewFile *.prr hi! link prrResult Special
+        augroup END
+        ]])
       '';
 
     extraPlugins = [
@@ -199,6 +232,7 @@ in
       octo-nvim
       oatmeal-nvim
       oil-git-status
+      prr
       SchemaStore-nvim
     ];
 
