@@ -1,21 +1,20 @@
-{
-  lib,
-  helpers,
-  pkgs,
-  neovim-nightly-overlay,
-  system,
-  ...
+{ lib
+, helpers
+, pkgs
+, neovim-nightly-overlay
+, system
+, ...
 }:
 let
-  octo-nvim = pkgs.vimUtils.buildVimPlugin {
-    name = "octo.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "pwntester";
-      repo = "octo.nvim";
-      rev = "5646539320cd62af6ff28f48ec92aeb724c68e18";
-      hash = "sha256-EK05b72/ekNcA7RBauiKZ27/rF4YX6IXnzRpODzXduI=";
-    };
-  };
+  # octo-nvim = pkgs.vimUtils.buildVimPlugin {
+  #   name = "octo.nvim";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "pwntester";
+  #     repo = "octo.nvim";
+  #     rev = "5646539320cd62af6ff28f48ec92aeb724c68e18";
+  #     hash = "sha256-EK05b72/ekNcA7RBauiKZ27/rF4YX6IXnzRpODzXduI=";
+  #   };
+  # };
   oatmeal-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "oatmeal.nvim";
     src = pkgs.fetchFromGitHub {
@@ -51,12 +50,13 @@ let
   prr = pkgs.vimUtils.buildVimPlugin {
     name = "prr";
     src =
-      pkgs.fetchFromGitHub {
-        owner = "danobi";
-        repo = "prr";
-        rev = "0a947caf8fe4dc32faff3ed6f6f59b8ae41e6769";
-        hash = "sha256-+YVAFm9S06CufAQjqJBVb1nGCezH+Eti2zNUA+r5vU4=";
-      }
+      pkgs.fetchFromGitHub
+        {
+          owner = "danobi";
+          repo = "prr";
+          rev = "0a947caf8fe4dc32faff3ed6f6f59b8ae41e6769";
+          hash = "sha256-+YVAFm9S06CufAQjqJBVb1nGCezH+Eti2zNUA+r5vU4=";
+        }
       + "/vim";
   };
 in
@@ -191,11 +191,11 @@ in
         require('markdown-table-sorter')
         require('oil-git-status').setup()
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
-        require('octo').setup({
-          suppress_missing_scope = {
-            projects_v2 = true,
-          },
-        })
+        -- require('octo').setup({
+        --   suppress_missing_scope = {
+        --     projects_v2 = true,
+        --   },
+        -- })
 
         -- Pascal Case, also highlights the cased words for easy lowercasing! :)
         vim.api.nvim_set_keymap('v', 'gp', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>]], { noremap = true, silent = true })
@@ -229,7 +229,7 @@ in
 
     extraPlugins = [
       markdown-table-sorter
-      octo-nvim
+      # octo-nvim
       oatmeal-nvim
       oil-git-status
       prr
@@ -422,31 +422,32 @@ in
         vs = modeKeys [ "v" ];
         im = modeKeys [ "i" ];
       in
-      helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
-        "-" = "<cmd>Oil<CR>";
-        "bp" = "<cmd>Telescope buffers<CR>";
-        "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
-        "mk" = "<cmd>Telescope keymaps<CR>";
-        "<leader>fu" = "<cmd>Telescope undo<CR>";
-        # lsp navigation
-        "gr" = "<cmd>Telescope lsp_references<CR>";
-        "gI" = "<cmd>Telescope lsp_implementations<CR>";
-        "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
-        "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
-        "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
-        "gE" = "<cmd>Telescope diagnostics<CR>";
-        # remove highlights
-        "<Esc>" = ":noh <CR>";
-        # window navigation
-        "<C-h>" = "<C-w>h";
-        "<C-l>" = "<C-w>l";
-        "<C-j>" = "<C-w>j";
-        "<C-k>" = "<C-w>k";
-        # buffer navigation
-        "<tab>" = ":bnext <CR>";
-        "<S-tab>" = ":bprevious <CR>";
-        "<leader>x" = ":bdelete <CR>";
-      })
+      helpers.keymaps.mkKeymaps { options.silent = true; }
+        (nm {
+          "-" = "<cmd>Oil<CR>";
+          "bp" = "<cmd>Telescope buffers<CR>";
+          "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
+          "mk" = "<cmd>Telescope keymaps<CR>";
+          "<leader>fu" = "<cmd>Telescope undo<CR>";
+          # lsp navigation
+          "gr" = "<cmd>Telescope lsp_references<CR>";
+          "gI" = "<cmd>Telescope lsp_implementations<CR>";
+          "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
+          "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
+          "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
+          "gE" = "<cmd>Telescope diagnostics<CR>";
+          # remove highlights
+          "<Esc>" = ":noh <CR>";
+          # window navigation
+          "<C-h>" = "<C-w>h";
+          "<C-l>" = "<C-w>l";
+          "<C-j>" = "<C-w>j";
+          "<C-k>" = "<C-w>k";
+          # buffer navigation
+          "<tab>" = ":bnext <CR>";
+          "<S-tab>" = ":bprevious <CR>";
+          "<leader>x" = ":bdelete <CR>";
+        })
       ++ (vs {
         "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
         "<leader>?" = "<ESC><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>";
@@ -918,7 +919,7 @@ in
           #   enable_autosnippets = true;
           #   store_selection_keys = “<Tab>”;
         };
-        fromVscode = [ { } ];
+        fromVscode = [{ }];
       };
       # luasnip expansions in cmp
       cmp_luasnip.enable = true;
