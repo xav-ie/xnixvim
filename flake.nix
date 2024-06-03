@@ -9,11 +9,10 @@
   };
 
   outputs =
-    {
-      nixvim,
-      flake-parts,
-      neovim-nightly-overlay,
-      ...
+    { nixvim
+    , flake-parts
+    , neovim-nightly-overlay
+    , ...
     }@inputs:
     let
       config = import ./config; # import the module directly
@@ -53,6 +52,8 @@
               name = "A nixvim configuration";
             };
           };
+
+          formatter = pkgs.nixpkgs-fmt;
 
           packages = {
             # Lets you run `nix run .` to start nixvim
