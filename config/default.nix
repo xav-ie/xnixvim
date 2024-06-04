@@ -1,9 +1,10 @@
-{ lib
-, helpers
-, pkgs
-, neovim-nightly-overlay
-, system
-, ...
+{
+  lib,
+  helpers,
+  pkgs,
+  neovim-nightly-overlay,
+  system,
+  ...
 }:
 let
   # octo-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -50,13 +51,12 @@ let
   prr = pkgs.vimUtils.buildVimPlugin {
     name = "prr";
     src =
-      pkgs.fetchFromGitHub
-        {
-          owner = "danobi";
-          repo = "prr";
-          rev = "0a947caf8fe4dc32faff3ed6f6f59b8ae41e6769";
-          hash = "sha256-+YVAFm9S06CufAQjqJBVb1nGCezH+Eti2zNUA+r5vU4=";
-        }
+      pkgs.fetchFromGitHub {
+        owner = "danobi";
+        repo = "prr";
+        rev = "0a947caf8fe4dc32faff3ed6f6f59b8ae41e6769";
+        hash = "sha256-+YVAFm9S06CufAQjqJBVb1nGCezH+Eti2zNUA+r5vU4=";
+      }
       + "/vim";
   };
 in
@@ -422,32 +422,31 @@ in
         vs = modeKeys [ "v" ];
         im = modeKeys [ "i" ];
       in
-      helpers.keymaps.mkKeymaps { options.silent = true; }
-        (nm {
-          "-" = "<cmd>Oil<CR>";
-          "bp" = "<cmd>Telescope buffers<CR>";
-          "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
-          "mk" = "<cmd>Telescope keymaps<CR>";
-          "<leader>fu" = "<cmd>Telescope undo<CR>";
-          # lsp navigation
-          "gr" = "<cmd>Telescope lsp_references<CR>";
-          "gI" = "<cmd>Telescope lsp_implementations<CR>";
-          "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
-          "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
-          "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
-          "gE" = "<cmd>Telescope diagnostics<CR>";
-          # remove highlights
-          "<Esc>" = ":noh <CR>";
-          # window navigation
-          "<C-h>" = "<C-w>h";
-          "<C-l>" = "<C-w>l";
-          "<C-j>" = "<C-w>j";
-          "<C-k>" = "<C-w>k";
-          # buffer navigation
-          "<tab>" = ":bnext <CR>";
-          "<S-tab>" = ":bprevious <CR>";
-          "<leader>x" = ":bdelete <CR>";
-        })
+      helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
+        "-" = "<cmd>Oil<CR>";
+        "bp" = "<cmd>Telescope buffers<CR>";
+        "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
+        "mk" = "<cmd>Telescope keymaps<CR>";
+        "<leader>fu" = "<cmd>Telescope undo<CR>";
+        # lsp navigation
+        "gr" = "<cmd>Telescope lsp_references<CR>";
+        "gI" = "<cmd>Telescope lsp_implementations<CR>";
+        "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
+        "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
+        "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
+        "gE" = "<cmd>Telescope diagnostics<CR>";
+        # remove highlights
+        "<Esc>" = ":noh <CR>";
+        # window navigation
+        "<C-h>" = "<C-w>h";
+        "<C-l>" = "<C-w>l";
+        "<C-j>" = "<C-w>j";
+        "<C-k>" = "<C-w>k";
+        # buffer navigation
+        "<tab>" = ":bnext <CR>";
+        "<S-tab>" = ":bprevious <CR>";
+        "<leader>x" = ":bdelete <CR>";
+      })
       ++ (vs {
         "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
         "<leader>?" = "<ESC><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>";
@@ -707,7 +706,7 @@ in
           lua-ls.enable = true;
           nil_ls = {
             enable = true;
-            settings.formatting.command = [ "nixpkgs-fmt" ];
+            settings.formatting.command = [ "nixfmt-rfc-style" ];
           };
           rust-analyzer = {
             enable = true;
@@ -919,7 +918,7 @@ in
           #   enable_autosnippets = true;
           #   store_selection_keys = “<Tab>”;
         };
-        fromVscode = [{ }];
+        fromVscode = [ { } ];
       };
       # luasnip expansions in cmp
       cmp_luasnip.enable = true;

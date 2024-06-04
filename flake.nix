@@ -9,10 +9,11 @@
   };
 
   outputs =
-    { nixvim
-    , flake-parts
-    , neovim-nightly-overlay
-    , ...
+    {
+      nixvim,
+      flake-parts,
+      neovim-nightly-overlay,
+      ...
     }@inputs:
     let
       config = import ./config; # import the module directly
