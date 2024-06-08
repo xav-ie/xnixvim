@@ -78,7 +78,6 @@ in
   #  https://github.com/L3MON4D3/LuaSnip#resources-for-new-users
   #  https://www.youtube.com/watch?v=FmHhonPjvvA
   # [ ] harpoon?
-  # [ ] flash nvim for faster jumping
 
   # Import all your configuration modules here
   imports = [ ./bufferline.nix ];
@@ -495,6 +494,143 @@ in
             expr = true;
           };
         }
+        {
+          mode = [ "c" ];
+          key = "<C-s>";
+          options = {
+            silent = true;
+            desc = "Flash";
+          };
+          action = # lua
+            ''function() require("flash").toggle() end'';
+          lua = true;
+        }
+        {
+          mode = [
+            "n"
+            "x"
+            "o"
+          ];
+          key = "s";
+          options = {
+            silent = true;
+            desc = "Flash";
+          };
+          action = # lua
+            ''function() require("flash").jump() end'';
+          lua = true;
+        }
+        {
+          mode = [
+            "n"
+            "x"
+            "o"
+          ];
+          key = "S";
+          options = {
+            silent = true;
+            desc = "Flash treesitter";
+          };
+          action = # lua
+            ''function() require("flash").treesitter() end'';
+          lua = true;
+        }
+        {
+          mode = [
+            "n"
+            "x"
+            "o"
+          ];
+          key = "<leader>sr";
+          options = {
+            silent = true;
+            desc = "Flash resume";
+          };
+          action = # lua
+            ''
+              function()
+                require("flash").jump({continue = true})
+              end
+            '';
+          lua = true;
+        }
+        {
+          mode = [
+            "n"
+            "x"
+            "o"
+          ];
+          key = "<leader>sc";
+          options = {
+            silent = true;
+            desc = "Flash current word";
+          };
+          action = # lua
+            ''
+              function()
+                require("flash").jump({
+                  pattern = vim.fn.expand("<cword>"),
+                })
+              end
+            '';
+          lua = true;
+        }
+        {
+          mode = [
+            "n"
+            "x"
+            "o"
+          ];
+          key = "<leader>sl";
+          options = {
+            silent = true;
+            desc = "Flash line";
+          };
+          action = # lua
+            ''
+              function()
+                require("flash").jump({
+                  search = { mode = "search", max_length = 0 },
+                  label = { after = { 0, 0 } },
+                  pattern = "^"
+                })
+              end
+            '';
+          lua = true;
+        }
+        {
+          mode = [
+            "n"
+            "x"
+            "o"
+          ];
+          key = "<leader>sw";
+          options = {
+            silent = true;
+            desc = "Flash word";
+          };
+          action = # lua
+            ''
+              function()
+                require("flash").jump({
+                  pattern = ".", -- initialize pattern with any char
+                  search = {
+                    mode = function(pattern)
+                      -- remove leading dot
+                      if pattern:sub(1, 1) == "." then
+                        pattern = pattern:sub(2)
+                      end
+                      -- return word pattern and proper skip pattern
+                      return ([[\<%s\w*\>]]):format(pattern), ([[\<%s]]):format(pattern)
+                    end,
+                  },
+                  -- select the range
+                  jump = { pos = "range" },
+                })
+              end
+            '';
+          lua = true;
+        }
       ];
 
     match = {
@@ -570,6 +706,12 @@ in
           timeoutMs = 500;
           lspFallback = true;
         };
+      };
+
+      flash = {
+        enable = true;
+        # autojump when there is only one match
+        jump.autojump = true;
       };
 
       # the best git plugin
@@ -1031,18 +1173,47 @@ in
               "%.generated.%"
             ];
             set_env.COLORTERM = "truecolor";
-            mappings = {
-              i =
-                let
-                  actions = "require('telescope.actions')";
-                in
-                {
-                  "<C-j>".__raw = "${actions}.move_selection_next";
-                  "<C-k>".__raw = "${actions}.move_selection_previous";
-                  "<C-q>".__raw = "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
-                  "<A-q>".__raw = "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
+            mappings =
+              let
+                flash = # lua
+                  ''
+                    function(prompt_bufnr)
+                        require("flash").jump({
+                            pattern = "^",
+                            label = { after = { 0, 0 } },
+                            search = {
+                                mode = "search",
+                                exclude = {
+                                    function(win)
+                                        return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+                                    end,
+                                },
+                            },
+                            action = function(match)
+                                local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+                                picker:set_selection(match.pos[1] - 1)
+                            end,
+                        })
+                    end
+                  '';
+              in
+              {
+                i =
+                  let
+                    actions = "require('telescope.actions')";
+                  in
+                  {
+                    "<C-j>".__raw = "${actions}.move_selection_next";
+                    "<C-k>".__raw = "${actions}.move_selection_previous";
+                    "<C-q>".__raw = "${actions}.smart_send_to_qflist + ${actions}.open_qflist";
+                    "<A-q>".__raw = "${actions}.smart_add_to_qflist + ${actions}.open_qflist";
+                    "<C-s>".__raw = "${flash}";
+                    # TODO: add file filtering command
+                  };
+                n = {
+                  "s".__raw = "${flash}";
                 };
-            };
+              };
           };
         };
 
