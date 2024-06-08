@@ -136,6 +136,9 @@ in
     extraConfigLua = # lua
       ''
         vim.opt.cmdheight = 0;
+        -- corrects command autocomplete to take fullest match but not overfill
+        -- full allows the list itself to also show still
+        vim.opt.wildmode = "longest:full";
 
         -- add border to diagnostic windows
         local _border = "single"
