@@ -1027,6 +1027,8 @@ in
               "^__pycache__/"
               "%.ipynb"
               "^node_modules/"
+              "^dist/"
+              "%.generated.%"
             ];
             set_env.COLORTERM = "truecolor";
             mappings = {
