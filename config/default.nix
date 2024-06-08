@@ -73,15 +73,12 @@ in
   #  https://github.com/Builditluc/dotfiles/blob/0989f7bf0d147232b4133d9fe4fb166465e93b94/dotnix/hm/nvim.nix#L95
   #  https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
   # https://github.com/evccyr/dotfiles/blob/main/nix/neovim/default.nix
-  # [ ] would git blame floating messages be helpful? https://github.com/rhysd/git-messenger.vim
-  # [ ] is lspsaga any good? looks kind of bloated and feature creeped.
   # [ ] write my own or find someone else's snippets for ts. specifically all the map, reduce, forEach should have snippets
   #  https://www.youtube.com/watch?v=Dn800rlPIho
   #  https://github.com/L3MON4D3/LuaSnip#resources-for-new-users
   #  https://www.youtube.com/watch?v=FmHhonPjvvA
   # [ ] harpoon?
   # [ ] flash nvim for faster jumping
-  # [ ] eslint with conform? or none-ls? idk the real differences yet
 
   # Import all your configuration modules here
   imports = [ ./bufferline.nix ];
@@ -466,44 +463,32 @@ in
         {
           key = "<leader>/";
           mode = [ "n" ];
-          action = ''
-            function() 
-             require("Comment.api").toggle.linewise.current()
-            end
-          '';
+          action = # lua
+            ''function() require("Comment.api").toggle.linewise.current() end'';
           lua = true;
           options.expr = true;
         }
         {
           key = "<leader>?";
           mode = [ "n" ];
-          action = ''
-            function() 
-             require("Comment.api").toggle.blockwise.current()
-            end
-          '';
+          action = # lua
+            ''function() require("Comment.api").toggle.blockwise.current() end'';
           lua = true;
           options.expr = true;
         }
         {
           key = "<leader>rn";
           mode = [ "n" ];
-          action = ''
-            function()
-             return ":IncRename " .. vim.fn.expand("<cword>")
-            end
-          '';
+          action = # lua
+            ''function() return ":IncRename " .. vim.fn.expand("<cword>") end'';
           lua = true;
           options.expr = true;
         }
         {
           key = "<leader>fm";
           mode = [ "n" ];
-          action = ''
-            function()
-              vim.lsp.buf.format { async = true }
-            end
-          '';
+          action = # lua
+            ''function() vim.lsp.buf.format { async = true } end'';
           lua = true;
           options = {
             desc = "LSP formatting";
