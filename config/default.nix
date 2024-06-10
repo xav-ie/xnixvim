@@ -16,6 +16,24 @@ let
   #     hash = "sha256-EK05b72/ekNcA7RBauiKZ27/rF4YX6IXnzRpODzXduI=";
   #   };
   # };
+  orgmode = pkgs.vimUtils.buildVimPlugin {
+    name = "orgmode";
+    src = pkgs.fetchFromGitHub {
+      owner = "nvim-orgmode";
+      repo = "orgmode";
+      rev = "0.3.4";
+      hash = "sha256-SmofuYt4fLhtl5qedYlmCRgOmZaw3nmlnMg0OMzyKnM=";
+    };
+  };
+  org-roam-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "org-roam.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "chipsenkbeil";
+      repo = "org-roam.nvim";
+      rev = "0.1.0";
+      hash = "sha256-n7GrZrM5W7QvM7805Li0VEBKc23KKbrxG3voL3otpLw=";
+    };
+  };
   oatmeal-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "oatmeal.nvim";
     src = pkgs.fetchFromGitHub {
@@ -193,6 +211,10 @@ in
         require('markdown-table-sorter')
         require('oil-git-status').setup()
         require('oatmeal').setup({backend='ollama', model='codellama:latest'})
+        require("orgmode").setup({})
+        require("org-roam").setup({
+          directory = "~/Notes",
+        })
         -- require('octo').setup({
         --   suppress_missing_scope = {
         --     projects_v2 = true,
@@ -231,9 +253,11 @@ in
 
     extraPlugins = [
       markdown-table-sorter
-      # octo-nvim
       oatmeal-nvim
+      # octo-nvim
       oil-git-status
+      orgmode
+      org-roam-nvim
       prr
       SchemaStore-nvim
     ];
@@ -1274,6 +1298,8 @@ in
         # fold based on ast
         # folding = true;
 
+        # this is handled by orgmode plugin
+        ignoreInstall = [ "org" ];
         # indent based on ast
         indent = true;
         # lua highlighting for nixvim lua sections
