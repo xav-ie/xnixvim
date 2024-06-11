@@ -43,7 +43,7 @@ let
       hash = "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=";
     };
   };
-  # idk what the difference is in package builders 
+  # IDK what the difference is in package builders 
   oil-git-status = pkgs.vimUtils.buildVimPlugin {
     name = "oil-git-status.nvim";
     src = pkgs.fetchFromGitHub {
@@ -84,7 +84,7 @@ in
   #     https://github.com/pta2002/nixos-config/blob/main/modules/nvim.nix
   # [ ] checkout these other plugins:
   #  https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/appearance/treesitter.nix#L2
-  # [ ] lsp code actions with telescope?
+  # [ ] LSP code actions with telescope?
   # https://github.com/nvim-telescope/telescope-ui-select.nvim
   #  https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L306
   # [ ] read through these config(s) fully:
@@ -156,6 +156,10 @@ in
         -- corrects command autocomplete to take fullest match but not overfill
         -- full allows the list itself to also show still
         vim.opt.wildmode = "longest:full";
+        vim.opt.spelllang = "en_us";
+        vim.opt.spell = true;
+        -- Not currently working. See other configs on GitHub.
+        vim.opt.spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
 
         -- add border to diagnostic windows
         local _border = "single"
@@ -183,13 +187,13 @@ in
           paste = {
             ['+'] = paste,
             ['*'] = paste,
-            -- TODO: get osc paste working for zellij first
+            -- TODO: get OSC paste working for zellij first
             -- ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
             -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
           },
         }
 
-        -- I always want yanks syncronized with system and "selection" (idk what that is) clipboard
+        -- I always want yanks synchronized with system and "selection" (IDK what that is) clipboard
         -- https://github.com/ch3n9w/dev/blob/319deb662ff50b58f5b643fbd9327ecb00919886/nvim/lua/autocmd.lua#L26-L34
         vim.api.nvim_create_autocmd('TextYankPost', {
             callback = function()
@@ -200,9 +204,9 @@ in
                 copy_to_unnamed(vim.v.event.regcontents)
             end
         })
-        -- I also want paste syncronized, too, but zellij is preventing this >:(
+        -- I also want paste synchronized, too, but Zellij is preventing this >:(
 
-        -- TODO: how to use colorscheme
+        -- TODO: how to use color scheme
         vim.cmd('highlight TSProperty guifg=#FFD242')
         vim.cmd('highlight TSType guifg=#00a0f0')
         vim.cmd('highlight TSNumber guifg=#be620a')
