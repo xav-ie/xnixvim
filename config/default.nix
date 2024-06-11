@@ -269,7 +269,6 @@ in
     extraPackages = with pkgs; [
       git
       ripgrep
-      prettierd
       nixfmt-rfc-style
       stylua
     ];
@@ -704,18 +703,14 @@ in
         # Map of filetype to formatters
         formattersByFt =
           let
-            prettierFormat = [
-              [
-                "prettierd"
-                "prettier"
-              ]
-            ];
+            # TODO: can this be simplified?
+            prettierFormat = [ [ "prettier" ] ];
           in
           {
             lua = [ "stylua" ];
             # It is kind of weird that you can't reference the actual bin formatter... or can you?
             # I think you can do it this way, but the current way seems to work okay.
-            # "${pkgs.prettierd}/bin/prettierd"
+            # "${pkgs.nodePackges.prettier}/bin/prettier"
             html = prettierFormat;
             markdown = prettierFormat;
             javascript = prettierFormat;
