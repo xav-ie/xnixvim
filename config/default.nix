@@ -142,12 +142,12 @@ in
     extraConfigLua = # lua
       ''
         vim.opt.cmdheight = 0;
-        -- corrects command autocomplete to take fullest match but not overfill
+        -- corrects command auto-complete to take fullest match but not overfill
         -- full allows the list itself to also show still
         vim.opt.wildmode = "longest:full";
         vim.opt.spelllang = "en_us";
         vim.opt.spell = true;
-        -- Not currently working. See other configs on GitHub.
+        -- Not currently working. See other configurations on GitHub.
         vim.opt.spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
 
         -- add border to diagnostic windows
@@ -176,7 +176,7 @@ in
           paste = {
             ['+'] = paste,
             ['*'] = paste,
-            -- TODO: get OSC paste working for zellij first
+            -- TODO: get OSC paste working for Zellij first
             -- ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
             -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
           },
@@ -214,7 +214,7 @@ in
         --   },
         -- })
 
-        -- Pascal Case, also highlights the cased words for easy lowercasing! :)
+        -- Pascal Case, also highlights the cased words for easy lower-casing! :)
         vim.api.nvim_set_keymap('v', 'gp', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>]], { noremap = true, silent = true })
         -- Title Case
         vim.api.nvim_set_keymap('v', 'gt', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>:<C-u>silent! '<,'>s/\%V\<\(A\|An\|The\|And\|But\|Or\|Nor\|So\|Yet\|At\|By\|In\|Of\|On\|To\|Up\|For\|About\|Above\|Across\|After\|Against\|Along\|Among\|Around\|Before\|Behind\|Below\|Beneath\|Beside\|Between\|Beyond\|Down\|During\|Except\|From\|Inside\|Into\|Like\|Near\|Off\|Onto\|Out\|Outside\|Over\|Past\|Since\|Through\|Throughout\|Under\|Underneath\|Until\|With\|Within\|Without\|Is\|Be\|Am\|Are\|Was\|Were\|Has\|Have\|Had\)\>/\L&/g<CR>]], { noremap = true, silent = true })
