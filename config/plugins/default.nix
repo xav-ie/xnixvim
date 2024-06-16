@@ -12,19 +12,19 @@
       tabSize = 0;
     };
 
-    # freeeeee auto-complete at least
+    # free auto-complete at least
     # TODO: replace with local version
     codeium-nvim = {
       enable = true;
     };
 
-    # smart comment/uncomment
+    # smart comment/un-comment
     comment.enable = true;
 
     # auto-formatting
     conform-nvim = {
       enable = true;
-      # Map of filetype to formatters
+      # Map of file-type to formatters
       formattersByFt =
         let
           prettierFormat = [
@@ -47,9 +47,9 @@
           typescript = prettierFormat;
           typescriptreact = prettierFormat;
           nix = [ "nixfmt" ];
-          # Use the "*" filetype to run formatters on all filetypes.
+          # Use the "*" file-type to run formatters on all file-types.
           #"*" = [ "codespell" ];
-          # Use the "_" filetype to run formatters on filetypes that don't
+          # Use the "_" file-type to run formatters on file-types that don't
           # have other formatters configured.
           "_" = [ "trim_whitespace" ];
         };
@@ -61,7 +61,7 @@
 
     flash = {
       enable = true;
-      # autojump when there is only one match
+      # auto-jump when there is only one match
       jump.autojump = true;
     };
 
@@ -267,13 +267,13 @@
       };
     };
 
-    # better diagnostics ui
+    # better diagnostics UI
     lsp-lines = {
       enable = true;
       # currentLine = true;
     };
 
-    # statusline
+    # status line
     lualine = {
       enable = true;
       theme = lib.mkForce "powerline_dark";
@@ -388,7 +388,7 @@
       };
 
       # what sections to show in inactive windows
-      # N/A bc I disabled it on other subwindows
+      # N/A because I disabled it on other sub-windows
       # inactiveSections = { };
     };
 
@@ -404,7 +404,7 @@
     # luasnip expansions in cmp
     cmp_luasnip.enable = true;
 
-    # TODO: figure out if this is possible with just treesitter?
+    # TODO: figure out if this is possible with just TreeSitter?
     # nix.enable = true;
 
     ollama = {
@@ -454,7 +454,7 @@
             # Words from other open buffers can also be suggested.
             option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
           }
-          # idk what this one is
+          # IDK what this one is
           # { name = "calc"; }
           # TODO: {name = "neorg";}
         ];
@@ -479,18 +479,18 @@
       # };
     };
 
-    # colors in neovim
+    # colors in Neovim
     nvim-colorizer.enable = true;
 
     # TODO: figure out if this is good or not
-    # vscode lightbulbs
+    # VSCode lightbulbs
     # nvim-lightbulb = {
     #   enable = true;
     #   autocmd.enabled = true;
     # };
 
-    # better folding ui
-    #nvim-ufo.enable = true;
+    # better folding UI
+    # nvim-ufo.enable = true;
 
     # easily browse directories
     oil = {
@@ -508,7 +508,7 @@
     # tpope === goat
     surround.enable = true;
 
-    # fzf client
+    # FZF client
     # https://github.com/BenjaminTalbi/nixos-configurations/blob/0f160eaa0eae5a0417bc3eafae5e5e389614bda2/home/nixvim/telescope.nix
     telescope = {
       enable = true;
@@ -615,18 +615,18 @@
 
     todo-comments.enable = true;
 
-    # ast syntax highlighting
+    # AST syntax highlighting
     treesitter = {
       enable = true;
       # TODO: figure out how to make this not open files pre-folded
-      # fold based on ast
+      # fold based on AST
       # folding = true;
 
       # this is handled by orgmode plugin
       ignoreInstall = [ "org" ];
       # indent based on ast
       indent = true;
-      # lua highlighting for nixvim lua sections
+      # Lua highlighting for Nixvim Lua sections
       nixvimInjections = true;
       # this is SO useful
       incrementalSelection = {
@@ -635,7 +635,7 @@
           initSelection = "<C-space>";
           nodeDecremental = "<bs>";
           nodeIncremental = "<C-space>";
-          # idk what this does
+          # IDK what this does
           scopeIncremental = "grc";
         };
       };
