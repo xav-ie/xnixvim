@@ -6,18 +6,19 @@
     ./conform-nvim.nix
     ./gitsigns.nix
     ./lsp
-    ./lsp-lines.nix
     ./lspkind.nix
-    ./luasnip.nix
+    ./lsp-lines.nix
     ./lualine.nix
+    ./luasnip.nix
     ./markdown-table-sorter.nix
-    # ./nvim-lightbulb.nix
+    ./neogit.nix
     ./noice.nix
-    ./ollama.nix
+    # ./nvim-lightbulb.nix
     ./oatmeal.nix
     # ./octo-nvim.nix
     ./oil-git-status.nix
     ./oil.nix
+    ./ollama.nix
     ./orgmode.nix
     ./org-roam-nvim.nix
     ./telescope.nix
@@ -33,9 +34,6 @@
 
     # smart comment/un-comment
     comment.enable = true;
-
-    # the best git plugin
-    fugitive.enable = true;
 
     # amazing snippets for every language
     friendly-snippets.enable = true;
