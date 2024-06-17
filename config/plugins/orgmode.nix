@@ -13,7 +13,10 @@ in
 {
   extraConfigLua = # lua
     ''
-      require("orgmode").setup({})
+      require("orgmode").setup({
+        org_agenda_files = '~/Notes/**/*',
+        org_default_notes_file = '~/Notes/refile.org',
+      })
     '';
   extraPlugins = [ orgmode ];
 }
