@@ -5,7 +5,7 @@
     ./cmp.nix
     ./conform-nvim.nix
     ./gitsigns.nix
-    ./lsp.nix
+    ./lsp
     ./lualine.nix
     ./noice.nix
     ./oil.nix
