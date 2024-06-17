@@ -146,7 +146,7 @@ in
         -- will cause complete auto-complete 
         vim.opt.wildmode = "list,full";
         vim.opt.spelllang = "en_us";
-        vim.opt.spell = true;
+        -- vim.opt.spell = true;
         -- Not currently working. See other configurations on GitHub.
         vim.opt.spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
 
