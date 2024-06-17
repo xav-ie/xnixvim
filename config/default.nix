@@ -228,6 +228,20 @@ in
           end,
           desc = "Notify when recording macro",
         })
+
+        if vim.g.neovide then
+          vim.g.neovide_scale_factor = 1.2
+          vim.g.neovide_cursor_vfx_mode = "pixiedust"
+          -- TODO: add MacOS specific config
+          vim.g.neovide_transparency = 0.8
+          vim.g.neovide_touch_deadzone = 0.0
+          -- only applies when launched with --no-vsync. Improves animation quite a bit.
+          vim.g.neovide_refresh_rate = 144
+
+          -- These two seem to have no effect (maybe on MacOS?):
+          -- vim.g.neovide_text_gamma = 3.4
+          -- vim.g.neovide_text_contrast = 2.0
+        end
       '';
 
     extraPlugins = [
