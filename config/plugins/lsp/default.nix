@@ -1,5 +1,7 @@
 { ... }:
 {
+  imports = [ ./SchemaStore-nvim.nix ];
+
   plugins.lsp = {
     enable = true;
     keymaps = {

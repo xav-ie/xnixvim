@@ -7,8 +7,14 @@
     ./gitsigns.nix
     ./lsp
     ./lualine.nix
+    ./markdown-table-sorter.nix
     ./noice.nix
+    ./oatmeal.nix
+    # ./octo-nvim.nix
+    ./oil-git-status.nix
     ./oil.nix
+    ./orgmode.nix
+    ./org-roam-nvim.nix
     ./telescope.nix
     ./treesitter.nix
   ];
