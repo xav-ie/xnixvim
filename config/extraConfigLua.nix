@@ -78,7 +78,7 @@
       })
 
       if vim.g.neovide then
-        vim.g.neovide_scale_factor = 1.2
+        vim.g.neovide_scale_factor = 1.1
         vim.g.neovide_cursor_vfx_mode = "pixiedust"
         -- TODO: add MacOS specific config
         vim.g.neovide_transparency = 0.8
