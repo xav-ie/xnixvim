@@ -6,67 +6,6 @@
   system,
   ...
 }:
-let
-  # octo-nvim = pkgs.vimUtils.buildVimPlugin {
-  #   name = "octo.nvim";
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "pwntester";
-  #     repo = "octo.nvim";
-  #     rev = "5646539320cd62af6ff28f48ec92aeb724c68e18";
-  #     hash = "sha256-EK05b72/ekNcA7RBauiKZ27/rF4YX6IXnzRpODzXduI=";
-  #   };
-  # };
-  orgmode = pkgs.vimUtils.buildVimPlugin {
-    name = "orgmode";
-    src = pkgs.fetchFromGitHub {
-      owner = "nvim-orgmode";
-      repo = "orgmode";
-      rev = "0.3.4";
-      hash = "sha256-SmofuYt4fLhtl5qedYlmCRgOmZaw3nmlnMg0OMzyKnM=";
-    };
-  };
-  org-roam-nvim = pkgs.vimUtils.buildVimPlugin {
-    name = "org-roam.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "chipsenkbeil";
-      repo = "org-roam.nvim";
-      rev = "0.1.0";
-      hash = "sha256-n7GrZrM5W7QvM7805Li0VEBKc23KKbrxG3voL3otpLw=";
-    };
-  };
-  oatmeal-nvim = pkgs.vimUtils.buildVimPlugin {
-    name = "oatmeal.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "dustinblackman";
-      repo = "oatmeal.nvim";
-      rev = "c8cdd0a182cf77f88ea5fa4703229ddb3f47c1f7";
-      hash = "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=";
-    };
-  };
-  # IDK what the difference is in package builders 
-  oil-git-status = pkgs.vimUtils.buildVimPlugin {
-    name = "oil-git-status.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "refractalize";
-      repo = "oil-git-status.nvim";
-      rev = "839a1a287f5eb3ce1b07b50323032398e63f7ffa";
-      hash = "sha256-pTAvkJPmT3eD3XWrYl6nyKSzeRFEHOi8iDCamF1D1Cg=";
-    };
-  };
-  SchemaStore-nvim = pkgs.vimUtils.buildVimPlugin {
-    name = "SchemaStore.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "b0o";
-      repo = "SchemaStore.nvim";
-      rev = "cf82be744f4dba56d5d0c13d7fe429dd1d4c02e7";
-      hash = "sha256-bAsSHBdxdwfHZ3HiU/wyeoS/FiQNb3a/TB2lQOz/glA=";
-    };
-  };
-  markdown-table-sorter = pkgs.vimUtils.buildVimPlugin {
-    name = "markdown-table-sorter";
-    src = ./custom-plugins/markdown-table-sorter;
-  };
-in
 {
   # TODO:
   # [ ] checkout ts-auto-tag:
@@ -200,19 +139,6 @@ in
         vim.cmd('highlight TSType guifg=#00a0f0')
         vim.cmd('highlight TSNumber guifg=#be620a')
 
-        -- TODO: improve docs and package
-        require('markdown-table-sorter')
-        require('oil-git-status').setup()
-        require('oatmeal').setup({backend='ollama', model='codellama:latest'})
-        require("orgmode").setup({})
-        require("org-roam").setup({
-          directory = "~/Notes",
-        })
-        -- require('octo').setup({
-        --   suppress_missing_scope = {
-        --     projects_v2 = true,
-        --   },
-        -- })
 
         -- Pascal Case, also highlights the cased words for easy lower-casing! :)
         vim.api.nvim_set_keymap('v', 'gp', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>]], { noremap = true, silent = true })
@@ -244,25 +170,13 @@ in
         end
       '';
 
-    extraPlugins = [
-      markdown-table-sorter
-      oatmeal-nvim
-      # octo-nvim
-      oil-git-status
-      orgmode
-      org-roam-nvim
-      SchemaStore-nvim
-    ];
-
     extraPackages = with pkgs; [
       git
-      ripgrep
       nixfmt-rfc-style
+      ripgrep
       stylua
+      # vimPlugins.friendly-snippets
     ];
-    # with pkgs.vimPlugins; [
-    # friendly-snippets
-    # ];
 
     globals = {
       # merge statusbar into command bar
