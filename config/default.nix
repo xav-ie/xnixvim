@@ -142,9 +142,9 @@ in
     extraConfigLua = # lua
       ''
         vim.opt.cmdheight = 0;
-        -- corrects command auto-complete to take fullest match but not overfill
-        -- full allows the list itself to also show still
-        vim.opt.wildmode = "longest:full";
+        -- corrects command auto-complete to first show the completion list, then further tabs 
+        -- will cause complete auto-complete 
+        vim.opt.wildmode = "list,full";
         vim.opt.spelllang = "en_us";
         vim.opt.spell = true;
         -- Not currently working. See other configurations on GitHub.
