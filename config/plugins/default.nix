@@ -4,6 +4,7 @@
     ./bufferline.nix
     ./cmp.nix
     ./conform-nvim.nix
+    ./flash.nix
     ./gitsigns.nix
     ./lsp
     ./lspkind.nix
