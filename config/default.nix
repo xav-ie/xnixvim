@@ -279,9 +279,9 @@ in
 
     # TODO: clean this up
     highlight = {
-      ColorColumn = {
-        underline = true;
-      };
+      # ColorColumn = {
+      #   underline = true;
+      # };
 
       PmenuSel = {
         bg = "#504945";
@@ -651,9 +651,9 @@ in
         }
       ];
 
-    match = {
-      ColorColumn = "\\%101v";
-    };
+    # match = {
+    #   ColorColumn = "\\%101v";
+    # };
 
     opts = {
       number = true; # Show line numbers
