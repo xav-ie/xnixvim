@@ -63,10 +63,18 @@
     ];
 
     globals = {
-      # merge statusbar into command bar
-      # ...except, this does not work :/
-      # cmdheight = 0;
       mapleader = " ";
+      # TODO: add MacOS specific neovide config
+      neovide_cursor_vfx_mode = "pixiedust";
+      # only applies when launched with --no-vsync.
+      # Improves animation quite a bit.
+      neovide_refresh_rate = 144;
+      neovide_scale_factor = 1.1;
+      neovide_touch_deadzone = 0.0;
+      neovide_transparency = 0.8;
+      # These two seem to have no effect (maybe on MacOS?):
+      # neovide_text_gamma = 3.4;
+      # neovide_text_contrast = 2.0;
       # 24-bit colors
       termguicolors = true;
       # don't care about case when search
@@ -79,14 +87,24 @@
     #   ColorColumn = "\\%101v";
     # };
 
+    # vim.opt[...]
     opts = {
+      cmdheight = 0;
+      expandtab = true;
       number = true; # Show line numbers
       relativenumber = false;
       shiftwidth = 2; # Tab width should be 2
-      tabstop = 2;
-      softtabstop = 2;
       smartindent = true;
-      expandtab = true;
+      softtabstop = 2;
+      tabstop = 2;
+      # spell = true;
+      # Not currently working. 
+      # TODO: See other configurations on GitHub.
+      spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
+      spelllang = "en_us";
+      # corrects command auto-complete to first show the completion list, then further tabs 
+      # will cause complete auto-complete 
+      wildmode = "list,full";
     };
   };
 }
