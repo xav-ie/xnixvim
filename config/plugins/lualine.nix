@@ -36,6 +36,30 @@
         }
       ];
       lualine_c = [
+        # TODO: replace with possession, scope, or tabufline nvim...
+        {
+          name = "";
+          fmt = # lua
+            ''
+              function()
+                -- global cwd ~ cd
+                local cwd = vim.fn.getcwd()
+                -- tab local cwd ~ tc[d]
+                local tcwd = vim.fn.getcwd(-1)
+                -- window local cwd ~ cw[d]
+                local wcwd = vim.fn.getcwd(-1, -1)
+                -- TODO: fix logic...
+                return vim.fn.fnamemodify(tcwd, ':~') 
+                -- if wcwd ~= tcwd then
+                --   return wcwd
+                -- elseif tcwd ~= cwd then
+                --   return tcwd
+                -- else
+                --   return cwd
+                -- end
+              end
+            '';
+        }
         {
           name = "%{&readonly?&buftype=='help'?'📚 ':'🔒 ':''}%t"; # %{&modified?'*':''}
           color.__raw = "function() return vim.bo.modified and { fg = '#FFAA00' } or {} end";
