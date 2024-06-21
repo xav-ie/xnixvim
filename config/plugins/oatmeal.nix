@@ -13,7 +13,7 @@ in
 {
   extraConfigLua = # lua
     ''
-      require('oatmeal').setup({backend='ollama', model='codellama:latest'})
+      require('oatmeal').setup({backend='ollama', model='codestral:latest'})
     '';
   extraPlugins = [ oatmeal-nvim ];
 }
