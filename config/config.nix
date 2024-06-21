@@ -67,7 +67,7 @@
       # TODO: add MacOS specific neovide config
       neovide_cursor_vfx_mode = "pixiedust";
       # only applies when launched with --no-vsync.
-      # Improves animation quite a bit.
+      # sometimes improves animations
       neovide_refresh_rate = 144;
       neovide_scale_factor = 1.1;
       neovide_touch_deadzone = 0.0;
