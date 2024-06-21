@@ -50,9 +50,15 @@
               function()
                 local ok, oil = pcall(require, 'oil')
                 if ok then
-                  return vim.fn.fnamemodify(oil.get_current_dir(), ':~')
+                  local dirname = vim.fn.fnamemodify(oil.get_current_dir(), ':~')
+                  local entry = oil.get_cursor_entry()
+                  if not entry then
+                    return dirname
+                  else
+                    return dirname .. entry.name
+                  end
                 else
-                  return ""
+                  return "Could not load oil"
                 end
               end
             '';
