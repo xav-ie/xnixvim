@@ -36,6 +36,9 @@
     # smart comment/un-comment
     comment.enable = true;
 
+    # automatic env updates
+    direnv.enable = true;
+
     # amazing snippets for every language
     friendly-snippets.enable = true;
 
