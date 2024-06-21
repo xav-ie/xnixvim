@@ -22,6 +22,7 @@
     ./ollama.nix
     ./orgmode.nix
     ./org-roam-nvim.nix
+    ./tabscope.nix
     ./telescope.nix
     ./treesitter.nix
     ./vim-matchup.nix
