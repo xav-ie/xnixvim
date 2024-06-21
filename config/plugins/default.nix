@@ -12,7 +12,7 @@
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
-    ./neogit.nix
+    # ./neogit.nix
     ./noice.nix
     # ./nvim-lightbulb.nix
     ./oatmeal.nix
@@ -41,6 +41,9 @@
 
     # amazing snippets for every language
     friendly-snippets.enable = true;
+
+    # unstoppable git plugin
+    fugitive.enable = true;
 
     # luasnip expansions in cmp
     cmp_luasnip.enable = true;
