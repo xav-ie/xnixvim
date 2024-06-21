@@ -33,6 +33,12 @@
       "<C-l>" = "<C-w>l";
       "<C-j>" = "<C-w>j";
       "<C-k>" = "<C-w>k";
+      # tab navigation
+      "<C-t>l" = ":tabnext <CR>";
+      "<C-t>h" = ":tabprev <CR>";
+      "<C-t>n" = ":tabnew <CR>:tcd ~/";
+      "<C-t>x" = ":tabclose <CR>";
+      "<C-t>c" = ":tcd ~/";
       # buffer navigation
       "<tab>" = ":bnext <CR>";
       "<S-tab>" = ":bprevious <CR>";
