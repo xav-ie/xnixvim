@@ -42,7 +42,7 @@
       # buffer navigation
       "<tab>" = ":bnext <CR>";
       "<S-tab>" = ":bprevious <CR>";
-      "<leader>x" = ":bdelete <CR>";
+      # "<leader>x" = ":bdelete <CR>";
     })
     ++ (vs {
       "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
