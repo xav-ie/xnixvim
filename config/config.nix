@@ -64,7 +64,7 @@
 
     globals = {
       mapleader = " ";
-      # TODO: add MacOS specific neovide config
+      neovide_window_blurred = true;
       neovide_cursor_vfx_mode = "pixiedust";
       # only applies when launched with --no-vsync.
       # sometimes improves animations
