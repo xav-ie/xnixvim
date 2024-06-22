@@ -1,7 +1,7 @@
+# https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
 { helpers, lib, ... }:
 {
   keymaps =
-    # taken from https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
     let
       modeKeys =
         mode:
@@ -12,18 +12,19 @@
       nm = modeKeys [ "n" ];
       vs = modeKeys [ "v" ];
       im = modeKeys [ "i" ];
+      c = modeKeys [ "c" ];
+      nxo = modeKeys [
+        "n"
+        "x"
+        "o"
+      ];
     in
     helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
       "-" = "<cmd>Oil<CR>";
+      # TODO: move Telescope commands into telescope plugin...?
       "bp" = "<cmd>Telescope buffers<CR>";
       "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
       "mk" = "<cmd>Telescope keymaps<CR>";
-      "<leader>fu" = "<cmd>Telescope undo<CR>";
-      # lsp navigation
-      "gr" = "<cmd>Telescope lsp_references<CR>";
-      "gI" = "<cmd>Telescope lsp_implementations<CR>";
-      "gW" = "<cmd>Telescope lsp_workspace_symbols<CR>";
-      "gF" = "<cmd>Telescope lsp_document_symbols<CR>";
       "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
       "gE" = "<cmd>Telescope diagnostics<CR>";
       # remove highlights
@@ -42,11 +43,37 @@
       # buffer navigation
       "<tab>" = ":bnext <CR>";
       "<S-tab>" = ":bprevious <CR>";
+      # located in ./plugins/tabscope.nix
       # "<leader>x" = ":bdelete <CR>";
+      "<leader>/" = {
+        action = "<ESC><cmd>lua require('Comment.api').toggle.linewise.current()<CR>";
+        options.desc = "Comment Line";
+      };
+      "<leader>?" = {
+        action = "<ESC><cmd>lua require('Comment.api').toggle.blockwise.current()<CR>";
+        options.desc = "Comment Line Blockwise";
+      };
+      "<leader>rn" = {
+        mode = [ "n" ];
+        action = # lua
+          ''function() return ":IncRename " .. vim.fn.expand("<cword>") end'';
+        lua = true;
+        options = {
+          expr = true;
+          desc = "Incremental [r]e[n]ame";
+        };
+      };
     })
     ++ (vs {
-      "<leader>/" = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
-      "<leader>?" = "<ESC><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>";
+      # TODO: find better bindings
+      "<leader>/" = {
+        action = "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>";
+        options.desc = "Comment Linewise";
+      };
+      "<leader>?" = {
+        action = "<ESC><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>";
+        options.desc = "Comment Blockwise";
+      };
     })
     ++ (im {
       "<C-e>" = "<End>";
@@ -56,93 +83,41 @@
       "<C-k>" = "<Up>";
       "<C-l>" = "<Right>";
     })
-    ++ [
-      {
-        key = "<leader>/";
-        mode = [ "n" ];
-        action = # lua
-          ''function() require("Comment.api").toggle.linewise.current() end'';
-        lua = true;
-        options.expr = true;
-      }
-      {
-        key = "<leader>?";
-        mode = [ "n" ];
-        action = # lua
-          ''function() require("Comment.api").toggle.blockwise.current() end'';
-        lua = true;
-        options.expr = true;
-      }
-      {
-        key = "<leader>rn";
-        mode = [ "n" ];
-        action = # lua
-          ''function() return ":IncRename " .. vim.fn.expand("<cword>") end'';
-        lua = true;
-        options.expr = true;
-      }
-      {
-        key = "<leader>fm";
-        mode = [ "n" ];
-        action = # lua
-          ''function() vim.lsp.buf.format { async = true } end'';
-        lua = true;
-        options = {
-          desc = "LSP formatting";
-          expr = true;
-        };
-      }
-      {
-        mode = [ "c" ];
-        key = "<C-s>";
-        options = {
-          silent = true;
-          desc = "Flash";
-        };
+    # TODO: move flash keymaps into flash plugin?
+    ++ (c {
+      "<C-s>" = {
         action = # lua
           ''function() require("flash").toggle() end'';
-        lua = true;
-      }
-      {
-        mode = [
-          "n"
-          "x"
-          "o"
-        ];
-        key = "s";
         options = {
           silent = true;
-          desc = "Flash";
+          desc = "Fla[s]h";
+        };
+        lua = true;
+      };
+    })
+    ++ (nxo {
+      "s" = {
+        options = {
+          silent = true;
+          desc = "Fla[s]h";
         };
         action = # lua
           ''function() require("flash").jump() end'';
         lua = true;
-      }
-      {
-        mode = [
-          "n"
-          "x"
-          "o"
-        ];
-        key = "S";
+      };
+      "S" = {
         options = {
           silent = true;
-          desc = "Flash treesitter";
+          desc = "Flash Tree[S]itter";
         };
         action = # lua
           ''function() require("flash").treesitter() end'';
         lua = true;
-      }
-      {
-        mode = [
-          "n"
-          "x"
-          "o"
-        ];
-        key = "<leader>sr";
+      };
+      "<leader>sr" = {
         options = {
           silent = true;
-          desc = "Flash resume";
+          desc = "Flash [r]esume";
         };
         action = # lua
           ''
@@ -151,17 +126,11 @@
             end
           '';
         lua = true;
-      }
-      {
-        mode = [
-          "n"
-          "x"
-          "o"
-        ];
-        key = "<leader>sc";
+      };
+      "<leader>sc" = {
         options = {
           silent = true;
-          desc = "Flash current word";
+          desc = "Flash [c]urrent word";
         };
         action = # lua
           ''
@@ -172,17 +141,11 @@
             end
           '';
         lua = true;
-      }
-      {
-        mode = [
-          "n"
-          "x"
-          "o"
-        ];
-        key = "<leader>sl";
+      };
+      "<leader>sl" = {
         options = {
           silent = true;
-          desc = "Flash line";
+          desc = "Flash [l]ine";
         };
         action = # lua
           ''
@@ -195,14 +158,8 @@
             end
           '';
         lua = true;
-      }
-      {
-        mode = [
-          "n"
-          "x"
-          "o"
-        ];
-        key = "<leader>sw";
+      };
+      "<leader>sw" = {
         options = {
           silent = true;
           desc = "Flash word";
@@ -228,6 +185,6 @@
             end
           '';
         lua = true;
-      }
-    ];
+      };
+    });
 }
