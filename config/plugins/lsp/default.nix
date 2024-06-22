@@ -150,12 +150,12 @@
       };
       tsserver = {
         enable = true;
-        onAttach.function = # lua
-          ''
-            if client.server_capabilities.inlayHintProvider then
-              vim.lsp.inlay_hint.enable(true)
-            end
-          '';
+        # onAttach.function = # lua
+        #   ''
+        #     if client.server_capabilities.inlayHintProvider then
+        #       vim.lsp.inlay_hint.enable(true)
+        #     end
+        #   '';
         extraOptions = {
           single_file_support = false;
           settings =
