@@ -41,20 +41,20 @@
                 ["<leader>"] = {
                     h = {
                         name = "Gitsigns",
-                        s = { ":Gitsigns stage_hunk<CR>", "Stage Hunk" },
-                        r = { ":Gitsigns reset_hunk<CR>", "Reset Hunk" },
-                        S = { gs.stage_buffer, "Stage Buffer" },
-                        u = { gs.undo_stage_hunk, "Undo Stage Hunk" },
-                        R = { gs.reset_buffer, "Reset Buffer" },
-                        p = { gs.preview_hunk, "Preview Hunk" },
-                        b = { function() gs.blame_line{full=true} end, "Blame Full Line" },
-                        d = { gs.diffthis, "Diff This" },
-                        D = { function() gs.diffthis('~') end, "Diff This ~" },
+                        s = { ":Gitsigns stage_hunk<CR>", "[s]tage Hunk" },
+                        r = { ":Gitsigns reset_hunk<CR>", "[r]eset Hunk" },
+                        S = { gs.stage_buffer, "[S]tage Buffer" },
+                        u = { gs.undo_stage_hunk, "[u]ndo Stage Hunk" },
+                        R = { gs.reset_buffer, "[R]eset Buffer" },
+                        p = { gs.preview_hunk, "[p]review Hunk" },
+                        b = { function() gs.blame_line{full=true} end, "[b]lame Full Line" },
+                        d = { gs.diffthis, "[d]iff This" },
+                        D = { function() gs.diffthis('~') end, "[D]iff This ~" },
                     },
                     t = {
                         name = "Toggle",
-                        b = { gs.toggle_current_line_blame, "Toggle Line Blame" },
-                        d = { gs.toggle_deleted, "Toggle Deleted" },
+                        b = { gs.toggle_current_line_blame, "Toggle Line [b]lame" },
+                        d = { gs.toggle_deleted, "Toggle [d]eleted" },
                     }
                 }
             }, { mode = "n", buffer = bufnr, silent = true, noremap = true, nowait = true })
