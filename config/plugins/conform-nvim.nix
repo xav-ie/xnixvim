@@ -8,7 +8,7 @@
       let
         prettierFormat = [
           [
-            # prefer the node_module prettier
+            # prefer node_modules/.bin/prettier
             "prettier"
             # fallback to global prettier
             "${pkgs.nodePackages.prettier}/bin/prettier"
