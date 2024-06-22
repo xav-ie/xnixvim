@@ -21,10 +21,7 @@
         "]d" = "goto_next";
       };
 
-      lspBuf = {
-        K = "hover";
-      };
-
+      # TODO: make more strict like in ../../keymaps.nix
       extra = [
         {
           key = "<leader>la";
@@ -100,6 +97,20 @@
           key = "<leader>ly";
           options.desc = "LSP D[y]namic Symbols";
           action = "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>";
+        }
+
+        # Global maps
+        {
+          key = "K";
+          options.desc = "LSP Hover";
+          action.__raw = # lua
+            ''function() vim.lsp.buf.hover() end'';
+        }
+        {
+          key = "<leader>th";
+          options.desc = "LSP Toggle Inlay [h]ints";
+          action.__raw = # lua
+            ''function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end'';
         }
       ];
     };

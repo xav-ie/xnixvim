@@ -90,7 +90,7 @@
           ''function() require("flash").toggle() end'';
         options = {
           silent = true;
-          desc = "Fla[s]h";
+          desc = "Fla[<c-s>]h";
         };
         lua = true;
       };
@@ -117,7 +117,7 @@
       "<leader>sr" = {
         options = {
           silent = true;
-          desc = "Flash [r]esume";
+          desc = "Fla[s]h [r]esume";
         };
         action = # lua
           ''
@@ -130,7 +130,7 @@
       "<leader>sc" = {
         options = {
           silent = true;
-          desc = "Flash [c]urrent word";
+          desc = "Fla[s]h [c]urrent word";
         };
         action = # lua
           ''
@@ -145,7 +145,7 @@
       "<leader>sl" = {
         options = {
           silent = true;
-          desc = "Flash [l]ine";
+          desc = "Fla[s]h [l]ine";
         };
         action = # lua
           ''
@@ -162,7 +162,7 @@
       "<leader>sw" = {
         options = {
           silent = true;
-          desc = "Flash word";
+          desc = "Fla[s]h [w]ord";
         };
         action = # lua
           ''
