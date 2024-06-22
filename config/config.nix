@@ -71,7 +71,7 @@
       neovide_refresh_rate = 144;
       neovide_scale_factor = 1.1;
       neovide_touch_deadzone = 0.0;
-      neovide_transparency = 0.8;
+      neovide_transparency = 0.7;
       # These two seem to have no effect (maybe on MacOS?):
       # neovide_text_gamma = 3.4;
       # neovide_text_contrast = 2.0;
