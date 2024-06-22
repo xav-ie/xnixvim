@@ -31,11 +31,26 @@
                   vim.highlight.on_yank()
                   local copy_to_unnamedplus = require('vim.ui.clipboard.osc52').copy('+')
                   copy_to_unnamedplus(vim.v.event.regcontents)
-                  local copy_to_unnamed = require('vim.ui.clipboard.osc52').copy('*')
+                  local copy_to_unnamed     = require('vim.ui.clipboard.osc52').copy('*')
                   copy_to_unnamed(vim.v.event.regcontents)
               end
           })
           -- I also want paste synchronized, too, but Zellij is preventing this >:(
+
+          -- Fix copy/paste for Neovide
+          -- https://neovide.dev/faq.html?highlight=clipboard#how-can-i-use-cmd-ccmd-v-to-copy-and-paste
+          if vim.g.neovide then
+            vim.keymap.set('n', '<D-s>', ':w<CR>')      -- save
+            vim.keymap.set('v', '<D-c>', '"+y')         -- copy
+            vim.keymap.set('n', '<D-v>', '"+P')         -- paste
+            vim.keymap.set('v', '<D-v>', '"+P')         -- paste
+            vim.keymap.set('c', '<D-v>', '<C-R>+')      -- paste
+            vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- paste
+          end
+          vim.api.nvim_set_keymap("",  '<D-v>', '+p<CR>', {noremap = true, silent=true})
+          vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', {noremap = true, silent=true})
+          vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', {noremap = true, silent=true})
+          vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', {noremap = true, silent=true})
         '';
 
       # TODO: make better maps
@@ -56,6 +71,7 @@
             desc = "Notify when recording macro",
           })
         '';
+
       randomHighlightConfig = # lua
         ''
           -- TODO: how to use color scheme
