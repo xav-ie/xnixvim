@@ -16,7 +16,7 @@ in
   extraConfigLua = # lua
     ''
       require('tabscope').setup({})
-      vim.keymap.set('n', '<leader>x', require('tabscope').remove_tab_buffer)
+      vim.keymap.set('n', '<leader>x', require('tabscope').remove_tab_buffer, { desc = "Remove Tab Buffer" })
     '';
   extraPlugins = [ tabscope-nvim ];
 }

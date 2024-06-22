@@ -65,9 +65,9 @@
         action = "find_files";
         options.desc = "find_[f]iles";
       };
-      "<leader>fg" = {
+      "<leader>fi" = {
         action = "git_files";
-        options.desc = "[g]it_files";
+        options.desc = "g[i]t_files";
       };
       "<leader>fl" = {
         action = "live_grep";
@@ -79,16 +79,19 @@
       };
       "<leader>fr" = {
         action = "resume";
-        options.desc = "[R]esume Previous Seasch";
+        options.desc = "[r]esume Previous Seasch";
       };
-      "<leader>fs" = {
-        action = "lsp_document_symbols";
-        options.desc = "lsp_document_[s]ymbols";
+      # "<leader>fs" = {
+      #   action = "lsp_document_symbols";
+      #   options.desc = "lsp_document_[s]ymbols";
+      # };
+      "<leader>fu" = {
+        action = "undo";
+        options.desc = "[u]ndo";
       };
-      # "<leader>fu" = { action = "undo"; desc = "undo"; };
-      "<leader>fw" = {
+      "<leader>fg" = {
         action = "grep_string";
-        options.desc = "grep_string";
+        options.desc = "[g]rep_string";
       };
     };
     extensions = {
