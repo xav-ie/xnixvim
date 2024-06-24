@@ -61,6 +61,10 @@
     };
 
     keymaps = {
+      "<leader>fb" = {
+        action = "buffers";
+        options.desc = "[b]uffers";
+      };
       "<leader>ff" = {
         action = "find_files";
         options.desc = "find_[f]iles";
@@ -68,6 +72,10 @@
       "<leader>fi" = {
         action = "git_files";
         options.desc = "g[i]t_files";
+      };
+      "<leader>fk" = {
+        action = "keymaps";
+        options.desc = "[k]eymaps";
       };
       "<leader>fl" = {
         action = "live_grep";
@@ -81,10 +89,10 @@
         action = "resume";
         options.desc = "[r]esume Previous Seasch";
       };
-      # "<leader>fs" = {
-      #   action = "lsp_document_symbols";
-      #   options.desc = "lsp_document_[s]ymbols";
-      # };
+      "<leader>fs" = {
+        action = "spell_suggest";
+        options.desc = "[s]pell_suggest";
+      };
       "<leader>fu" = {
         action = "undo";
         options.desc = "[u]ndo";
