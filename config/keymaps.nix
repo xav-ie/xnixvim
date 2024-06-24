@@ -21,12 +21,6 @@
     in
     helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
       "-" = "<cmd>Oil<CR>";
-      # TODO: move Telescope commands into telescope plugin...?
-      "bp" = "<cmd>Telescope buffers<CR>";
-      "<C-s>" = "<cmd>Telescope spell_suggest<CR>";
-      "mk" = "<cmd>Telescope keymaps<CR>";
-      "ge" = "<cmd>Telescope diagnostics bufnr=0<CR>";
-      "gE" = "<cmd>Telescope diagnostics<CR>";
       # remove highlights
       "<Esc>" = ":noh <CR>";
       # window navigation
