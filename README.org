@@ -1,0 +1,25 @@
+* xnixvim
+  My nixvim (nixified neovim) config!
+
+  Nixvim is an amazing project that brings nix to neovim. You can find out more on the [[https://github.com/nix-community/nixvim][nixvim repository]]. It makes running neovim with your complete config on alien systems easy, consistent, and fast! Try this command to run /my/ neovim configuration:
+  #+BEGIN_SRC sh
+  nix run github:xav-ie/xnixvim
+  #+END_SRC
+
+  Basically, if you have `nix` installed, you can run this configuation!
+
+  I am still actively re-organizing this repository, so feel free to just poke around.
+
+  You might also enjoy [[https://github.com/xav-ie/dots][my dotfiles]]!
+
+** TODO TODO
+   - [ ] CI to automatically run and take screenshot
+   - [ ] separate theme out and share
+   - [ ] add neovide output and config
+   - [ ] local completions
+   - [ ] snippets
+   - [ ] better clipboard support
+   - [ ] better large file support
+   - [ ] proper spelling and dictionary support to add new words
+   - [ ] org concealment
+
