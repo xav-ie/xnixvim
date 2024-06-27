@@ -62,6 +62,7 @@
       # vimPlugins.friendly-snippets
     ];
 
+    # vim.g[...]
     globals = {
       mapleader = " ";
       neovide_window_blurred = true;
@@ -88,20 +89,24 @@
     # };
 
     # vim.opt[...]
+    # THERE IS NO WAY TO SET VISUAL LINE BREAK WIDTH?!?
+    # https://www.reddit.com/r/neovim/comments/1anwa1y/nondestructively_set_line_wrap_width/
     opts = {
       cmdheight = 0;
       expandtab = true;
+      linebreak = true; # visually wrap lines by word, not char
       number = true; # Show line numbers
       relativenumber = false;
       shiftwidth = 2; # Tab width should be 2
+      showbreak = "→"; # prefix for wrapped lines
       smartindent = true;
       softtabstop = 2;
-      tabstop = 2;
       # spell = true;
       # Not currently working. 
       # TODO: See other configurations on GitHub.
       spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
       spelllang = "en_us";
+      tabstop = 2;
       # corrects command auto-complete to first show the completion list, then further tabs 
       # will cause complete auto-complete 
       wildmode = "list,full";
