@@ -105,13 +105,7 @@
       };
     };
     extensions = {
-      fzf-native = {
-        enable = true;
-        settings = {
-          fuzzy = true;
-          override_files_sorter = true;
-        };
-      };
+      fzf-native.enable = true;
       undo = {
         enable = true;
       };
