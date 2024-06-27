@@ -26,6 +26,7 @@
     ./telescope
     ./treesitter.nix
     ./vim-matchup.nix
+    ./which-key
     # ./zellij.nix
   ];
 
@@ -68,9 +69,6 @@
 
     # diagnostics buffer
     trouble.enable = true;
-
-    # TODO: see https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/which-key.nix#L4
-    which-key.enable = true;
   };
 
   extraPlugins = with pkgs.vimPlugins; [
