@@ -2,6 +2,9 @@
 {
   # FZF client
   # https://github.com/BenjaminTalbi/nixos-configurations/blob/0f160eaa0eae5a0417bc3eafae5e5e389614bda2/home/nixvim/telescope.nix
+
+  imports = [ ./telescope-symbols-nvim.nix ];
+
   plugins.telescope = {
     enable = true;
     settings = {
@@ -104,8 +107,11 @@
         options.desc = "[g]rep_string";
       };
     };
+
     extensions = {
+      # faster fzf search
       fzf-native.enable = true;
+      # replace native pickers with telescope
       ui-select.enable = true;
       undo = {
         enable = true;
