@@ -14,6 +14,7 @@
       };
       # TODO: comb through and make better
       # https://github.com/fpletz/flake/blob/f97512e2f7cfb555bcebefd96f8cf61155b8dc42/home/nixvim/gitsigns.nix#L21
+      # TODO: make this not depend on which-key
       on_attach = # lua
         ''
           function(bufnr)
@@ -40,7 +41,7 @@
                 end, "Previous Hunk" },
                 ["<leader>"] = {
                     h = {
-                        name = "Gitsigns",
+                        name = "+[h]unk",
                         s = { ":Gitsigns stage_hunk<CR>", "[s]tage Hunk" },
                         r = { ":Gitsigns reset_hunk<CR>", "[r]eset Hunk" },
                         S = { gs.stage_buffer, "[S]tage Buffer" },
@@ -52,7 +53,7 @@
                         D = { function() gs.diffthis('~') end, "[D]iff This ~" },
                     },
                     t = {
-                        name = "Toggle",
+                        name = "+[t]oggle",
                         b = { gs.toggle_current_line_blame, "Toggle Line [b]lame" },
                         d = { gs.toggle_deleted, "Toggle [d]eleted" },
                     }
