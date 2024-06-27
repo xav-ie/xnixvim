@@ -14,6 +14,8 @@
           "^node_modules/"
           "^dist/"
           "%.generated.%"
+          "*.lock"
+          "package-lock.json"
         ];
         set_env.COLORTERM = "truecolor";
         mappings =
