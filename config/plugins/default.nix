@@ -23,7 +23,7 @@
     ./orgmode.nix
     ./org-roam-nvim.nix
     ./tabscope.nix
-    ./telescope.nix
+    ./telescope
     ./treesitter.nix
     ./vim-matchup.nix
     # ./zellij.nix
