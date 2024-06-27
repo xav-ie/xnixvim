@@ -106,6 +106,7 @@
     };
     extensions = {
       fzf-native.enable = true;
+      ui-select.enable = true;
       undo = {
         enable = true;
       };
