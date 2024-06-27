@@ -73,5 +73,9 @@
     which-key.enable = true;
   };
 
-  extraPlugins = [ pkgs.vimPlugins.vim-unimpaired ];
+  extraPlugins = with pkgs.vimPlugins; [
+    # TODO: configure
+    rhubarb # allows easily opening things in github
+    vim-unimpaired # better [] jumps
+  ];
 }
