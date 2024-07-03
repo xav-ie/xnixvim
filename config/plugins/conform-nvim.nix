@@ -17,6 +17,7 @@
       in
       {
         lua = [ "stylua" ];
+        astro = prettierFormat;
         html = prettierFormat;
         markdown = prettierFormat;
         javascript = prettierFormat;
