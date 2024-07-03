@@ -115,6 +115,7 @@
       ];
     };
     servers = {
+      astro.enable = true;
       eslint.enable = true;
       gopls.enable = true;
       graphql.enable = true;
