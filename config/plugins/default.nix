@@ -3,6 +3,7 @@
   imports = [
     ./bufferline.nix
     ./cmp.nix
+    ./coq
     ./conform-nvim.nix
     ./flash.nix
     ./gitsigns.nix
