@@ -1,11 +1,14 @@
 { ... }:
 {
+  # replace nvim ui with nicer one
+  # https://github.com/folke/noice.nvim
   plugins.noice = {
     enable = true;
     messages = {
-      view = "mini";
-      viewError = "mini";
-      viewWarn = "mini";
+      view = "mini"; # too many info notifications...very annoying!
+      # I think these two are good candidates for notifications:
+      viewError = "notify";
+      viewWarn = "notify";
     };
 
     lsp.override = {
