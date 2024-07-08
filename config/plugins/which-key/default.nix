@@ -21,6 +21,9 @@
                     name = "+s[y]mbol",
                   },
               },
+              h = {
+                  name = "+[h]unk",
+              },
               l = {
                   name = "+[l]sp",
               },
@@ -32,6 +35,9 @@
               },
               s = {
                   name = "+fla[s]h",
+              },
+              t = {
+                  name = "+[t]oggle",
               },
           },
       }
