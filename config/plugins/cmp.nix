@@ -7,8 +7,9 @@
     autoEnableSources = true;
     settings = {
       sources = [
+        # TODO: how to dynamically add sources?
         { name = "nvim_lsp"; }
-        { name = "codeium"; }
+        # { name = "codeium"; }
         { name = "luasnip"; }
         { name = "path"; }
         {

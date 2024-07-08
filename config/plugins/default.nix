@@ -24,6 +24,7 @@
     ./ollama.nix
     ./orgmode.nix
     ./org-roam-nvim.nix
+    ./supermaven.nix
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
@@ -33,10 +34,6 @@
   ];
 
   plugins = {
-    # TODO: replace with local version
-    # free auto-complete at last
-    codeium-nvim.enable = true;
-
     # smart comment/un-comment
     comment.enable = true;
 
