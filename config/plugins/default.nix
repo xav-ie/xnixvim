@@ -45,6 +45,7 @@
     ./quicker.nix
     ./refactoring.nix
     ./rustaceanvim.nix
+    ./sort-group.nix
     # ./supermaven.nix
     ./tabscope.nix
     ./telescope
@@ -52,6 +53,7 @@
     ./toggleterm.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
+    # ./vim-advanced-sorters.nix
     # TODO: fix
     # ./vim-guise.nix
     ./vim-matchup.nix
