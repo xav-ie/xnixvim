@@ -24,10 +24,12 @@
     ./ollama.nix
     ./orgmode.nix
     ./org-roam-nvim.nix
+    ./sort-group.nix
     ./supermaven.nix
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
+    # ./vim-advanced-sorters.nix
     ./vim-matchup.nix
     ./which-key
     # ./zellij.nix
