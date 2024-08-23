@@ -1,4 +1,8 @@
-{ ... }:
+{ lib, helpers, ... }:
+let
+  modeKeys = import ../../modeKeys.nix { inherit lib; };
+in
+# inherit modeKeys;
 {
   # FZF client
   # https://github.com/BenjaminTalbi/nixos-configurations/blob/0f160eaa0eae5a0417bc3eafae5e5e389614bda2/home/nixvim/telescope.nix
@@ -70,10 +74,6 @@
         action = "buffers";
         options.desc = "[b]uffers";
       };
-      "<leader>ff" = {
-        action = "find_files";
-        options.desc = "find_[f]iles";
-      };
       "<leader>fi" = {
         action = "git_files";
         options.desc = "g[i]t_files";
@@ -118,4 +118,16 @@
       };
     };
   };
+
+  keymaps = helpers.keymaps.mkKeymaps { options.silent = true; } (
+    modeKeys.nm {
+      # less noisy dropdown
+      "<leader>ff" = {
+        # TODO: make a PR to nixvim to enable raw option within telescope keymaps attribute
+        action.__raw = # lua
+          "function() require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({ previewer = false })) end";
+        options.desc = "find_[f]iles";
+      };
+    }
+  );
 }
