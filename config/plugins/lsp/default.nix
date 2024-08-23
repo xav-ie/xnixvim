@@ -140,7 +140,7 @@
         };
       };
       lua-ls.enable = true;
-      nil_ls = {
+      nil-ls = {
         enable = true;
         settings.formatting.command = [ "nixfmt-rfc-style" ];
       };

@@ -37,7 +37,7 @@
           silent = true;
           desc = "Previous hunk";
         };
-        action = # lua
+        action.__raw = # lua
           ''
             function() 
               if vim.wo.diff then return "[c" end
@@ -45,14 +45,13 @@
               return '<Ignore>'
             end
           '';
-        lua = true;
       };
       "]c" = {
         options = {
           silent = true;
           desc = "Next hunk";
         };
-        action = # lua
+        action.__raw = # lua
           ''
             function() 
               if vim.wo.diff then return "]c" end
@@ -60,43 +59,38 @@
               return '<Ignore>'
             end
           '';
-        lua = true;
       };
       "<leader>hb" = {
         options = {
           silent = true;
           desc = "[b]lame Full Line";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").blame_line{full=true} end'';
-        lua = true;
       };
       "<leader>hd" = {
         options = {
           silent = true;
           desc = "[d]iff This";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").diffthis() end'';
-        lua = true;
       };
       "<leader>hD" = {
         options = {
           silent = true;
           desc = "[D]iff This ~";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").diffthis("~") end'';
-        lua = true;
       };
       "<leader>hp" = {
         options = {
           silent = true;
           desc = "[p]review Hunk";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").preview_hunk() end'';
-        lua = true;
       };
       "<leader>hr" = {
         action = ":Gitsigns reset_hunk<CR>";
@@ -107,9 +101,8 @@
           silent = true;
           desc = "[R]eset Buffer";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").reset_buffer() end'';
-        lua = true;
       };
       "<leader>hs" = {
         action = ":Gitsigns stage_hunk<CR>";
@@ -120,36 +113,32 @@
           silent = true;
           desc = "[S]tage Buffer";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").stage_buffer() end'';
-        lua = true;
       };
       "<leader>hu" = {
         options = {
           silent = true;
           desc = "[u]ndo Stage Hunk";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").undo_stage_hunk() end'';
-        lua = true;
       };
       "<leader>tb" = {
         options = {
           silent = true;
           desc = "Toggle Line [b]lame";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").toggle_current_line_blame() end'';
-        lua = true;
       };
       "<leader>td" = {
         options = {
           silent = true;
           desc = "Toggle [d]eleted";
         };
-        action = # lua
+        action.__raw = # lua
           ''function() require("gitsigns").toggle_deleted() end'';
-        lua = true;
       };
     })
     ++ (ox {
