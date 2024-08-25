@@ -11,6 +11,11 @@ let
       rev = "c7ab94a6bcde96c79ff51afd6a1494606bb6f10b";
       hash = "sha256-TeRWReHeEqP5I3tgfJdMDmHvL83NDCENRMcQrKbPiqg=";
     };
+    # TODO: how to get curl?!?
+    # nativeBuildInputs = [ pkgs.curl ];
+    # buildInputs = [ pkgs.curl ];
+    # extraPackages = [ pkgs.curl ];
+    # ^ these dont't work
   };
 in
 {
@@ -21,4 +26,6 @@ in
       require("supermaven-nvim").setup({})
     '';
   extraPlugins = [ supermaven-nvim ];
+  # extraPackages = [ pkgs.curl ];
+  # ^ also doesn't work
 }

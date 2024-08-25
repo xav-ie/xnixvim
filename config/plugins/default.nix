@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, helpers, ... }:
 {
   imports = [
     ./bufferline.nix
@@ -24,14 +24,13 @@
     ./ollama.nix
     ./orgmode.nix
     ./org-roam-nvim.nix
-    ./supermaven.nix
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
     ./vim-matchup.nix
     ./which-key
     # ./zellij.nix
-  ];
+  ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 
   plugins = {
     # smart comment/un-comment
