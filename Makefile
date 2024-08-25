@@ -1,8 +1,8 @@
 build:
-	NIXPKGS_ALLOW_UNFREE=1 nix run nixpkgs#nix-output-monitor -- build --impure
+	nix run nixpkgs#nix-output-monitor -- build
 
 check:
-	NIXPKGS_ALLOW_UNFREE=1 nix flake check --impure
+	nix flake check
 
 format:
-	NIXPKGS_ALLOW_UNFREE=1 nix fmt
+	nix fmt
