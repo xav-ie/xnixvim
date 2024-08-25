@@ -15,9 +15,6 @@
       neovim-nightly-overlay,
       ...
     }@inputs:
-    let
-      config = import ./config; # import the module directly
-    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       # TODO: copy this excellent nixvim config:
       # https://github.com/asungy/nixim/blob/979643e6a13d1803915b379a0e974b86cbcd77ea/flake.nix
@@ -35,7 +32,7 @@
           nixvim' = nixvim.legacyPackages.${system};
           nvim = nixvim'.makeNixvimWithModule {
             inherit pkgs;
-            module = config;
+            module = import ./config; # import the module directly
             # You can use `extraSpecialArgs` to pass additional arguments to your module files
             # idk how to use this
             extraSpecialArgs = {
