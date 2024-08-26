@@ -3,9 +3,9 @@
   # auto-formatting
   plugins.conform-nvim = {
     enable = true;
+    # Map of file-type to formatters
     settings = {
-      # Map of file-type to formatters
-      formattersByFt =
+      formatters_by_ft =
         let
           prettierFormat = [
             [
@@ -34,7 +34,6 @@
           # have other formatters configured.
           "_" = [ "trim_whitespace" ];
         };
-
       format_on_save.__raw = # lua
         ''
           function(bufnr)
@@ -44,7 +43,7 @@
             return { timeout_ms = 500, lsp_format = "fallback" }
           end
         '';
-      notifyOnError = true;
+      notify_on_error = true;
     };
   };
 
