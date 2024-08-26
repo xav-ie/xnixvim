@@ -4,9 +4,13 @@
   # tabs
   plugins.bufferline = {
     enable = true;
-    separatorStyle = "thin";
-    showBufferCloseIcons = false;
-    indicator.icon = "▌";
-    tabSize = 0;
+    settings = {
+      options = {
+        separatorStyle = "thin";
+        showBufferCloseIcons = false;
+        indicator.icon = "▌";
+        tabSize = 0;
+      };
+    };
   };
 }
