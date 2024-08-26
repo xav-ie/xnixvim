@@ -3,38 +3,38 @@
   # auto-formatting
   plugins.conform-nvim = {
     enable = true;
-    # Map of file-type to formatters
-    formattersByFt =
-      let
-        prettierFormat = [
-          [
-            # prefer node_modules/.bin/prettier
-            "prettier"
-            # fallback to global prettier
-            "${pkgs.nodePackages.prettier}/bin/prettier"
-          ]
-        ];
-      in
-      {
-        lua = [ "stylua" ];
-        astro = prettierFormat;
-        html = prettierFormat;
-        markdown = prettierFormat;
-        javascript = prettierFormat;
-        javascriptreact = prettierFormat;
-        json = prettierFormat;
-        jsonc = prettierFormat;
-        typescript = prettierFormat;
-        typescriptreact = prettierFormat;
-        nix = [ "nixfmt" ];
-        # Use the "*" file-type to run formatters on all file-types.
-        #"*" = [ "codespell" ];
-        # Use the "_" file-type to run formatters on file-types that don't
-        # have other formatters configured.
-        "_" = [ "trim_whitespace" ];
-      };
+    settings = {
+      # Map of file-type to formatters
+      formattersByFt =
+        let
+          prettierFormat = [
+            [
+              # prefer node_modules/.bin/prettier
+              "prettier"
+              # fallback to global prettier
+              "${pkgs.nodePackages.prettier}/bin/prettier"
+            ]
+          ];
+        in
+        {
+          lua = [ "stylua" ];
+          astro = prettierFormat;
+          html = prettierFormat;
+          markdown = prettierFormat;
+          javascript = prettierFormat;
+          javascriptreact = prettierFormat;
+          json = prettierFormat;
+          jsonc = prettierFormat;
+          typescript = prettierFormat;
+          typescriptreact = prettierFormat;
+          nix = [ "nixfmt" ];
+          # Use the "*" file-type to run formatters on all file-types.
+          #"*" = [ "codespell" ];
+          # Use the "_" file-type to run formatters on file-types that don't
+          # have other formatters configured.
+          "_" = [ "trim_whitespace" ];
+        };
 
-    extraOptions = {
       format_on_save.__raw = # lua
         ''
           function(bufnr)
@@ -44,8 +44,8 @@
             return { timeout_ms = 500, lsp_format = "fallback" }
           end
         '';
+      notifyOnError = true;
     };
-    notifyOnError = true;
   };
 
   # TODO: is there a good way to abstract idea of toggling?

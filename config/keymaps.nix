@@ -29,6 +29,8 @@ in
         "<leader>/" = {
           action = "<ESC><cmd>lua require('Comment.api').toggle.linewise.current()<CR>";
           options.desc = "Comment Line";
+          # TODO: enable support for icons somehow
+          # options.icon = "";
         };
         "<leader>?" = {
           action = "<ESC><cmd>lua require('Comment.api').toggle.blockwise.current()<CR>";
