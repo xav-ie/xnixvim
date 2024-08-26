@@ -16,14 +16,14 @@
       # indent based on ast
       indent.enable = true;
       # this is SO useful 
-      incrementalSelection = {
+      incremental_selection = {
         enable = true;
         keymaps = {
-          initSelection = "<C-space>";
-          nodeDecremental = "<bs>";
-          nodeIncremental = "<C-space>";
+          init_selection = "<C-space>";
+          node_decremental = "<bs>";
+          node_incremental = "<C-space>";
           # IDK what this does
-          scopeIncremental = "grc";
+          scope_incremental = "grc";
         };
       };
     };

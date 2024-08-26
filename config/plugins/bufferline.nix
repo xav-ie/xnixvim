@@ -6,10 +6,10 @@
     enable = true;
     settings = {
       options = {
-        separatorStyle = "thin";
-        showBufferCloseIcons = false;
+        separator_style = "thin";
+        showBuffer_close_icons = false;
         indicator.icon = "▌";
-        tabSize = 0;
+        tab_size = 0;
       };
     };
   };
