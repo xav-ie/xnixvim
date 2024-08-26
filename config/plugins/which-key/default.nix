@@ -12,34 +12,15 @@
       wk.setup {
       }
 
-      wk.register {
-          ["<leader>"] = {
-              -- TODO: move into specific plugin?
-              f = {
-                  name = "+[f]ind",
-                  y = {
-                    name = "+s[y]mbol",
-                  },
-              },
-              h = {
-                  name = "+[h]unk",
-              },
-              l = {
-                  name = "+[l]sp",
-              },
-              n = {
-                  name = "+[n]ode",
-              },
-              o = {
-                  name = "+[o]rg",
-              },
-              s = {
-                  name = "+fla[s]h",
-              },
-              t = {
-                  name = "+[t]oggle",
-              },
-          },
+      wk.add {
+        { "<leader>f", group = "[f]ind", icon = "", },
+        { "<leader>fy", group = "s[y]mbol", icon = "", },
+        { "<leader>h", group = "[h]unk", icon = "", },
+        { "<leader>l", group = "[l]sp", icon = "󰁨", },
+        { "<leader>n", group = "[n]ode", icon = "", },
+        { "<leader>o", group = "[o]rg", icon = "", },
+        { "<leader>s", group = "fla[s]h", icon = "󱐋", },
+        { "<leader>t", group = "[t]oggle", icon = "", },
       }
     '';
 }
