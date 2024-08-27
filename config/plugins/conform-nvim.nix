@@ -7,14 +7,14 @@
     settings = {
       formatters_by_ft =
         let
-          prettierFormat = [
-            [
-              # prefer node_modules/.bin/prettier
-              "prettier"
-              # fallback to global prettier
-              "${pkgs.nodePackages.prettier}/bin/prettier"
-            ]
-          ];
+          prettierFormat = {
+            # prefer node_modules/.bin/prettier
+            __unkeyed-1 = "prettier";
+            # fallback to global prettier
+            __unkeyed-2 = "${pkgs.nodePackages.prettier}/bin/prettier";
+            # choose the first formatter that works, not all
+            stop_after_first = true;
+          };
         in
         {
           lua = [ "stylua" ];
