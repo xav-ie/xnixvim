@@ -1,4 +1,4 @@
-{ ... }:
+{ helpers, ... }:
 {
   imports = [ ./SchemaStore-nvim.nix ];
 
@@ -139,7 +139,28 @@
           validate.enable = true;
         };
       };
-      lua-ls.enable = true;
+      lua-ls = {
+        enable = true;
+        settings = {
+          # nixvim adds the "Lua"
+          # Lua = {
+          # runtime.version = "LuaJIT"; # not sure if needed/desired
+          # diagnostics.globals = [ "vim" ]; # should not be needed if types are
+          #                                  # sourced correctly
+          workspace.library = [
+            (helpers.mkRaw # lua
+              ''
+                vim.env.VIMRUNTIME,
+                -- ^ just this is enough for me!, keeping the rest just in case
+                -- vim.api.nvim_get_runtime_file("", true),
+                -- [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                -- [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true
+              ''
+            )
+          ];
+          # };
+        };
+      };
       nil-ls = {
         enable = true;
         settings.formatting.command = [ "nixfmt-rfc-style" ];
