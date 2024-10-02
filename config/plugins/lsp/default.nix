@@ -181,7 +181,7 @@
           unstable = true;
         };
       };
-      tsserver = {
+      ts-ls = {
         enable = true;
         # onAttach.function = # lua
         #   ''

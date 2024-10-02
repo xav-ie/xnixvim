@@ -23,7 +23,7 @@
     ./oil.nix
     ./ollama.nix
     ./orgmode.nix
-    ./org-roam-nvim.nix
+    # ./org-roam-nvim.nix # buggy as hell
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
@@ -62,12 +62,16 @@
     # nvim-ufo.enable = true;
 
     # tpope === goat
-    surround.enable = true;
+    vim-surround.enable = true;
 
+    # todo comment highlighting
     todo-comments.enable = true;
 
     # diagnostics buffer
     trouble.enable = true;
+
+    # icons 🍥
+    web-devicons.enable = true;
   };
 
   extraPlugins = with pkgs.vimPlugins; [
