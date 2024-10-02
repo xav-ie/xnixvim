@@ -5,8 +5,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "xav-ie";
       repo = "witt-neovim";
-      rev = "deac52e7d5aace5dec6b010644615dfbc5425c21";
-      hash = "sha256-9kE3vjhDpdOu6N6AqMY4JqFTKcg5qRezxOe0i6ItfCU=";
+      rev = "4020181341465dc24014afc872a5df0a60453c4c";
+      hash = "sha256-mpLG/6n42CzU428ali2rQ6rZBf/NvVjFF0r/Skda/2w=";
     };
   };
 in
