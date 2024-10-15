@@ -147,5 +147,9 @@
     FloatBorder = {
       fg = "#a89984";
     };
+
+    TabLineFill = {
+      bg = "NONE";
+    };
   };
 }
