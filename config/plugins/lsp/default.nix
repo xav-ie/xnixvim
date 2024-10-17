@@ -117,6 +117,7 @@
     servers = {
       astro.enable = true;
       eslint.enable = true;
+      glsl_analyzer.enable = true;
       gopls.enable = true;
       graphql.enable = true;
       jsonls = {
