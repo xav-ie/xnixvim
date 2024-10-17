@@ -139,7 +139,7 @@
           validate.enable = true;
         };
       };
-      lua-ls = {
+      lua_ls = {
         enable = true;
         settings = {
           # nixvim adds the "Lua"
@@ -161,11 +161,11 @@
           # };
         };
       };
-      nil-ls = {
+      nil_ls = {
         enable = true;
         settings.formatting.command = [ "nixfmt-rfc-style" ];
       };
-      rust-analyzer = {
+      rust_analyzer = {
         enable = true;
         installCargo = true;
         installRustc = true;
@@ -181,7 +181,7 @@
           unstable = true;
         };
       };
-      tsserver = {
+      ts_ls = {
         enable = true;
         # onAttach.function = # lua
         #   ''
