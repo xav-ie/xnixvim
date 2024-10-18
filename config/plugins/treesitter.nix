@@ -11,10 +11,14 @@
     nixvimInjections = true;
 
     settings = {
+      # auto install grammars on encounter
+      auto_install = true;
+
       # this is handled by orgmode plugin
       ignore_install = [ "org" ];
       # indent based on ast
       indent.enable = true;
+      highlight.enable = true;
       # this is SO useful 
       incremental_selection = {
         enable = true;
