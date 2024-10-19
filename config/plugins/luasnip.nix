@@ -1,12 +1,14 @@
 { ... }:
 {
-  # useful code expansions
-  plugins.luasnip = {
-    enable = true;
-    settings = {
-      #   enable_autosnippets = true;
-      #   store_selection_keys = “<Tab>”;
+  config = {
+    # useful code expansions
+    plugins.luasnip = {
+      enable = true;
+      settings = {
+        #   enable_autosnippets = true;
+        #   store_selection_keys = “<Tab>”;
+      };
+      fromVscode = [ { } ];
     };
-    fromVscode = [ { } ];
   };
 }

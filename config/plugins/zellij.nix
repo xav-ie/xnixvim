@@ -1,13 +1,15 @@
 { ... }:
 {
-  plugins.zellij = {
-    enable = true;
+  config = {
+    plugins.zellij = {
+      enable = true;
 
-    settings = {
-      debug = true;
-      vimTmuxNavigatorKeybinds = true;
-      whichKeyEnabled = true;
-      replaceVimWindowNavigationKeybinds = true;
+      settings = {
+        debug = true;
+        vimTmuxNavigatorKeybinds = true;
+        whichKeyEnabled = true;
+        replaceVimWindowNavigationKeybinds = true;
+      };
     };
   };
 }

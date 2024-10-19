@@ -11,9 +11,11 @@ let
   };
 in
 {
-  extraConfigLua = # lua
-    ''
-      require('oatmeal').setup({backend='ollama', model='codestral:latest'})
-    '';
-  extraPlugins = [ oatmeal-nvim ];
+  config = {
+    extraConfigLua = # lua
+      ''
+        require('oatmeal').setup({backend='ollama', model='codestral:latest'})
+      '';
+    extraPlugins = [ oatmeal-nvim ];
+  };
 }

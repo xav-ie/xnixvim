@@ -11,9 +11,11 @@ let
   };
 in
 {
-  extraConfigLua = # lua
-    ''
-      require('oil-git-status').setup()
-    '';
-  extraPlugins = [ oil-git-status ];
+  config = {
+    extraConfigLua = # lua
+      ''
+        require('oil-git-status').setup()
+      '';
+    extraPlugins = [ oil-git-status ];
+  };
 }

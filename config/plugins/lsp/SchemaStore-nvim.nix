@@ -11,5 +11,7 @@ let
   };
 in
 {
-  extraPlugins = [ SchemaStore-nvim ];
+  config = {
+    extraPlugins = [ SchemaStore-nvim ];
+  };
 }

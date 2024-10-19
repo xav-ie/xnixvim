@@ -1,10 +1,12 @@
 { ... }:
 {
-  # completion icons
-  plugins.lspkind = {
-    enable = true;
-    cmp = {
+  config = {
+    # completion icons
+    plugins.lspkind = {
       enable = true;
+      cmp = {
+        enable = true;
+      };
     };
   };
 }

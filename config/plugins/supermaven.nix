@@ -19,13 +19,15 @@ let
   };
 in
 {
-  # TODO: which keymaps are best?
-  # TODO: should I register this as a cmp source?
-  extraConfigLua = # lua
-    ''
-      require("supermaven-nvim").setup({})
-    '';
-  extraPlugins = [ supermaven-nvim ];
-  # extraPackages = [ pkgs.curl ];
-  # ^ also doesn't work
+  config = {
+    # TODO: which keymaps are best?
+    # TODO: should I register this as a cmp source?
+    extraConfigLua = # lua
+      ''
+        require("supermaven-nvim").setup({})
+      '';
+    extraPlugins = [ supermaven-nvim ];
+    # extraPackages = [ pkgs.curl ];
+    # ^ also doesn't work
+  };
 }

@@ -11,11 +11,13 @@ let
   };
 in
 {
-  extraConfigLua = # lua
-    ''
-      require("org-roam").setup({
-        directory = "~/Notes",
-      })
-    '';
-  extraPlugins = [ org-roam-nvim ];
+  config = {
+    extraConfigLua = # lua
+      ''
+        require("org-roam").setup({
+          directory = "~/Notes",
+        })
+      '';
+    extraPlugins = [ org-roam-nvim ];
+  };
 }
