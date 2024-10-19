@@ -11,5 +11,7 @@ let
   };
 in
 {
-  extraPlugins = [ coqtail ];
+  config = {
+    extraPlugins = [ coqtail ];
+  };
 }

@@ -1,11 +1,13 @@
 { ... }:
 {
-  # even better %
-  plugins.vim-matchup = {
-    treesitterIntegration = {
+  config = {
+    # even better %
+    plugins.vim-matchup = {
+      treesitterIntegration = {
+        enable = true;
+        includeMatchWords = true;
+      };
       enable = true;
-      includeMatchWords = true;
     };
-    enable = true;
   };
 }

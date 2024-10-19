@@ -11,13 +11,15 @@ let
   };
 in
 {
-  extraConfigLua = # lua
-    ''
-      require('octo').setup({
-        suppress_missing_scope = {
-          projects_v2 = true,
-        },
-      })
-    '';
-  extraPlugins = [ octo-nvim ];
+  config = {
+    extraConfigLua = # lua
+      ''
+        require('octo').setup({
+          suppress_missing_scope = {
+            projects_v2 = true,
+          },
+        })
+      '';
+    extraPlugins = [ octo-nvim ];
+  };
 }

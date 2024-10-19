@@ -6,10 +6,12 @@ let
   };
 in
 {
-  extraConfigLua = # lua
-    ''
-      -- TODO: improve docs and package
-      require('markdown-table-sorter')
-    '';
-  extraPlugins = [ markdown-table-sorter ];
+  config = {
+    extraConfigLua = # lua
+      ''
+        -- TODO: improve docs and package
+        require('markdown-table-sorter')
+      '';
+    extraPlugins = [ markdown-table-sorter ];
+  };
 }

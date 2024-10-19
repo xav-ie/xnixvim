@@ -11,9 +11,11 @@ let
   };
 in
 {
-  extraConfigLua = # lua
-    ''
-      require('witt')
-    '';
-  extraPlugins = [ witt-neovim ];
+  config = {
+    extraConfigLua = # lua
+      ''
+        require('witt')
+      '';
+    extraPlugins = [ witt-neovim ];
+  };
 }

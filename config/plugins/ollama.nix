@@ -1,7 +1,9 @@
 { ... }:
 {
-  plugins.ollama = {
-    enable = true;
-    model = "codellama";
+  config = {
+    plugins.ollama = {
+      enable = true;
+      model = "codellama";
+    };
   };
 }
