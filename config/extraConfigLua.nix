@@ -75,18 +75,9 @@
               desc = "Notify when recording macro",
             })
           '';
-
-        randomHighlightConfig = # lua
-          ''
-            -- TODO: how to use color scheme
-            vim.cmd('highlight TSProperty guifg=#FFD242')
-            vim.cmd('highlight TSType guifg=#00a0f0')
-            vim.cmd('highlight TSNumber guifg=#be620a')
-          '';
       in
       # lua
       ''
-        ${randomHighlightConfig}
         ${clipBoardConfig}
         ${caseChangeFunctions}
       '';
