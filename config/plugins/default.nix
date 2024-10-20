@@ -21,7 +21,7 @@
     ./oil-git-status.nix
     ./oil.nix
     ./ollama.nix
-    ./orgmode.nix
+    # ./orgmode.nix
     # ./org-roam-nvim.nix # buggy as hell
     ./tabscope.nix
     ./telescope
