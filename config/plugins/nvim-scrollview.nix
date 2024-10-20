@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  # beautiful, performant scrollbar
   # https://github.com/dstein64/nvim-scrollview
   config = {
     extraPlugins = with pkgs.vimPlugins; [

@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # ^? support in nvim
+  # https://github.com/typed-rocks/witt-neovim
   config = {
     extraConfigLua = # lua
       ''

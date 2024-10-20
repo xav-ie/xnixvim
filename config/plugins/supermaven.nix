@@ -19,6 +19,8 @@ let
   };
 in
 {
+  # AI auto-completion
+  # https://github.com/supermaven-inc/supermaven-nvim
   config = {
     # TODO: which keymaps are best?
     # TODO: should I register this as a cmp source?

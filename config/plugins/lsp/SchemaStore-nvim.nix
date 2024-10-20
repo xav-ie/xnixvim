@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # JSON schemas for Neovim
+  # https://github.com/b0o/SchemaStore.nvim
   config = {
     extraPlugins = [ SchemaStore-nvim ];
   };

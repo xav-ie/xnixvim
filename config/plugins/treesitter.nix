@@ -1,5 +1,8 @@
 { ... }:
 {
+  # beautiful, wonderful, good-enough syntax highlighting/AST parsing
+  # https://github.com/nvim-treesitter/nvim-treesitter/
+  # https://nix-community.github.io/nixvim/plugins/treesitter/index.html
   config = {
     # AST syntax highlighting
     plugins.treesitter = {

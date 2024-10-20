@@ -11,6 +11,7 @@ let
   };
 in
 {
+  # AI assistant
   config = {
     extraConfigLua = # lua
       ''

@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # Actual orgmode in nvim
+  # https://github.com/nvim-orgmode/orgmode
   config = {
     extraConfigLua = # lua
       ''
