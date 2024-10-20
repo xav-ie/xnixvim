@@ -30,7 +30,6 @@
     ./vim-matchup.nix
     ./which-key
     ./witt-neovim.nix
-    # ./zellij.nix
   ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 
   config = {
