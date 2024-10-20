@@ -75,9 +75,9 @@
     };
 
     extraPlugins = with pkgs.vimPlugins; [
-      # TODO: configure
       rhubarb # allows easily opening things in github
       vim-unimpaired # better [] jumps
+      vim-smoothie # smooth scrolling
     ];
   };
 }
