@@ -15,10 +15,8 @@
 ** TODO TODO
    - [ ] CI to automatically run and take screenshot
    - [ ] separate theme out and share
-   - [ ] add neovide output and config
    - [ ] local completions
    - [ ] snippets
-   - [ ] better clipboard support
    - [ ] better large file support
    - [ ] proper spelling and dictionary support to add new words
    - [ ] org concealment
