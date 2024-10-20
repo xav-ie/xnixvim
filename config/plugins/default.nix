@@ -15,6 +15,7 @@
     ./markdown-table-sorter.nix
     ./noice.nix
     ./notify.nix
+    ./nvim-colorizer.nix
     # ./nvim-lightbulb.nix
     ./nvim-scrollview.nix
     ./oatmeal.nix
@@ -69,11 +70,6 @@
       # https://github.com/windwp/nvim-autopairs/
       # https://nix-community.github.io/nixvim/plugins/nvim-autopairs/index.html
       nvim-autopairs.enable = true;
-
-      # colors in Neovim
-      # https://github.com/norcalli/nvim-colorizer.lua
-      # https://nix-community.github.io/nixvim/plugins/nvim-colorizer/index.html
-      nvim-colorizer.enable = true;
 
       # better folding UI
       # https://github.com/kevinhwang91/nvim-ufo/
