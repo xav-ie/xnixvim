@@ -3,18 +3,12 @@
   # https://github.com/petertriho/nvim-scrollbar
   config = {
     extraPlugins = with pkgs.vimPlugins; [
-      nvim-scrollbar
+      nvim-scrollview
     ];
-    extraConfigLua = # lua
-      ''
-        require('scrollbar').setup({
-          handle = {
-            color = '#333333',
-          },
-          handlers = {
-            cursor = false,
-          },
-        })
-      '';
+    highlight = {
+      ScrollView = {
+        bg = "#333333";
+      };
+    };
   };
 }
