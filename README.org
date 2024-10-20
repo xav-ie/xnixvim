@@ -14,6 +14,9 @@
 
 ** TODO TODO
    - [ ] CI to automatically run and take screenshot
+     - [X] CI
+     - [ ] Fast CI
+     - [ ] Screenshot with CI
    - [ ] separate theme out and share
    - [ ] local completions
    - [ ] snippets
