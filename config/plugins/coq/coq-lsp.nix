@@ -13,6 +13,8 @@ in
 {
   # TODO: add specific dep on nix binary
 
+  # Extension and LSP for Coq
+  # https://github.com/tomtomjhj/coq-lsp.nvim
   config = {
     extraConfigLua = # lua
       ''

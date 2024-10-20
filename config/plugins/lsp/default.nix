@@ -2,6 +2,9 @@
 {
   imports = [ ./SchemaStore-nvim.nix ];
 
+  # LSP
+  # https://github.com/neovim/nvim-lspconfig
+  # https://nix-community.github.io/nixvim/plugins/lsp/index.html
   config = {
     extraConfigLua =
       # lua
@@ -115,12 +118,32 @@
           }
         ];
       };
+      # all servers come from:
+      # https://github.com/nix-community/nixvim/blob/c4ad4d0b2e7de04fa9ae0652b006807f42062080/plugins/lsp/lsp-packages.nix#L179
       servers = {
+        # https://github.com/withastro/language-tools
         astro.enable = true;
+        # https://docs.deno.com/runtime/reference/lsp_integration/
+        denols = {
+          enable = true;
+          rootDir = # lua
+            ''
+              require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
+            '';
+          extraOptions.init_options = {
+            lint = true;
+            unstable = true;
+          };
+        };
+        # https://github.com/hrsh7th/vscode-langservers-extracted
         eslint.enable = true;
+        # https://github.com/nolanderc/glsl_analyzer
         glsl_analyzer.enable = true;
+        # https://github.com/golang/tools/tree/master/gopls
         gopls.enable = true;
+        # https://github.com/graphql/graphiql/tree/main/packages/graphql-language-service-cli#readme
         graphql.enable = true;
+        # https://github.com/hrsh7th/vscode-langservers-extracted
         jsonls = {
           enable = true;
           extraOptions.settings.json = {
@@ -141,6 +164,7 @@
             validate.enable = true;
           };
         };
+        # https://github.com/luals/lua-language-server
         lua_ls = {
           enable = true;
           settings = {
@@ -163,26 +187,18 @@
             # };
           };
         };
+        # https://github.com/oxalica/nil
         nil_ls = {
           enable = true;
           settings.formatting.command = [ "nixfmt-rfc-style" ];
         };
+        # https://rust-analyzer.github.io/
         rust_analyzer = {
           enable = true;
           installCargo = true;
           installRustc = true;
         };
-        denols = {
-          enable = true;
-          rootDir = # lua
-            ''
-              require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
-            '';
-          extraOptions.init_options = {
-            lint = true;
-            unstable = true;
-          };
-        };
+        # https://github.com/typescript-language-server/typescript-language-server
         ts_ls = {
           enable = true;
           # onAttach.function = # lua

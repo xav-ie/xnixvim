@@ -1,7 +1,9 @@
 { lib, ... }:
 {
+  # status line
+  # https://github.com/nvim-lualine/lualine.nvim/
+  # https://nix-community.github.io/nixvim/plugins/lualine/index.html
   config = {
-    # status line
     plugins.lualine = {
       enable = true;
       settings = {

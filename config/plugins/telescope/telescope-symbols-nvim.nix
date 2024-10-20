@@ -5,6 +5,8 @@
   ...
 }:
 {
+  # Emoji, kaomoji, latex, math, nerd, etc.
+  # https://github.com/nvim-telescope/telescope-symbols.nvim
   config = {
     extraPlugins = with pkgs.vimPlugins; [ telescope-symbols-nvim ];
 

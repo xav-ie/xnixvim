@@ -2,6 +2,9 @@
 {
   imports = [ ./telescope-symbols-nvim.nix ];
 
+  # Find, Filter, Preview, Pick.
+  # https://github.com/nvim-telescope/telescope.nvim/
+  # https://nix-community.github.io/nixvim/plugins/telescope/index.html
   config =
     # inherit modeKeys;
     let

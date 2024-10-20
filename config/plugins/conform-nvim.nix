@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  # https://github.com/stevearc/conform.nvim
+  # https://nix-community.github.io/nixvim/plugins/conform-nvim
   config = {
     # auto-formatting
     plugins.conform-nvim = {

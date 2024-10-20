@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # Actual org-roam in neovim
+  # https://github.com/chipsenkbeil/org-roam.nvim
   config = {
     extraConfigLua = # lua
       ''

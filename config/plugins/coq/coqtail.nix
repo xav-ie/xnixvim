@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # Interactive Coq Proofs in Vim
+  # https://github.com/whonore/Coqtail
   config = {
     extraPlugins = [ coqtail ];
   };

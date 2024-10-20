@@ -2,6 +2,8 @@
 {
   config = {
     # completions
+    # https://github.com/hrsh7th/nvim-cmp
+    # https://nix-community.github.io/nixvim/plugins/cmp/
     plugins.cmp = {
       enable = true;
       # only works when sources is not set with __raw

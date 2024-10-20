@@ -1,5 +1,7 @@
 { ... }:
 {
+  # https://github.com/folke/flash.nvim/
+  # https://nix-community.github.io/nixvim/plugins/flash/index.html
   config = {
     plugins.flash = {
       enable = true;

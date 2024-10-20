@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # adds git status to oil buffers
+  # https://github.com/refractalize/oil-git-status.nvim
   config = {
     extraConfigLua = # lua
       ''

@@ -1,7 +1,9 @@
 { ... }:
 {
+  # easily browse directories
+  # https://github.com/stevearc/oil.nvim/
+  # https://nix-community.github.io/nixvim/plugins/oil/index.html
   config = {
-    # easily browse directories
     plugins.oil = {
       enable = true;
       settings = {

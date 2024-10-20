@@ -1,7 +1,9 @@
 { ... }:
 {
+  # useful code expansions
+  # https://github.com/L3MON4D3/LuaSnip
+  # https://nix-community.github.io/nixvim/plugins/luasnip/index.html
   config = {
-    # useful code expansions
     plugins.luasnip = {
       enable = true;
       settings = {

@@ -12,8 +12,10 @@ let
   };
 in
 {
+  # manage buffers to be tab-scoped
+  # https://github.com/backdround/tabscope.nvim
+  # THIS PLUGIN IS AMAZING!!!
   config = {
-    # THIS PLUGIN IS AMAZING!!!
     extraConfigLua = # lua
       ''
         require('tabscope').setup({})

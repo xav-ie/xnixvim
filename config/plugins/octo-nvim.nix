@@ -11,6 +11,8 @@ let
   };
 in
 {
+  # review issues and PRs in nvim
+  # https://github.com/pwntester/octo.nvim
   config = {
     extraConfigLua = # lua
       ''
