@@ -16,7 +16,7 @@
     ./noice.nix
     ./notify.nix
     # ./nvim-lightbulb.nix
-    ./nvim-scrollbar.nix
+    ./nvim-scrollview.nix
     ./oatmeal.nix
     # ./octo-nvim.nix
     ./oil-git-status.nix
