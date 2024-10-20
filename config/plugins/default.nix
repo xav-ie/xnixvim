@@ -13,7 +13,6 @@
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
-    # ./neogit.nix
     ./noice.nix
     ./notify.nix
     # ./nvim-lightbulb.nix
