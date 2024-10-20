@@ -94,6 +94,7 @@
     opts = {
       cmdheight = 0;
       expandtab = true;
+      guifont = "Maple Mono NF:h14";
       linebreak = true; # visually wrap lines by word, not char
       number = true; # Show line numbers
       relativenumber = false;
