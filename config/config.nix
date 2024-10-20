@@ -97,6 +97,7 @@
       linebreak = true; # visually wrap lines by word, not char
       number = true; # Show line numbers
       relativenumber = false;
+      scrolloff = 2; # min number of lines to keep above and below cursor. default is 0
       shiftwidth = 2; # Tab width should be 2
       showbreak = "→"; # prefix for wrapped lines
       smartindent = true;
