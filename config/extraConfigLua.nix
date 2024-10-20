@@ -5,26 +5,6 @@
       let
         clipBoardConfig = # lua
           ''
-            local function paste()
-             -- this is inaccurate and not correct, but it is okay enough
-             return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
-            end
-
-            vim.g.clipboard = {
-              name = 'OSC 52',
-              copy = {
-                ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-                ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-              },
-              paste = {
-                ['+'] = paste,
-                ['*'] = paste,
-                -- TODO: get OSC paste working for Zellij first
-                -- ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-                -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-              },
-            }
-
             -- I always want yanks synchronized with system and "selection" (IDK what that is) clipboard
             -- https://github.com/ch3n9w/dev/blob/319deb662ff50b58f5b643fbd9327ecb00919886/nvim/lua/autocmd.lua#L26-L34
             vim.api.nvim_create_autocmd('TextYankPost', {
@@ -47,7 +27,30 @@
               vim.keymap.set('v', '<D-v>', '"+P')         -- paste
               vim.keymap.set('c', '<D-v>', '<C-R>+')      -- paste
               vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- paste
+              -- set clipboard to unnamedplus
+              vim.opt.clipboard = "unnamedplus"
+            else
+              local function paste()
+               -- this is inaccurate and not correct, but it is okay enough
+               return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
+              end
+
+              vim.g.clipboard = {
+                name = 'OSC 52',
+                copy = {
+                  ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+                  ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+                },
+                paste = {
+                  ['+'] = paste,
+                  ['*'] = paste,
+                  -- TODO: get OSC paste working for Zellij first
+                  -- ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+                  -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+                },
+              }
             end
+
             vim.api.nvim_set_keymap("",  '<D-v>', '+p<CR>', {noremap = true, silent=true})
             vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', {noremap = true, silent=true})
             vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', {noremap = true, silent=true})
