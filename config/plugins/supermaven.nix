@@ -8,8 +8,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "supermaven-inc";
       repo = "supermaven-nvim";
-      rev = "c7ab94a6bcde96c79ff51afd6a1494606bb6f10b";
-      hash = "sha256-TeRWReHeEqP5I3tgfJdMDmHvL83NDCENRMcQrKbPiqg=";
+      rev = "07d20fce48a5629686aefb0a7cd4b25e33947d50";
+      hash = "sha256-1z3WKIiikQqoweReUyK5O8MWSRN5y95qcxM6qzlKMME=";
     };
     # TODO: how to get curl?!?
     # nativeBuildInputs = [ pkgs.curl ];
