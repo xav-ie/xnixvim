@@ -41,6 +41,11 @@
       # https://nix-community.github.io/nixvim/plugins/comment/index.html
       comment.enable = true;
 
+      # luasnip expansions in cmp
+      # https://github.com/saadparwaiz1/cmp_luasnip/
+      # https://nix-community.github.io/nixvim/plugins/cmp_luasnip.html
+      cmp_luasnip.enable = true;
+
       # automatic env updates
       # https://github.com/direnv/direnv.vim/
       # https://nix-community.github.io/nixvim/plugins/direnv/index.html
@@ -55,11 +60,6 @@
       # https://github.com/tpope/vim-fugitive/
       # https://nix-community.github.io/nixvim/plugins/fugitive.html
       fugitive.enable = true;
-
-      # luasnip expansions in cmp
-      # https://github.com/saadparwaiz1/cmp_luasnip/
-      # https://nix-community.github.io/nixvim/plugins/cmp_luasnip.html
-      cmp_luasnip.enable = true;
 
       # adds syntax highlighting and special helpers for nix files
       # https://github.com/LnL7/vim-nix/
