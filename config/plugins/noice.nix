@@ -18,6 +18,8 @@
         "vim.lsp.util.stylize_markdown" = true;
         "cmp.entry.get_documentation" = true;
       };
+      # faulty checks
+      health.checker = false;
 
       presets = {
         bottom_search = true;
