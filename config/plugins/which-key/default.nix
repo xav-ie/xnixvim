@@ -2,7 +2,7 @@
 {
   # keybindings assistant
   # https://github.com/folke/which-key.nvim/
-  # https://nix-community.github.io/nixvim/plugins/which-key/index.html
+  # https://nix-community.github.io/nixvim/plugins/which-key
   config = {
     plugins.which-key.enable = true;
 

@@ -39,64 +39,64 @@
     plugins = {
       # smart comment/un-comment
       # https://github.com/numtostr/comment.nvim/
-      # https://nix-community.github.io/nixvim/plugins/comment/index.html
+      # https://nix-community.github.io/nixvim/plugins/comment
       comment.enable = true;
 
       # luasnip expansions in cmp
       # https://github.com/saadparwaiz1/cmp_luasnip/
-      # https://nix-community.github.io/nixvim/plugins/cmp_luasnip.html
+      # https://nix-community.github.io/nixvim/plugins/cmp_luasnip
       cmp_luasnip.enable = true;
 
       # automatic env updates
       # https://github.com/direnv/direnv.vim/
-      # https://nix-community.github.io/nixvim/plugins/direnv/index.html
+      # https://nix-community.github.io/nixvim/plugins/direnv
       direnv.enable = true;
 
       # amazing snippets for every language
       # https://github.com/rafamadriz/friendly-snippets
-      # https://nix-community.github.io/nixvim/plugins/friendly-snippets.html
+      # https://nix-community.github.io/nixvim/plugins/friendly-snippets
       friendly-snippets.enable = true;
 
       # unstoppable git plugin
       # https://github.com/tpope/vim-fugitive/
-      # https://nix-community.github.io/nixvim/plugins/fugitive.html
+      # https://nix-community.github.io/nixvim/plugins/fugitive
       fugitive.enable = true;
 
       # adds syntax highlighting and special helpers for nix files
       # https://github.com/LnL7/vim-nix/
-      # https://nix-community.github.io/nixvim/plugins/nix.html
+      # https://nix-community.github.io/nixvim/plugins/nix
       # nix.enable = true;
       # TODO: test
 
       # ()[]{}...
       # https://github.com/windwp/nvim-autopairs/
-      # https://nix-community.github.io/nixvim/plugins/nvim-autopairs/index.html
+      # https://nix-community.github.io/nixvim/plugins/nvim-autopairs
       nvim-autopairs.enable = true;
 
       # better folding UI
       # https://github.com/kevinhwang91/nvim-ufo/
-      # https://nix-community.github.io/nixvim/plugins/nvim-ufo/index.html
+      # https://nix-community.github.io/nixvim/plugins/nvim-ufo
       # nvim-ufo.enable = true;
 
       # tpope === goat
       # add native-like vim surround command
       # https://github.com/tpope/vim-surround/
-      # https://nix-community.github.io/nixvim/plugins/vim-surround.html
+      # https://nix-community.github.io/nixvim/plugins/vim-surround
       vim-surround.enable = true;
 
       # todo comment highlighting
       # https://github.com/folke/todo-comments.nvim/
-      # https://nix-community.github.io/nixvim/plugins/todo-comments/index.html
+      # https://nix-community.github.io/nixvim/plugins/todo-comments
       todo-comments.enable = true;
 
       # diagnostics buffer
       # https://github.com/folke/trouble.nvim/
-      # https://nix-community.github.io/nixvim/plugins/trouble/index.html
+      # https://nix-community.github.io/nixvim/plugins/trouble
       trouble.enable = true;
 
       # icons 🍥
       # https://github.com/nvim-tree/nvim-web-devicons/
-      # https://nix-community.github.io/nixvim/plugins/web-devicons/index.html
+      # https://nix-community.github.io/nixvim/plugins/web-devicons
       web-devicons.enable = true;
     };
 

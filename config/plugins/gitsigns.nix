@@ -1,7 +1,7 @@
 { helpers, lib, ... }:
 {
   # https://github.com/lewis6991/gitsigns.nvim/
-  # https://nix-community.github.io/nixvim/plugins/gitsigns/index.html
+  # https://nix-community.github.io/nixvim/plugins/gitsigns
   config = {
     # git indicators in the left gutter
     plugins.gitsigns = {

@@ -4,7 +4,7 @@
 
   # LSP
   # https://github.com/neovim/nvim-lspconfig
-  # https://nix-community.github.io/nixvim/plugins/lsp/index.html
+  # https://nix-community.github.io/nixvim/plugins/lsp
   config = {
     extraConfigLua =
       # lua

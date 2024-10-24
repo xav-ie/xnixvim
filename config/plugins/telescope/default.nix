@@ -4,7 +4,7 @@
 
   # Find, Filter, Preview, Pick.
   # https://github.com/nvim-telescope/telescope.nvim/
-  # https://nix-community.github.io/nixvim/plugins/telescope/index.html
+  # https://nix-community.github.io/nixvim/plugins/telescope
   config =
     # inherit modeKeys;
     let
