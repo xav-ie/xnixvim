@@ -2,7 +2,7 @@
 {
   # colors in Neovim
   # https://github.com/norcalli/nvim-colorizer.lua
-  # https://nix-community.github.io/nixvim/plugins/nvim-colorizer/index.html
+  # https://nix-community.github.io/nixvim/plugins/nvim-colorizer
   config = {
     plugins.nvim-colorizer = {
       enable = true;

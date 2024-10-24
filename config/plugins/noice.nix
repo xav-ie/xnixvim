@@ -2,7 +2,7 @@
 {
   # replace nvim ui with nicer one
   # https://github.com/folke/noice.nvim
-  # https://nix-community.github.io/nixvim/plugins/noice/index.html
+  # https://nix-community.github.io/nixvim/plugins/noice
   config = {
     plugins.noice = {
       enable = true;

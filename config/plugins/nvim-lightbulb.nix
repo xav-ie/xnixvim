@@ -2,7 +2,7 @@
 {
   # VSCode lightbulbs
   # https://github.com/kosayoda/nvim-lightbulb/
-  # https://nix-community.github.io/nixvim/plugins/nvim-lightbulb/index.html
+  # https://nix-community.github.io/nixvim/plugins/nvim-lightbulb
   config = {
     # TODO: figure out if this is good or not
     plugins.nvim-lightbulb = {
