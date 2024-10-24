@@ -6,6 +6,7 @@
     ./coq
     ./conform-nvim.nix
     ./flash.nix
+    ./firenvim.nix
     ./gitsigns.nix
     ./lsp
     ./lspkind.nix
