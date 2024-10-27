@@ -2,7 +2,7 @@
 {
   # TODO: improve config
   imports = [
-    ./coq-lsp.nix
+    # ./coq-lsp.nix
     ./coqtail.nix
   ];
 }

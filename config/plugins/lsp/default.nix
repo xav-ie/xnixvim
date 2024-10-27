@@ -1,4 +1,4 @@
-{ helpers, ... }:
+{ helpers, pkgs, ... }:
 {
   imports = [ ./SchemaStore-nvim.nix ];
 
@@ -123,6 +123,12 @@
       servers = {
         # https://github.com/withastro/language-tools
         astro.enable = true;
+        # https://github.com/ejgallego/coq-lsp
+        coq_lsp = {
+          enable = true;
+          # not sure what the right default is?
+          package = pkgs.coqPackages.coq-lsp;
+        };
         # https://docs.deno.com/runtime/reference/lsp_integration/
         denols = {
           enable = true;

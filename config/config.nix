@@ -55,6 +55,7 @@
     package = neovim-nightly-overlay.packages."${system}".default;
 
     extraPackages = with pkgs; [
+      coq
       git
       nixfmt-rfc-style
       ripgrep
