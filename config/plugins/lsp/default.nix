@@ -135,6 +135,7 @@
             unstable = true;
           };
         };
+        nixd.enable = true;
         # https://github.com/hrsh7th/vscode-langservers-extracted
         eslint.enable = true;
         # https://github.com/nolanderc/glsl_analyzer
@@ -187,11 +188,11 @@
             # };
           };
         };
-        # https://github.com/oxalica/nil
-        nil_ls = {
-          enable = true;
-          settings.formatting.command = [ "nixfmt-rfc-style" ];
-        };
+        # # https://github.com/oxalica/nil
+        # nil_ls = {
+        #   enable = true;
+        #   settings.formatting.command = [ "nixfmt-rfc-style" ];
+        # };
         # https://rust-analyzer.github.io/
         rust_analyzer = {
           enable = true;
