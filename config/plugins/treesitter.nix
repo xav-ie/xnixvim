@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   # beautiful, wonderful, good-enough syntax highlighting/AST parsing
   # https://github.com/nvim-treesitter/nvim-treesitter/
@@ -14,12 +14,80 @@
       # Lua highlighting for Nixvim Lua sections
       nixvimInjections = true;
 
+      grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        arduino
+        astro
+        awk
+        bash
+        c
+        cmake
+        css
+        csv
+        diff
+        elixir
+        erlang
+        git-config
+        git-rebase
+        gitattributes
+        gitcommit
+        gitignore
+        gleam
+        glsl
+        go
+        gomod
+        gpg
+        graphql
+        haskell
+        hcl
+        hlsl
+        html
+        hyprlang
+        ini
+        java
+        javascript
+        jq
+        jsdoc
+        json
+        jsonc
+        kdl
+        latex
+        liquid
+        llvm
+        lua
+        make
+        markdown
+        markdown-inline
+        mermaid
+        nickel
+        nix
+        org
+        proto
+        python
+        regex
+        rust
+        scss
+        sql
+        ssh-config
+        svelte
+        swift
+        toml
+        tsv
+        tsx
+        typescript
+        vim
+        vimdoc
+        vue
+        wgsl
+        xml
+        yaml
+        zig
+      ];
+
       settings = {
         # auto install grammars on encounter
         auto_install = true;
 
-        # this is handled by orgmode plugin
-        ignore_install = [ "org" ];
+        ensure_installed = [ ];
         # indent based on ast
         indent.enable = true;
         highlight.enable = true;
