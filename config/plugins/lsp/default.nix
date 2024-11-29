@@ -204,6 +204,26 @@
           installCargo = true;
           installRustc = true;
         };
+        # You need to do this for every svelte project
+        # `npm install --save-dev typescript-svelte-plugin`
+        # Ajust tsconfig.json to include the plugin:
+        # ```tsconfig.json
+        # {
+        #   "compilerOptions": {
+        #       ...
+        #       "plugins": [{
+        #           "name": "typescript-svelte-plugin",
+        #           "enabled": true,
+        #           "assumeIsSvelteProject": false
+        #       }]
+        #   }
+        # }
+        # ```
+        # https://github.com/sveltejs/language-tools/tree/master/packages/typescript-plugin#usage
+        svelte = {
+          enable = true;
+
+        };
         # https://github.com/vuejs/vetur/tree/master/server
         # https://nix-community.github.io/nixvim/plugins/lsp/servers/vuels/index.html
         volar = {
