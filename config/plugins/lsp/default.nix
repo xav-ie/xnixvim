@@ -201,8 +201,23 @@
         # https://rust-analyzer.github.io/
         rust_analyzer = {
           enable = true;
-          installCargo = true;
-          installRustc = true;
+          installCargo = false;
+          installRustc = false;
+          settings = {
+            # cfg = {
+            #   mobile = "";
+            # };
+            # cargo = {
+            #   # allFeatures = true;
+            #   # features = "all";
+            #   # cfgs.mobile = "";
+            #   cfgs.mobile = null;
+            # };
+            # diagnostics = {
+            #   disabled = [ "inactive-code" ];
+            # };
+          };
+        };
         };
         # You need to do this for every svelte project
         # `npm install --save-dev typescript-svelte-plugin`
