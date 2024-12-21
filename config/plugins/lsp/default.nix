@@ -218,6 +218,13 @@
             # };
           };
         };
+        # NOTE: the global index does not update unless you build or enable the
+        #       experimental indexing feature
+        # https://github.com/swiftlang/sourcekit-lsp/blob/main/Documentation/Enable%20Experimental%20Background%20Indexing.md#behavior-without-background-indexing
+        #
+        # https://nix-community.github.io/nixvim/plugins/lsp/servers/sourcekit/index.html
+        sourcekit = {
+          enable = true;
         };
         # You need to do this for every svelte project
         # `npm install --save-dev typescript-svelte-plugin`
