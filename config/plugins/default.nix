@@ -6,7 +6,9 @@
     ./coq
     ./conform-nvim.nix
     ./flash.nix
+
     ./firenvim.nix
+    ./fugitive.nix
     ./gitsigns.nix
     ./lsp
     ./lspkind.nix
@@ -56,11 +58,6 @@
       # https://github.com/rafamadriz/friendly-snippets
       # https://nix-community.github.io/nixvim/plugins/friendly-snippets
       friendly-snippets.enable = true;
-
-      # unstoppable git plugin
-      # https://github.com/tpope/vim-fugitive/
-      # https://nix-community.github.io/nixvim/plugins/fugitive
-      fugitive.enable = true;
 
       # adds syntax highlighting and special helpers for nix files
       # https://github.com/LnL7/vim-nix/
