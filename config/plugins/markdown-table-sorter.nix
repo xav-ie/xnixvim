@@ -3,6 +3,7 @@ let
   markdown-table-sorter = pkgs.vimUtils.buildVimPlugin {
     name = "markdown-table-sorter";
     src = ../custom-plugins/markdown-table-sorter;
+    dependencies = [ pkgs.vimPlugins.nvim-treesitter ];
   };
 in
 {

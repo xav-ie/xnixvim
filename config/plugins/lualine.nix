@@ -23,8 +23,8 @@
 
         # Available Sections:
         # A lot of these include reasonable extra logos/logic for display:
-        # branch, buffers, diagnostics, diff, encoding, fileformat, 
-        # filename, filesize, filetype, hostname, location, mode, 
+        # branch, buffers, diagnostics, diff, encoding, fileformat,
+        # filename, filesize, filetype, hostname, location, mode,
         # progress, searchcount, selectioncount, tabs, windows
         # Raw things:
         # %t (filename), %c (column), %l (line), %p (percentage), %{any expression}

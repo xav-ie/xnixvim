@@ -5,9 +5,9 @@
   # https://nix-community.github.io/nixvim/plugins/vim-matchup
   config = {
     plugins.vim-matchup = {
-      treesitterIntegration = {
+      treesitter = {
         enable = true;
-        includeMatchWords = true;
+        include_match_words = true;
       };
       enable = true;
     };

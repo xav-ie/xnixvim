@@ -7,9 +7,9 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    # neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
 
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -20,7 +20,7 @@
     {
       nixvim,
       flake-parts,
-      neovim-nightly-overlay,
+      # neovim-nightly-overlay,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -44,7 +44,7 @@
             # You can use `extraSpecialArgs` to pass additional arguments to your module files
             # idk how to use this
             extraSpecialArgs = {
-              inherit neovim-nightly-overlay;
+              # inherit neovim-nightly-overlay;
               inherit system;
               # inherit (inputs) foo;
             };
