@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixvim.url = "github:nix-community/nixvim";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # vendored
@@ -59,6 +60,10 @@
         "x86_64-linux"
       ];
 
+      imports = [
+        inputs.treefmt-nix.flakeModule
+      ];
+
       perSystem =
         { pkgs, system, ... }:
         let
@@ -84,7 +89,24 @@
             # TODO: add `nix run github:fzakaria/nix-auto-follow -- -c`
           };
 
-          formatter = pkgs.nixfmt-rfc-style;
+          # https://flake.parts/options/treefmt-nix.html#options
+          treefmt = {
+            projectRootFile = "./flake.nix";
+            programs = {
+              deadnix.enable = true;
+              nixfmt.enable = true;
+              stylua.enable = true;
+              prettier.enable = true;
+            };
+            settings.global.excludes = [
+              # I could not find formatters for these:
+              "Makefile"
+              ".git-blame-ignore-revs"
+            ];
+
+          };
+
+          # formatter = pkgs.nixfmt-rfc-style;
 
           packages = {
             # Lets you run `nix run .` to start nixvim
