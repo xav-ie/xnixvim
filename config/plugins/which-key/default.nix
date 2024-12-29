@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # keybindings assistant
   # https://github.com/folke/which-key.nvim/
   # https://nix-community.github.io/nixvim/plugins/which-key

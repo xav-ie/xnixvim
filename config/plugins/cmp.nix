@@ -1,5 +1,4 @@
-_:
-{
+_: {
   config = {
     # completions
     # https://github.com/hrsh7th/nvim-cmp

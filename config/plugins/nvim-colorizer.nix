@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # colors in Neovim
   # https://github.com/norcalli/nvim-colorizer.lua
   # https://nix-community.github.io/nixvim/plugins/nvim-colorizer

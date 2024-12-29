@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # vim in the browser
   # https://github.com/glacambre/firenvim/
   # https://nix-community.github.io/nixvim/plugins/firenvim

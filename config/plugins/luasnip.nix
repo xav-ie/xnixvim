@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # useful code expansions
   # https://github.com/L3MON4D3/LuaSnip
   # https://nix-community.github.io/nixvim/plugins/luasnip

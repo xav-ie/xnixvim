@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # easily browse directories
   # https://github.com/stevearc/oil.nvim/
   # https://nix-community.github.io/nixvim/plugins/oil

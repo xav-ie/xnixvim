@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # replace nvim ui with nicer one
   # https://github.com/folke/noice.nvim
   # https://nix-community.github.io/nixvim/plugins/noice
