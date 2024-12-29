@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # VSCode lightbulbs
   # https://github.com/kosayoda/nvim-lightbulb/
   # https://nix-community.github.io/nixvim/plugins/nvim-lightbulb

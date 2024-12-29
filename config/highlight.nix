@@ -1,5 +1,4 @@
-_:
-{
+_: {
   config = {
     # TODO: clean this up
     highlight = {

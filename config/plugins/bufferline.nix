@@ -1,5 +1,4 @@
-_:
-{
+_: {
   config = {
     # TODO: consider barbar.enable instead
     # https://github.com/akinsho/bufferline.nvim

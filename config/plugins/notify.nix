@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # pretty notifications
   # https://github.com/rcarriga/nvim-notify
   # https://nix-community.github.io/nixvim/plugins/notify
