@@ -1,13 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 let
   oil-git-status = pkgs.vimUtils.buildVimPlugin {
     name = "oil-git-status.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "refractalize";
-      repo = "oil-git-status.nvim";
-      rev = "839a1a287f5eb3ce1b07b50323032398e63f7ffa";
-      hash = "sha256-pTAvkJPmT3eD3XWrYl6nyKSzeRFEHOi8iDCamF1D1Cg=";
-    };
+    src = inputs.oil-git-status;
     dependencies = [ pkgs.vimPlugins.oil-nvim ];
   };
 in

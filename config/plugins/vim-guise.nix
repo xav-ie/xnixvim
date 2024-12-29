@@ -1,14 +1,14 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 let
   vim-guise = pkgs.vimUtils.buildVimPlugin {
     name = "vim-guise";
-    src = pkgs.fetchFromGitHub {
-      owner = "lambdalisue";
-      repo = "vim-guise";
-      rev = "1759cc936583490af76c36e0a25546329b2b9921";
-      hash = "sha256-srtcPjG+TPgHvqdIXPg3n99Rwtck/N1a+EzURcXKscw=";
-    };
+    src = inputs.vim-guise;
     dependencies = with pkgs.vimPlugins; [ denops-vim ];
   };
 in

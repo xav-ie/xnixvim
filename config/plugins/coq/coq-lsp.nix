@@ -1,13 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 let
   coq-lsp = pkgs.vimUtils.buildVimPlugin {
     name = "coq-lsp.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "tomtomjhj";
-      repo = "coq-lsp.nvim";
-      rev = "e8f8edd56bde52e64f98824d0737127356b8bd4e";
-      hash = "sha256-hBr0gi1FD3eZa45mUe3ohJ13SVd7v75udPT8ttH9dNE=";
-    };
+    src = inputs.coq-lsp;
   };
 in
 {
