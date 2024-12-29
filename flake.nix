@@ -3,17 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
-    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
-
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    # neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
-
     nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.inputs.flake-parts.follows = "flake-parts";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # vendored
     coq-lsp.url = "github:tomtomjhj/coq-lsp.nvim";
@@ -89,6 +81,7 @@
           checks = {
             # Run `nix flake check .` to verify that your config is not broken
             default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+            # TODO: add `nix run github:fzakaria/nix-auto-follow -- -c`
           };
 
           formatter = pkgs.nixfmt-rfc-style;

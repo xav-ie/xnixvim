@@ -91,7 +91,7 @@
         # indent based on ast
         indent.enable = true;
         highlight.enable = true;
-        # this is SO useful 
+        # this is SO useful
         incremental_selection = {
           enable = true;
           keymaps = {
