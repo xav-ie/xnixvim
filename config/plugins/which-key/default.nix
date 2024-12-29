@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # keybindings assistant
   # https://github.com/folke/which-key.nvim/

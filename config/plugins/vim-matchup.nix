@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # even better %
   # https://github.com/andymass/vim-matchup

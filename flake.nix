@@ -95,18 +95,16 @@
             programs = {
               deadnix.enable = true;
               nixfmt.enable = true;
-              stylua.enable = true;
               prettier.enable = true;
+              statix.enable = true;
+              stylua.enable = true;
             };
             settings.global.excludes = [
               # I could not find formatters for these:
               "Makefile"
               ".git-blame-ignore-revs"
             ];
-
           };
-
-          # formatter = pkgs.nixfmt-rfc-style;
 
           packages = {
             # Lets you run `nix run .` to start nixvim

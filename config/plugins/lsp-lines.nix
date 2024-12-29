@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # better diagnostics UI
   # https://git.sr.ht/~whynothugo/lsp_lines.nvim

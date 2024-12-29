@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # Ollama (AI tool) + nvim
   # https://github.com/nomnivore/ollama.nvim

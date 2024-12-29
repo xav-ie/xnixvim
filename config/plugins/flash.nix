@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # https://github.com/folke/flash.nvim/
   # https://nix-community.github.io/nixvim/plugins/flash
