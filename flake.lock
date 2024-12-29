@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "coq-lsp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1730137168,
+        "narHash": "sha256-eceyZc9nIbpe1G/kzU3Y61ut+RKfYXI78zALxN4Un+4=",
+        "owner": "tomtomjhj",
+        "repo": "coq-lsp.nvim",
+        "rev": "6135ed25fc2a1b4b1b6451ed206dc38b493ff1a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tomtomjhj",
+        "repo": "coq-lsp.nvim",
+        "type": "github"
+      }
+    },
+    "coqtail": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1726593185,
+        "narHash": "sha256-uRy+fsiWu0kEz4m4BVTnT1hnivz2mO+6ZjFAEvzl7/w=",
+        "owner": "whonore",
+        "repo": "Coqtail",
+        "rev": "299d0acdb9b697fd951df81a5d67e3f5cb6ed4f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "whonore",
+        "repo": "Coqtail",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -264,11 +296,118 @@
         "type": "github"
       }
     },
+    "oatmeal": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1711805699,
+        "narHash": "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=",
+        "owner": "dustinblackman",
+        "repo": "oatmeal.nvim",
+        "rev": "c8cdd0a182cf77f88ea5fa4703229ddb3f47c1f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dustinblackman",
+        "repo": "oatmeal.nvim",
+        "type": "github"
+      }
+    },
+    "octo-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1735390506,
+        "narHash": "sha256-bbFb3F24ibAoHWbgIKNyF8p25XoDLvoJThsg1eaA5+Q=",
+        "owner": "pwntester",
+        "repo": "octo.nvim",
+        "rev": "b099b0ade680d6bba14828319627276a8334d8de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pwntester",
+        "repo": "octo.nvim",
+        "type": "github"
+      }
+    },
+    "oil-git-status": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1712149148,
+        "narHash": "sha256-IXjpuzWipF7Pjp4N92ZuNKktYNe5oTYzyCykqkmNRkg=",
+        "owner": "refractalize",
+        "repo": "oil-git-status.nvim",
+        "rev": "a7ea816bac0cc3b8b4c3605e2f2b87960be60a05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "refractalize",
+        "repo": "oil-git-status.nvim",
+        "type": "github"
+      }
+    },
+    "org-roam-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1731867362,
+        "narHash": "sha256-R+5vbvOMVlLfPx5xmmx2cG0p+FhO3gFBpVZFvVwJDfM=",
+        "owner": "chipsenkbeil",
+        "repo": "org-roam.nvim",
+        "rev": "59da7daa2b218063936d2fc6363c1eb0667e64f2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chipsenkbeil",
+        "repo": "org-roam.nvim",
+        "type": "github"
+      }
+    },
+    "orgmode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1734770880,
+        "narHash": "sha256-E1YJeTay1tX2PgiXwV/DRgrlYHIGUe9/uTA+6ORIhBw=",
+        "owner": "nvim-orgmode",
+        "repo": "orgmode",
+        "rev": "bf657742f7cb56211f99946ff64f5f87d7d7f0d0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-orgmode",
+        "repo": "orgmode",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "coq-lsp": "coq-lsp",
+        "coqtail": "coqtail",
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs",
-        "nixvim": "nixvim"
+        "nixvim": "nixvim",
+        "oatmeal": "oatmeal",
+        "octo-nvim": "octo-nvim",
+        "oil-git-status": "oil-git-status",
+        "org-roam-nvim": "org-roam-nvim",
+        "orgmode": "orgmode",
+        "schemastore-nvim": "schemastore-nvim",
+        "tabscope-nvim": "tabscope-nvim",
+        "vim-guise": "vim-guise",
+        "witt-neovim": "witt-neovim"
+      }
+    },
+    "schemastore-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1735318841,
+        "narHash": "sha256-k4ovDNlEQ6v9/14UeqvKlgbtTSVHSauhnAyCAOo/z48=",
+        "owner": "b0o",
+        "repo": "SchemaStore.nvim",
+        "rev": "562681847dd904485caddd42395db2bb9d6e694a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "b0o",
+        "repo": "SchemaStore.nvim",
+        "type": "github"
       }
     },
     "systems": {
@@ -283,6 +422,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tabscope-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696813271,
+        "narHash": "sha256-eM0N2fyiX78/MoP8a6T/nsvtkMRprK/lJp9Wfm83yv4=",
+        "owner": "backdround",
+        "repo": "tabscope.nvim",
+        "rev": "cba52d18fbb1171cd92c7baf916e98fb720d6ae0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "backdround",
+        "repo": "tabscope.nvim",
         "type": "github"
       }
     },
@@ -304,6 +459,38 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "vim-guise": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1647351644,
+        "narHash": "sha256-srtcPjG+TPgHvqdIXPg3n99Rwtck/N1a+EzURcXKscw=",
+        "owner": "lambdalisue",
+        "repo": "vim-guise",
+        "rev": "1759cc936583490af76c36e0a25546329b2b9921",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lambdalisue",
+        "repo": "vim-guise",
+        "type": "github"
+      }
+    },
+    "witt-neovim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1727913229,
+        "narHash": "sha256-mpLG/6n42CzU428ali2rQ6rZBf/NvVjFF0r/Skda/2w=",
+        "owner": "typed-rocks",
+        "repo": "witt-neovim",
+        "rev": "4fa39ed4753c8576d6a69bde787d9575ce14daef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "typed-rocks",
+        "repo": "witt-neovim",
         "type": "github"
       }
     }

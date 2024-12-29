@@ -14,6 +14,40 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
+
+    # vendored
+    coq-lsp.url = "github:tomtomjhj/coq-lsp.nvim";
+    coq-lsp.flake = false;
+
+    coqtail.url = "github:whonore/Coqtail";
+    coqtail.flake = false;
+
+    oatmeal.url = "github:dustinblackman/oatmeal.nvim";
+    oatmeal.flake = false;
+
+    octo-nvim.url = "github:pwntester/octo.nvim";
+    octo-nvim.flake = false;
+
+    oil-git-status.url = "github:refractalize/oil-git-status.nvim";
+    oil-git-status.flake = false;
+
+    org-roam-nvim.url = "github:chipsenkbeil/org-roam.nvim";
+    org-roam-nvim.flake = false;
+
+    orgmode.url = "github:nvim-orgmode/orgmode";
+    orgmode.flake = false;
+
+    schemastore-nvim.url = "github:b0o/SchemaStore.nvim";
+    schemastore-nvim.flake = false;
+
+    tabscope-nvim.url = "github:backdround/tabscope.nvim";
+    tabscope-nvim.flake = false;
+
+    vim-guise.url = "github:lambdalisue/vim-guise";
+    vim-guise.flake = false;
+
+    witt-neovim.url = "github:typed-rocks/witt-neovim";
+    witt-neovim.flake = false;
   };
 
   outputs =
@@ -44,9 +78,9 @@
             # You can use `extraSpecialArgs` to pass additional arguments to your module files
             # idk how to use this
             extraSpecialArgs = {
+              inherit inputs;
               # inherit neovim-nightly-overlay;
               inherit system;
-              # inherit (inputs) foo;
             };
           };
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
