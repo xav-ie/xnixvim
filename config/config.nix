@@ -1,7 +1,7 @@
 {
   pkgs,
-  neovim-nightly-overlay,
-  system,
+  # neovim-nightly-overlay,
+  # system,
   ...
 }:
 {
@@ -52,7 +52,14 @@
       };
     };
 
-    package = neovim-nightly-overlay.packages."${system}".default;
+    # Temporarily disable neovim-nightly-overlay because it is causing these
+    # plugins to misbehave:
+    # - oil - broken from lualine
+    # - lualine - breaking oil buffers
+    # - telescope - search not populating
+    # - gitsigns - always causes exit 1 for nvim
+    # - vim-matchup? - buffers not updating properly
+    # package = neovim-nightly-overlay.packages."${system}".default;
 
     extraPackages = with pkgs; [
       coq
@@ -93,7 +100,8 @@
     # THERE IS NO WAY TO SET VISUAL LINE BREAK WIDTH?!?
     # https://www.reddit.com/r/neovim/comments/1anwa1y/nondestructively_set_line_wrap_width/
     opts = {
-      cmdheight = 0;
+      cmdheight = 1;
+      showmode = false;
       expandtab = true;
       guifont = "Maple Mono NF:h14";
       linebreak = true; # visually wrap lines by word, not char
@@ -105,13 +113,13 @@
       smartindent = true;
       softtabstop = 2;
       # spell = true;
-      # Not currently working. 
+      # Not currently working.
       # TODO: See other configurations on GitHub.
       spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
       spelllang = "en_us";
       tabstop = 2;
-      # corrects command auto-complete to first show the completion list, then further tabs 
-      # will cause complete auto-complete 
+      # corrects command auto-complete to first show the completion list, then further tabs
+      # will cause complete auto-complete
       wildmode = "list,full";
     };
   };
