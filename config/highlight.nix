@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   config = {
     # TODO: clean this up

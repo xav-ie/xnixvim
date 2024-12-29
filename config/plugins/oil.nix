@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # easily browse directories
   # https://github.com/stevearc/oil.nvim/

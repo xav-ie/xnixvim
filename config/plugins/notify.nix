@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # pretty notifications
   # https://github.com/rcarriga/nvim-notify

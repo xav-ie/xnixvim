@@ -2,7 +2,7 @@
 let
   octo-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "octo.nvim";
-    src = inputs.octo-nvim.src;
+    inherit (inputs.octo-nvim) src;
   };
 in
 {
