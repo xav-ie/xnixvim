@@ -81,6 +81,10 @@
       # https://nix-community.github.io/nixvim/plugins/vim-surround
       vim-surround.enable = true;
 
+      # https://github.com/HiPhish/rainbow-delimiters.nvim
+      # https://nix-community.github.io/nixvim/plugins/rainbow-delimiters
+      rainbow-delimiters.enable = true;
+
       # todo comment highlighting
       # https://github.com/folke/todo-comments.nvim/
       # https://nix-community.github.io/nixvim/plugins/todo-comments
