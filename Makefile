@@ -1,6 +1,9 @@
+# dynamically resolve nom
+nom := $(shell command -v nom || echo 'nix shell nixpkgs#nix-output-monitor --command nom')
+
 .PHONY: build
 build:
-	nix run nixpkgs#nix-output-monitor -- build --no-write-lock-file
+	$(nom) build --no-write-lock-file
 
 .PHONY: check
 check:
