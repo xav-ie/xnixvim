@@ -28,6 +28,7 @@
     ./ollama.nix
     # ./orgmode.nix
     # ./org-roam-nvim.nix # buggy as hell
+    ./render-markdown.nix
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
