@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   # https://github.com/stevearc/conform.nvim
   # https://nix-community.github.io/nixvim/plugins/conform-nvim
@@ -18,8 +18,15 @@
               # choose the first formatter that works, not all
               stop_after_first = true;
             };
+            shellFormat = [
+              "shellcheck"
+              "shellharden"
+              "shfmt"
+            ];
           in
           {
+            bash = shellFormat;
+            sh = shellFormat;
             lua = [ "stylua" ];
             astro = prettierFormat;
             html = prettierFormat;
@@ -35,7 +42,11 @@
             #"*" = [ "codespell" ];
             # Use the "_" file-type to run formatters on file-types that don't
             # have other formatters configured.
-            "_" = [ "trim_whitespace" ];
+            "_" = [
+              "squeeze_blanks"
+              "trim_whitespace"
+              "trim_newlines"
+            ];
           };
         format_on_save.__raw = # lua
           ''
@@ -47,6 +58,12 @@
             end
           '';
         notify_on_error = true;
+        formatters = {
+          shellcheck.command = lib.getExe pkgs.shellcheck;
+          shfmt.command = lib.getExe pkgs.shfmt;
+          shellharden.command = lib.getExe pkgs.shellharden;
+          squeeze_blanks.command = lib.getExe' pkgs.coreutils "cat";
+        };
       };
     };
 
