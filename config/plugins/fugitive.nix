@@ -3,8 +3,10 @@ _: {
     extraConfigLua = # lua
       ''
         vim.keymap.set('n', '<leader>g', function()
-          if vim.fn.exists(':Git') > 0 then -- Ensure :Git command is available
-            vim.cmd('Git')                  -- Call :Git command
+          -- Ensure :Git command is available
+          if vim.fn.exists(':Git') > 0 then 
+            -- Call :Git command
+            vim.cmd('Git | only')                  
           else
             vim.notify('vim-fugitive is not loaded', vim.log.levels.ERROR)
           end
