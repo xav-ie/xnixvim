@@ -11,7 +11,7 @@ check:
 
 .PHONY: format
 format:
-	nix fmt
+	nix fmt --no-write-lock-file
 
 .PHONY: update
 update:
