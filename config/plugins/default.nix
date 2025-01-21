@@ -16,6 +16,7 @@
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
+    ./minuet-ai-nvim.nix
     ./noice.nix
     ./notify.nix
     ./nvim-colorizer.nix
@@ -36,7 +37,8 @@
     ./vim-matchup.nix
     ./which-key
     ./witt-neovim.nix
-  ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
+  ];
+  # ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 
   config = {
     plugins = {
