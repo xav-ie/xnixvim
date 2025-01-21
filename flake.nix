@@ -14,6 +14,8 @@
     coq-lsp.url = "github:tomtomjhj/coq-lsp.nvim";
     coqtail.flake = false;
     coqtail.url = "github:whonore/Coqtail";
+    minuet-ai-nvim.flake = false;
+    minuet-ai-nvim.url = "github:milanglacier/minuet-ai.nvim";
     oatmeal.flake = false;
     oatmeal.url = "github:dustinblackman/oatmeal.nvim";
     octo-nvim.flake = false;

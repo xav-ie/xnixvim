@@ -87,7 +87,7 @@
     },
     "flake-parts_2": {
       "inputs": {
-        "nixpkgs-lib": "nixpkgs-lib"
+        "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
         "lastModified": 1736143030,
@@ -218,6 +218,22 @@
         "type": "github"
       }
     },
+    "minuet-ai-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1737406238,
+        "narHash": "sha256-amgZiaQZlY9E5jxYr+QP8S1kUhc+hgNEnbYDm8yfzsg=",
+        "owner": "milanglacier",
+        "repo": "minuet-ai.nvim",
+        "rev": "72a67c514a66f6b8a692d7f16a64d42c86d8312b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "milanglacier",
+        "repo": "minuet-ai.nvim",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -267,6 +283,18 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/e9b51731911566bbf7e4895475a87fe06961de0b.tar.gz"
       }
     },
+    "nixpkgs-lib_2": {
+      "locked": {
+        "lastModified": 1735774519,
+        "narHash": "sha256-CewEm1o2eVAnoqb6Ml+Qi9Gg/EfNAxbRx1lANGVyoLI=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/e9b51731911566bbf7e4895475a87fe06961de0b.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/e9b51731911566bbf7e4895475a87fe06961de0b.tar.gz"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1736701207,
@@ -284,6 +312,22 @@
       }
     },
     "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1736701207,
+        "narHash": "sha256-jG/+MvjVY7SlTakzZ2fJ5dC3V1PrKKrUEOEE30jrOKA=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ed4a395ea001367c1f13d34b1e01aa10290f67d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1736701207,
         "narHash": "sha256-jG/+MvjVY7SlTakzZ2fJ5dC3V1PrKKrUEOEE30jrOKA=",
@@ -433,6 +477,7 @@
         "coq-lsp": "coq-lsp",
         "coqtail": "coqtail",
         "flake-parts": "flake-parts",
+        "minuet-ai-nvim": "minuet-ai-nvim",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "oatmeal": "oatmeal",
@@ -530,7 +575,7 @@
     },
     "treefmt-nix_2": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1736154270,
