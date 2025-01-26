@@ -3,16 +3,18 @@
   imports = [
     ./bufferline.nix
     ./cmp.nix
-    ./coq
+    # ./coq
     ./conform-nvim.nix
     ./flash.nix
 
-    ./firenvim.nix
+    # ./firenvim.nix
     ./fugitive.nix
     ./gitsigns.nix
     ./lsp
     ./lspkind.nix
     ./lsp-lines.nix
+    # TODO: optimize
+    # adds 50ms to startup!
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
@@ -22,11 +24,11 @@
     ./nvim-colorizer.nix
     # ./nvim-lightbulb.nix
     ./nvim-scrollview.nix
-    ./oatmeal.nix
+    # ./oatmeal.nix
     # ./octo-nvim.nix
     ./oil-git-status.nix
     ./oil.nix
-    ./ollama.nix
+    # ./ollama.nix
     # ./orgmode.nix
     # ./org-roam-nvim.nix # buggy as hell
     ./render-markdown.nix
@@ -42,6 +44,8 @@
 
   config = {
     plugins = {
+      lz-n.enable = true;
+
       # smart comment/un-comment
       # https://github.com/numtostr/comment.nvim/
       # https://nix-community.github.io/nixvim/plugins/comment

@@ -6,6 +6,7 @@
     # git indicators in the left gutter
     plugins.gitsigns = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       settings = {
         current_line_blame = true;
         current_line_blame_opts = {

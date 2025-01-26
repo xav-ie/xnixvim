@@ -20,9 +20,11 @@
             { inherit key mode; } // (if builtins.isString action then { inherit action; } else action)
           );
         nm = modeKeys [ "n" ];
-        telescopeSymbolsBinding = keyset: ''
-          <cmd>lua require("telescope.builtin").symbols { sources = { '${keyset}' } } <CR>
-        '';
+        telescopeSymbolsBinding =
+          keyset: # lua
+          ''
+            <cmd>lua require("telescope.builtin").symbols { sources = { '${keyset}' } }<CR>
+          '';
       in
       helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
         # TODO: somehow prefix the keymap description properly

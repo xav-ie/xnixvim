@@ -6,7 +6,7 @@ let
     dependencies = with pkgs.vimPlugins; [
       # TODO: add dependencies if you use the cmp
       # or blink extensions only
-      # nvim-cmp
+      nvim-cmp
       nvim-treesitter
       plenary-nvim
     ];
@@ -31,23 +31,27 @@ in
     extraConfigLua = # lua
       ''
         require'minuet'.setup {
-          virtualtext = {
+          -- virtualtext = {
+          --   auto_trigger_ft = { '*' },
+          --   keymap = {
+          --     accept = '<Tab>',
+          --     accept_line = '<A-a>',
+          --     --  TODO: better bindings
+          --     prev = '<C-Left>',
+          --     next = '<C-Right>',
+          --     dismiss = '<A-e>',
+          --   },
+          -- },
+          cmp = {
             auto_trigger_ft = { '*' },
-            keymap = {
-              accept = '<Tab>',
-              accept_line = '<A-a>',
-              --  TODO: better bindings
-              prev = '<C-Left>',
-              next = '<C-Right>',
-              dismiss = '<A-e>',
-            },
+            enable_auto_complete = true,
           },
           provider = 'openai_fim_compatible',
           provider_options = {
             openai_fim_compatible = {
-              model = 'deepseek-chat',
-              end_point = 'https://api.deepseek.com/beta/completions',
               api_key = 'DEEPSEEK_API_KEY',
+              end_point = 'https://api.deepseek.com/beta/completions',
+              model = 'deepseek-chat',
               name = 'Deepseek',
               stream = true,
               optional = {
@@ -55,7 +59,29 @@ in
                 stop = nil,
                 max_tokens = nil,
               },
-            }
+            },
+            -- openai_fim_compatible = {
+            --   api_key = 'TERM',
+            --   end_point = 'http://localhost:11434/v1/completions',
+            --   model = 'qwen2.5-coder:0.5b',
+            --   name = 'Ollama',
+            --   stream = true,
+            --   optional = {
+            --     stop = nil,
+            --     max_tokens = nil,
+            --   },
+            -- },
+            -- openai_compatible = {
+            --   api_key = 'FIREWORKS_API_KEY',
+            --   end_point = 'https://api.fireworks.ai/inference/v1/chat/completions',
+            --   model = 'accounts/fireworks/models/llama-v3p3-70b-instruct',
+            --   name = 'Fireworks',
+            --   optional = {
+            --     max_tokens = 256,
+            --     top_p = 0.9,
+            --   },
+            -- },
+
           },
         }
       '';
