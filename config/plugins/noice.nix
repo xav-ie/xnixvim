@@ -1,4 +1,5 @@
-_: {
+{ config, ... }:
+{
   # replace nvim ui with nicer one
   # https://github.com/folke/noice.nvim
   # https://nix-community.github.io/nixvim/plugins/noice
@@ -6,6 +7,7 @@ _: {
     plugins.noice = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         messages = {
           view = "mini"; # too many info notifications...very annoying!

@@ -1,4 +1,9 @@
-{ helpers, lib, ... }:
+{
+  config,
+  helpers,
+  lib,
+  ...
+}:
 {
   # https://github.com/lewis6991/gitsigns.nvim/
   # https://nix-community.github.io/nixvim/plugins/gitsigns
@@ -7,6 +12,7 @@
     plugins.gitsigns = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         current_line_blame = true;
         current_line_blame_opts = {
