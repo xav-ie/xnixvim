@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   imports = [
     ./bufferline.nix
@@ -42,9 +47,15 @@
   ];
   # ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 
+  # Global lazyLoad on/off
+  options.lazyLoad.enable = lib.mkEnableOption "lazyLoad";
+  # currently, makes negligible difference in start-up time with the byte
+  # compilation on. It even worsens start-up with byte compilation off.
+  config.lazyLoad.enable = false;
+
   config = {
     plugins = {
-      lz-n.enable = true;
+      lz-n.enable = config.lazyLoad.enable;
 
       # smart comment/un-comment
       # https://github.com/numtostr/comment.nvim/

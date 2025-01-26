@@ -1,4 +1,5 @@
-_: {
+{ config, ... }:
+{
   # better diagnostics UI
   # https://git.sr.ht/~whynothugo/lsp_lines.nvim
   # https://nix-community.github.io/nixvim/plugins/lsp-lines
@@ -6,6 +7,7 @@ _: {
     plugins.lsp-lines = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       # currentLine = true;
     };
   };

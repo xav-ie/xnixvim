@@ -1,4 +1,5 @@
-_: {
+{ config, ... }:
+{
   # colors in Neovim
   # https://github.com/norcalli/nvim-colorizer.lua
   # https://nix-community.github.io/nixvim/plugins/nvim-colorizer
@@ -6,6 +7,7 @@ _: {
     plugins.colorizer = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         user_default_options = {
           RGB = true;

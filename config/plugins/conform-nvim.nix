@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # https://github.com/stevearc/conform.nvim
   # https://nix-community.github.io/nixvim/plugins/conform-nvim
@@ -7,6 +12,7 @@
     plugins.conform-nvim = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       # Map of file-type to formatters
       settings = {
         formatters_by_ft =

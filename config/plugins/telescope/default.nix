@@ -1,4 +1,9 @@
-{ lib, helpers, ... }:
+{
+  config,
+  helpers,
+  lib,
+  ...
+}:
 {
   imports = [ ./telescope-symbols-nvim.nix ];
 
@@ -14,6 +19,7 @@
       plugins.telescope = {
         enable = true;
         lazyLoad.settings.cmd = "Telescope";
+        lazyLoad.enable = config.lazyLoad.enable;
         settings = {
           defaults = {
             file_ignore_patterns = [

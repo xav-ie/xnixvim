@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   # beautiful, wonderful, good-enough syntax highlighting/AST parsing
   # https://github.com/nvim-treesitter/nvim-treesitter/
@@ -8,6 +8,7 @@
     plugins.treesitter = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       # TODO: figure out how to make this not open files pre-folded
       # fold based on AST
       # folding = true;

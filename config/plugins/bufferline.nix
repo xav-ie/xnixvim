@@ -1,4 +1,5 @@
-_: {
+{ config, ... }:
+{
   config = {
     # TODO: consider barbar.enable instead
     # https://github.com/akinsho/bufferline.nvim
@@ -7,6 +8,7 @@ _: {
     plugins.bufferline = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         options = {
           separator_style = "thin";

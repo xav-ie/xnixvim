@@ -1,4 +1,5 @@
-_: {
+{ config, ... }:
+{
   config = {
     # completions
     # https://github.com/hrsh7th/nvim-cmp
@@ -6,6 +7,7 @@ _: {
     plugins.cmp = {
       enable = true;
       lazyLoad.settings.event = "InsertEnter";
+      lazyLoad.enable = config.lazyLoad.enable;
       # only works when sources is not set with __raw
       autoEnableSources = true;
       settings = {
