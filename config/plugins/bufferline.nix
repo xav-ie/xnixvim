@@ -6,6 +6,7 @@ _: {
     # tabs
     plugins.bufferline = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       settings = {
         options = {
           separator_style = "thin";

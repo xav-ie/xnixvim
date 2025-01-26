@@ -5,12 +5,14 @@ _: {
     # https://nix-community.github.io/nixvim/plugins/cmp
     plugins.cmp = {
       enable = true;
+      lazyLoad.settings.event = "InsertEnter";
       # only works when sources is not set with __raw
       autoEnableSources = true;
       settings = {
         sources = [
           # TODO: how to dynamically add sources?
           { name = "nvim_lsp"; }
+          { name = "minuet"; }
           # { name = "codeium"; }
           { name = "luasnip"; }
           { name = "path"; }
@@ -23,13 +25,22 @@ _: {
           # { name = "calc"; }
           # TODO: {name = "neorg";}
         ];
+        # wait 250ms before trying to reach out to minuet
+        performance.fetching_timeout = 50;
         mapping = {
           "<C-u>" = "cmp.mapping.scroll_docs(-3)";
           "<C-d>" = "cmp.mapping.scroll_docs(3)";
           "<C-Space>" = "cmp.mapping.complete()";
           "<tab>" = "cmp.mapping.close()";
-          "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
-          "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
+          # TODO: <c-n> and <c-p> seem to be overloaded and
+          # do not always do the right thing
+
+          # "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
+          # "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
+          "<c-n>" = "cmp.mapping.select_next_item({})";
+          "<c-.>" = "cmp.mapping.select_next_item({})";
+          "<c-p>" = "cmp.mapping.select_prev_item({})";
+          "<c-,>" = "cmp.mapping.select_prev_item({})";
           "<CR>" = "cmp.mapping.confirm({ select = true })";
         };
         snippet.expand = # lua

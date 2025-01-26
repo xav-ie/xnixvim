@@ -7,6 +7,7 @@
     # AST syntax highlighting
     plugins.treesitter = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       # TODO: figure out how to make this not open files pre-folded
       # fold based on AST
       # folding = true;

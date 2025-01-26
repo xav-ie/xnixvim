@@ -4,6 +4,7 @@ _: {
     # https://github.com/MeanderingProgrammer/render-markdown.nvim
     plugins.render-markdown = {
       enable = true;
+      lazyLoad.settings.ft = "markdown";
       settings = {
         sign.enabled = false;
         heading.border = true;

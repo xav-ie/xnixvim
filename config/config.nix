@@ -122,5 +122,26 @@
       # will cause complete auto-complete
       wildmode = "list,full";
     };
+
+    performance = {
+      byteCompileLua = {
+        enable = true;
+        configs = true;
+        initLua = true;
+        nvimRuntime = true;
+        plugins = true;
+      };
+      combinePlugins.enable = true;
+      combinePlugins.standalonePlugins = [
+        "firenvim"
+        "conform.nvim"
+        "oil.nvim"
+        "nvim-treesitter"
+        "lualine.nvim"
+        # TODO: move out somehow
+        "telescope.nvim"
+        "telescope-symbols.nvim"
+      ];
+    };
   };
 }

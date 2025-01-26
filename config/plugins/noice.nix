@@ -5,6 +5,7 @@ _: {
   config = {
     plugins.noice = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       settings = {
         messages = {
           view = "mini"; # too many info notifications...very annoying!

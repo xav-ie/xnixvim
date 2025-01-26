@@ -5,6 +5,7 @@ _: {
   config = {
     plugins.colorizer = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       settings = {
         user_default_options = {
           RGB = true;
