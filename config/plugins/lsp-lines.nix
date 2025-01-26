@@ -5,6 +5,7 @@ _: {
   config = {
     plugins.lsp-lines = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       # currentLine = true;
     };
   };

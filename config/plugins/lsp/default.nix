@@ -17,6 +17,8 @@
 
     plugins.lsp = {
       enable = true;
+      # TODO: Is this good idea?
+      # lazyLoad.settings.event = "BufEnter";
       keymaps = {
         silent = true;
         diagnostic = {

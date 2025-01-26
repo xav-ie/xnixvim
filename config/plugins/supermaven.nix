@@ -7,7 +7,7 @@
     # TODO: should I register this as a cmp source?
     extraConfigLua = # lua
       ''
-        require("supermaven-nvim").setup({})
+        require("supermaven-nvim").setup()
       '';
     extraPlugins = [ pkgs.vimPlugins.supermaven-nvim ];
   };

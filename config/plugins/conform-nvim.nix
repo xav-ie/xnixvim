@@ -6,6 +6,7 @@
     # auto-formatting
     plugins.conform-nvim = {
       enable = true;
+      lazyLoad.settings.event = "BufEnter";
       # Map of file-type to formatters
       settings = {
         formatters_by_ft =
@@ -54,7 +55,7 @@
               if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
                 return
               end
-              return { timeout_ms = 500, lsp_format = "fallback" }
+              return { timeout_ms = 1000, lsp_format = "fallback" }
             end
           '';
         notify_on_error = true;

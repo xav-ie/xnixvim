@@ -13,6 +13,7 @@
     {
       plugins.telescope = {
         enable = true;
+        lazyLoad.settings.cmd = "Telescope";
         settings = {
           defaults = {
             file_ignore_patterns = [
