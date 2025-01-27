@@ -16,6 +16,8 @@ _: {
                 end
             })
             -- I also want paste synchronized, too, but Zellij is preventing this >:(
+            -- https://github.com/zellij-org/zellij/issues/2647
+            -- https://github.com/zellij-org/zellij/issues/3135
 
             -- Fix copy/paste for Neovide
             -- https://neovide.dev/faq.html?highlight=clipboard#how-can-i-use-cmd-ccmd-v-to-copy-and-paste
@@ -54,25 +56,6 @@ _: {
             vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', {noremap = true, silent=true})
             vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', {noremap = true, silent=true})
             vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', {noremap = true, silent=true})
-          '';
-
-        # TODO: make better maps
-        caseChangeFunctions = # lua
-          ''
-            -- Pascal Case, also highlights the cased words for easy lower-casing! :)
-            vim.api.nvim_set_keymap('v', 'gp', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>]], { noremap = true, silent = true })
-            -- Title Case
-            vim.api.nvim_set_keymap('v', 'gt', [[:<C-u>'<,'>s/\%V\v\w+/\u\L&/g<CR>:<C-u>silent! '<,'>s/\%V\<\(A\|An\|The\|And\|But\|Or\|Nor\|So\|Yet\|At\|By\|In\|Of\|On\|To\|Up\|For\|About\|Above\|Across\|After\|Against\|Along\|Among\|Around\|Before\|Behind\|Below\|Beneath\|Beside\|Between\|Beyond\|Down\|During\|Except\|From\|Inside\|Into\|Like\|Near\|Off\|Onto\|Out\|Outside\|Over\|Past\|Since\|Through\|Throughout\|Under\|Underneath\|Until\|With\|Within\|Without\|Is\|Be\|Am\|Are\|Was\|Were\|Has\|Have\|Had\)\>/\L&/g<CR>]], { noremap = true, silent = true })
-            -- Sentence case
-            vim.api.nvim_set_keymap('v', 'gs', [[:<C-u>try | '<,'>s/\%V\(\(^\|[.!?]\s*\)\)\zs\w/\u&/g | catch | endtry<CR>:<C-u>'<,'>normal! _vgU<CR>]], { noremap = true, silent = true })
-            -- Stolen from nekowinston
-            vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
-              callback = function(data)
-                local msg = data.event == "RecordingEnter" and "Recording macro..." or "Macro recorded"
-                vim.notify(msg, vim.log.levels.INFO, { title = "Macro" })
-              end,
-              desc = "Notify when recording macro",
-            })
           '';
 
         # better nu support in nvim
@@ -131,7 +114,8 @@ _: {
           ''
             local function CopyToClipboard(text)
               vim.fn.setreg('+', text) -- Copy to the system clipboard register
-              vim.notify('Copied to clipboard: ' .. text, vim.log.levels.INFO, { title = "Clipboard" })
+              vim.notify('Copied to clipboard: ' .. text,
+                vim.log.levels.INFO, { title = "Clipboard" })
             end
 
             function GetAbsolutePath()
@@ -182,7 +166,6 @@ _: {
       # lua
       ''
         ${clipBoardConfig}
-        ${caseChangeFunctions}
         ${nuSupport}
         ${copyHelpers}
         ${quickfixToggle}
