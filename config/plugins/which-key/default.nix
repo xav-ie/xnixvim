@@ -14,6 +14,7 @@ _: {
         }
 
         wk.add {
+          { "<leader>c", group = "[c]opy", icon = "", },
           { "<leader>f", group = "[f]ind", icon = "", },
           { "<leader>fy", group = "s[y]mbol", icon = "", },
           { "<leader>h", group = "[h]unk", icon = "", },
