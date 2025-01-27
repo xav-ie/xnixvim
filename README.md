@@ -2,6 +2,9 @@
 
 My nixvim (nixified neovim) config!
 
+https://github.com/user-attachments/assets/039ed3bd-b285-4b25-8923-aafa65158e3a
+
+
 Nixvim is an amazing project that brings nix to neovim. You can find out more on the [nixvim repository](https://github.com/nix-community/nixvim). It makes running neovim with your complete config on alien systems easy, consistent, and fast! Try this command to run _my_ neovim configuration:
 
 ```sh
