@@ -85,6 +85,7 @@
               # I could not find formatters for these:
               "Makefile"
               ".git-blame-ignore-revs"
+              "welcome.tape"
             ];
           };
 
