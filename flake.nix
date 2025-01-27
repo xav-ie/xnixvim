@@ -44,7 +44,12 @@
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       perSystem =
-        { pkgs, system, ... }:
+        {
+          lib,
+          pkgs,
+          system,
+          ...
+        }:
         let
           nixvimLib = inputs.nixvim.lib.${system};
           nixvim' = inputs.nixvim.legacyPackages.${system};
@@ -86,6 +91,20 @@
           packages = {
             # Lets you run `nix run .` to start nixvim
             default = nvim;
+
+            # depends on host-system chromium and fonts :(
+            # TODO: use snowfall vhs with mac bundled chromium
+            build-demo =
+              let
+                videoName = "welcome.mp4";
+              in
+              pkgs.writeShellScriptBin "build-demo" ''
+                ${lib.getExe pkgs.vhs} ./welcome.tape -o ${videoName}
+                ${lib.getExe pkgs.ffmpeg} -i ${videoName} \
+                -vf "unsharp=5:5:0.8:5:5:0.8, eq=saturation=1.2" -vcodec libx264 \
+                -crf 28 -an -preset veryslow -y output.mp4
+                mv output.mp4 ${videoName}
+              '';
           };
         };
     };
