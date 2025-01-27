@@ -127,12 +127,43 @@ _: {
             })
           '';
 
+        copyHelpers = # lua
+          ''
+            local function CopyToClipboard(text)
+              vim.fn.setreg('+', text) -- Copy to the system clipboard register
+              vim.notify('Copied to clipboard: ' .. text, vim.log.levels.INFO, { title = "Clipboard" })
+            end
+
+            function GetAbsolutePath()
+              return vim.fn.expand('%:p')
+            end
+            function GetPath()
+              return vim.fn.expand('%:t')
+            end
+            function GetRelativePath()
+              return vim.fn.fnamemodify(vim.fn.expand('%'), ':~:.')
+            end
+
+
+            vim.keymap.set('n', '<leader>ca', function()
+              CopyToClipboard(GetAbsolutePath())
+            end, { desc = "Copy [a]bsolute path" })
+
+            vim.keymap.set('n', '<leader>cp', function()
+              CopyToClipboard(GetPath())
+            end, { desc = "Copy [p]ath" })
+
+            vim.keymap.set('n', '<leader>cr', function()
+              CopyToClipboard(GetRelativePath())
+            end, { desc = "Copy [r]elative path" })
+          '';
       in
       # lua
       ''
         ${clipBoardConfig}
         ${caseChangeFunctions}
         ${nuSupport}
+        ${copyHelpers}
       '';
   };
 }
