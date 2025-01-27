@@ -2,7 +2,7 @@ Require nvim
 
 # TODO: make hermetic
 Set FontFamily "Maple Mono NF"
-Set FontSize 24
+Set FontSize 32
 Set Width 1920
 Set Height 1080
 Set Padding 0
