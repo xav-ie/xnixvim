@@ -141,6 +141,8 @@
         # TODO: move out somehow
         "telescope.nvim"
         "telescope-symbols.nvim"
+        # TODO: move out somehow
+        "friendly-snippets"
       ];
     };
   };
