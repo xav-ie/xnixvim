@@ -172,6 +172,19 @@ _: {
             vim.keymap.set('n', '<leader>tq',
               ToggleQuickfix, { desc = "Toggle [q]uickfix" })
           '';
+
+        # Stolen from nekowinston
+        recordingMacroNotification = # lua
+          ''
+            vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+              callback = function(data)
+                local msg = data.event == "RecordingEnter"
+                            and "Recording macro..." or "Macro recorded"
+                vim.notify(msg, vim.log.levels.INFO, { title = "Macro" })
+              end,
+              desc = "Notify when recording macro",
+            })
+          '';
       in
       # lua
       ''
@@ -179,6 +192,7 @@ _: {
         ${nuSupport}
         ${copyHelpers}
         ${quickfixToggle}
+        ${recordingMacroNotification}
       '';
   };
 }
