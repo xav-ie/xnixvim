@@ -4,14 +4,16 @@ _: {
       let
         clipBoardConfig = # lua
           ''
-            -- I always want yanks synchronized with system and "selection" (IDK what that is) clipboard
+            -- I always want yanks synchronized with system and "selection"
+            -- (IDK what that is) clipboard
             -- https://github.com/ch3n9w/dev/blob/319deb662ff50b58f5b643fbd9327ecb00919886/nvim/lua/autocmd.lua#L26-L34
             vim.api.nvim_create_autocmd('TextYankPost', {
                 callback = function()
                     vim.highlight.on_yank()
-                    local copy_to_unnamedplus = require('vim.ui.clipboard.osc52').copy('+')
+                    local clipboard = require('vim.ui.clipboard.osc52')
+                    local copy_to_unnamedplus = clipboard.copy('+')
                     copy_to_unnamedplus(vim.v.event.regcontents)
-                    local copy_to_unnamed     = require('vim.ui.clipboard.osc52').copy('*')
+                    local copy_to_unnamed     = clipboard.copy('*')
                     copy_to_unnamed(vim.v.event.regcontents)
                 end
             })
@@ -33,7 +35,10 @@ _: {
             else
               local function paste()
                -- this is inaccurate and not correct, but it is okay enough
-               return {vim.fn.split(vim.fn.getreg(""), '\n'), vim.fn.getregtype("")}
+               return {
+                  vim.fn.split(vim.fn.getreg(""), '\n'),
+                  vim.fn.getregtype("")
+                }
               end
 
               vim.g.clipboard = {
@@ -52,10 +57,14 @@ _: {
               }
             end
 
-            vim.api.nvim_set_keymap("",  '<D-v>', '+p<CR>', {noremap = true, silent=true})
-            vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', {noremap = true, silent=true})
-            vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', {noremap = true, silent=true})
-            vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', {noremap = true, silent=true})
+            vim.api.nvim_set_keymap("",  '<D-v>', '+p<CR>',
+              {noremap = true, silent=true})
+            vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+',
+              {noremap = true, silent=true})
+            vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+',
+              {noremap = true, silent=true})
+            vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+',
+              {noremap = true, silent=true})
           '';
 
         # better nu support in nvim
@@ -113,7 +122,8 @@ _: {
         copyHelpers = # lua
           ''
             local function CopyToClipboard(text)
-              vim.fn.setreg('+', text) -- Copy to the system clipboard register
+              -- Copy to the system clipboard register
+              vim.fn.setreg('+', text)
               vim.notify('Copied to clipboard: ' .. text,
                 vim.log.levels.INFO, { title = "Clipboard" })
             end
