@@ -21,14 +21,15 @@ Type "O" Sleep 500ms
 Hide Escape Sleep 500ms Type "O" Sleep 500ms Show
 Type "Hello, " Sleep 500ms
 Type "welcome to my Neovim configuration!" Sleep 500ms Enter
-Sleep 1s
+Sleep 2s
 Type "The main configuration starts in `flake.nix`, " Sleep 250ms
-Type "which just imports `config/default.nix`" Sleep 500ms
+Type "which just imports" Enter
+Type "`config/default.nix`." Sleep 500ms
 Escape Sleep 500ms
-Sleep 3s
-Type "h" Sleep 500ms
+Sleep 4s
+Type "hh" Sleep 500ms
 Hide Type "gf" Sleep 500ms Show
-Type "O# This file is `config/default.nix`" Sleep 500ms
+Type "O# This file is `config/default.nix`." Sleep 500ms
 Escape Sleep 500ms
 Sleep 2s
 Type "/imports" Sleep 500ms
