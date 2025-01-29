@@ -2,7 +2,7 @@
 
 My nixvim (nixified neovim) config!
 
-https://github.com/user-attachments/assets/061e0bca-fd07-4635-bb43-576c05efb9a4
+https://github.com/user-attachments/assets/d5d9ac79-b8a7-4f26-81d4-33ad33353205
 
 Nixvim is an amazing project that brings nix to neovim. It makes running neovim
 with your complete config on alien systems easy, consistent, and fast! You can
