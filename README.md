@@ -4,9 +4,9 @@ My nixvim (nixified neovim) config!
 
 https://github.com/user-attachments/assets/061e0bca-fd07-4635-bb43-576c05efb9a4
 
-Nixvim is an amazing project that brings nix to neovim. You can find out more
-on the [nixvim repository](https://github.com/nix-community/nixvim). It makes running neovim with your complete config
-on alien systems easy, consistent, and fast!
+Nixvim is an amazing project that brings nix to neovim. It makes running neovim
+with your complete config on alien systems easy, consistent, and fast! You can
+find out more on the [nixvim repository](https://github.com/nix-community/nixvim).
 
 Try this command to run _my_ neovim configuration:
 
