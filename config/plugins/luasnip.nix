@@ -143,6 +143,18 @@
           s("trigger", {
             t({"Wow! Text!", "And another line."})
           }),
+          s("ochore", {
+            t("chore("),
+            i(1),
+            t("): "),
+            i(2),
+            t("(DEL-"),
+            i(3),
+            t({")", "", "https://console.outsmartly.com/"}),
+            rep(1),
+            t("/features/"),
+            i(0),
+          }),
           s("trig", {
             t"text: ", i(1), t{"", "copy: "},
             d(2, function(args)
