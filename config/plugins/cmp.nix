@@ -36,6 +36,7 @@
         # wait 250ms before trying to reach out to minuet
         performance.fetching_timeout = 50;
         mapping = {
+          "<A-y>" = "require('minuet').make_cmp_map()";
           "<C-u>" = "cmp.mapping.scroll_docs(-3)";
           "<C-d>" = "cmp.mapping.scroll_docs(3)";
           "<C-Space>" = "cmp.mapping.complete()";
