@@ -1,5 +1,9 @@
 { config, ... }:
 {
+  # imports = [
+  #   ./cmp-luasnip-choice.nix
+  # ];
+
   config = {
     # completions
     # https://github.com/hrsh7th/nvim-cmp
@@ -17,6 +21,8 @@
           { name = "minuet"; }
           # { name = "codeium"; }
           { name = "luasnip"; }
+          # TODO: only add iff cmp-luasnip-choice enabled
+          # { name = "luasnip_choice"; }
           { name = "path"; }
           {
             name = "buffer";
