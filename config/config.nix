@@ -143,6 +143,7 @@
         "telescope-symbols.nvim"
         # TODO: move out somehow
         "friendly-snippets"
+        "luasnip"
       ];
     };
   };

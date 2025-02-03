@@ -24,9 +24,14 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
 - [x] Fast CI
 - [x] Screenshot
   - [ ] with CI
+- [x] snippets
+- [ ] write my own or find someone else's snippets for ts. specifically all the
+      map, reduce, forEach should have snippets
+  - [https://www.youtube.com/watch?v=Dn800rlPIho](https://www.youtube.com/watch?v=Dn800rlPIho)
+  - [L3MON4D3/LuaSnip#resources-for-new-users](https://github.com/L3MON4D3/LuaSnip#resources-for-new-users)
+  - [https://www.youtube.com/watch?v=FmHhonPjvvA](https://www.youtube.com/watch?v=FmHhonPjvvA)
 - [ ] separate theme out and share
 - [x] local completions
-- [ ] snippets
 - [ ] better large file support
 - [ ] proper spelling and dictionary support to add new words
 - [ ] org concealment
@@ -44,11 +49,6 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
   - [prescientmoon/everything-nix/home/features/neovim/default.nix](https://github.com/prescientmoon/everything-nix/blob/82fca70a6e882365a76e947cc0e01db07d6cc13c/home/features/neovim/default.nix)
   - [NickHu/nixvim-flake/config/default.nix](https://github.com/NickHu/nixvim-flake/blob/1f47b9cfb5d8e86a48cf8d64bfb3fd0389d14f75/config/default.nix)
   - [SchnozzleCat/Nix/home/neovim.nix](https://github.com/SchnozzleCat/Nix/blob/160e617a28ef25be2311445fc407ca54e53437a7/home/neovim.nix)
-- [ ] write my own or find someone else's snippets for ts. specifically all the
-      map, reduce, forEach should have snippets
-  - [https://www.youtube.com/watch?v=Dn800rlPIho](https://www.youtube.com/watch?v=Dn800rlPIho)
-  - [L3MON4D3/LuaSnip#resources-for-new-users](https://github.com/L3MON4D3/LuaSnip#resources-for-new-users)
-  - [https://www.youtube.com/watch?v=FmHhonPjvvA](https://www.youtube.com/watch?v=FmHhonPjvvA)
 - [ ] harpoon?
 - [ ] Find better manager
   - [mhinz/vim-startify](https://github.com/mhinz/vim-startify)
