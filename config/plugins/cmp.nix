@@ -46,8 +46,8 @@
 
           # "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
           # "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
-          "<c-n>" = "cmp.mapping.select_next_item({})";
-          "<c-.>" = "cmp.mapping.select_next_item({})";
+          # "<c-n>" = "cmp.mapping.select_next_item({})";
+          # "<c-.>" = "cmp.mapping.select_next_item({})";
           "<c-p>" = "cmp.mapping.select_prev_item({})";
           "<c-,>" = "cmp.mapping.select_prev_item({})";
           "<CR>" = "cmp.mapping.confirm({ select = true })";
