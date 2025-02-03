@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cmp-luasnip-choice": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1678136664,
+        "narHash": "sha256-/s1p/WLfrHZHX6fU1p2PUQ0GIocAB4mvhjZ0XUMzkaw=",
+        "owner": "L3MON4D3",
+        "repo": "cmp-luasnip-choice",
+        "rev": "4f49232e51c9df379b9daf43f25f7ee6320450f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "L3MON4D3",
+        "repo": "cmp-luasnip-choice",
+        "type": "github"
+      }
+    },
     "coq-lsp": {
       "flake": false,
       "locked": {
@@ -474,6 +490,7 @@
     },
     "root": {
       "inputs": {
+        "cmp-luasnip-choice": "cmp-luasnip-choice",
         "coq-lsp": "coq-lsp",
         "coqtail": "coqtail",
         "flake-parts": "flake-parts",

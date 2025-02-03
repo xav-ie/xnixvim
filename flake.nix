@@ -34,6 +34,8 @@
     vim-guise.url = "github:lambdalisue/vim-guise";
     witt-neovim.flake = false;
     witt-neovim.url = "github:typed-rocks/witt-neovim";
+    cmp-luasnip-choice.url = "github:L3MON4D3/cmp-luasnip-choice";
+    cmp-luasnip-choice.flake = false;
   };
 
   outputs =
