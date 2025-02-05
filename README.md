@@ -25,6 +25,8 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
 - [x] Screenshot
   - [ ] with CI
 - [x] snippets
+  - [x] basic setup
+  - [ ] get cmp_luasnip_choice working or checkout [pysan3/dotfiles/nvim/lua/plugins/70-LuaSnip.lua#L150](https://github.com/pysan3/dotfiles/blob/aff7fc11d3b70b31f4a7727830a07d23a4f37c50/nvim/lua/plugins/70-LuaSnip.lua#L150)
 - [ ] write my own or find someone else's snippets for ts. specifically all the
       map, reduce, forEach should have snippets
   - [ ] [TakeTuesday E03: Introduction to LuaSnip](https://www.youtube.com/watch?v=Dn800rlPIho)
@@ -51,7 +53,10 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
   - [ ] [prescientmoon/everything-nix/home/features/neovim/default.nix](https://github.com/prescientmoon/everything-nix/blob/82fca70a6e882365a76e947cc0e01db07d6cc13c/home/features/neovim/default.nix)
   - [ ] [NickHu/nixvim-flake/config/default.nix](https://github.com/NickHu/nixvim-flake/blob/1f47b9cfb5d8e86a48cf8d64bfb3fd0389d14f75/config/default.nix)
   - [ ] [SchnozzleCat/Nix/home/neovim.nix](https://github.com/SchnozzleCat/Nix/blob/160e617a28ef25be2311445fc407ca54e53437a7/home/neovim.nix)
-- [ ] harpoon?
+- [x] harpoon - seems not active mantained right now. I am watching some
+      important issues and waiting until they close to consider this
 - [ ] Find better manager, check out these:
   - [ ] [mhinz/vim-startify](https://github.com/mhinz/vim-startify)
   - [ ] [tpope/vim-obsession](https://github.com/tpope/vim-obsession)
+- [ ] set up [blink.cmp](https://cmp.saghen.dev/installation)
+- [ ] set up [toggleterm](https://github.com/akinsho/toggleterm.nvim/)
