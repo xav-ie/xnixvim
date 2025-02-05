@@ -163,6 +163,15 @@ in
               end
             '';
         };
+      })
+      ++ (modeKeys.t {
+        "<esc><esc>" = {
+          options = {
+            silent = true;
+            desc = "Enter normal mode";
+          };
+          action = "<c-\\><c-n>";
+        };
       });
   };
 }

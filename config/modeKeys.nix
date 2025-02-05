@@ -13,6 +13,7 @@ in
   vs = modeKeys [ "v" ];
   im = modeKeys [ "i" ];
   c = modeKeys [ "c" ];
+  t = modeKeys [ "t" ];
   nxo = modeKeys [
     "n"
     "x"
