@@ -113,6 +113,10 @@
       # https://nix-community.github.io/nixvim/plugins/trouble
       trouble.enable = true;
 
+      # https://github.com/windwp/nvim-ts-autotag/
+      # https://nix-community.github.io/nixvim/plugins/ts-autotag
+      ts-autotag.enable = true;
+
       # icons 🍥
       # https://github.com/nvim-tree/nvim-web-devicons/
       # https://nix-community.github.io/nixvim/plugins/web-devicons
