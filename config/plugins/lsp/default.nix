@@ -220,14 +220,21 @@
             # };
           };
         };
-        # NOTE: the global index does not update unless you build or enable the
-        #       experimental indexing feature
-        # https://github.com/swiftlang/sourcekit-lsp/blob/main/Documentation/Enable%20Experimental%20Background%20Indexing.md#behavior-without-background-indexing
-        #
-        # https://nix-community.github.io/nixvim/plugins/lsp/servers/sourcekit/index.html
-        sourcekit = {
+        # https://nix-community.github.io/nixvim/plugins/lsp/servers/shopify_theme_ls
+        shopify_theme_ls = {
           enable = true;
+          filetypes = [ "liquid" ];
+          # TODO: checkout
+          # https://github.com/tlegasse/kickstart.nvim/blob/d30ee6e30be0e82ece0f18164a91adb02356ef5f/lua/lsp-config.lua#L7
+          # and improve this awful code
+          rootDir.__raw = # lua
+            ''
+              vim.fn.getcwd()
+            '';
         };
+
+        # https://nix-community.github.io/nixvim/plugins/lsp/servers/sourcekit
+        sourcekit.enable = true;
         # You need to do this for every svelte project
         # `npm install --save-dev typescript-svelte-plugin`
         # Ajust tsconfig.json to include the plugin:

@@ -115,7 +115,10 @@
 
       # https://github.com/windwp/nvim-ts-autotag/
       # https://nix-community.github.io/nixvim/plugins/ts-autotag
-      ts-autotag.enable = true;
+      ts-autotag = {
+        enable = true;
+        settings.aliases.liquid = "html";
+      };
 
       # icons 🍥
       # https://github.com/nvim-tree/nvim-web-devicons/
