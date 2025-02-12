@@ -5,8 +5,10 @@ _: {
   config = {
     plugins.notify = {
       enable = true;
-      backgroundColour = "#00000000";
-      fps = 60;
+      settings = {
+        background_colour = "#00000000";
+        fps = 60;
+      };
     };
   };
 }
