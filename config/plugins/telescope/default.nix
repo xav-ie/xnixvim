@@ -1,4 +1,4 @@
-{ ... }:
+{ helpers, ... }:
 {
   # FZF client
   # https://github.com/BenjaminTalbi/my-nixos/blob/a9c5d8ad7680bbfd7a6854cf2420870f2038bb00/home/nixvim/telescope.nix
@@ -131,7 +131,8 @@
         manix.enable = true;
         # project management
         project = {
-          enable = true;
+          # breaks `nix flake check`
+          enable = helpers.enableExceptInTests;
           settings = {
             base_dirs = [
               "~/Projects"
