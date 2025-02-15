@@ -75,7 +75,6 @@
 
           # https://flake.parts/options/treefmt-nix.html#options
           treefmt = {
-            projectRootFile = "./flake.nix";
             programs = {
               deadnix.enable = true;
               nixfmt.enable = true;
