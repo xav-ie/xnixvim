@@ -13,16 +13,14 @@
       enable = true;
       settings = {
         defaults = {
+          # see :h telescope.defaults.file_ignore_patterns
+          # see https://www.lua.org/manual/5.1/manual.html#5.4.1 for pattern syntax
           file_ignore_patterns = [
-            "^.git/"
-            "^.mypy_cache/"
-            "^__pycache__/"
-            "%.ipynb"
-            "^node_modules/"
+            "%.generated%.d%.ts"
+            "%.lock"
+            "%.schema%.json"
             "^dist/"
-            "%.generated.%"
-            "*.lock"
-            "package-lock.json"
+            "package%-lock%.json"
           ];
           set_env.COLORTERM = "truecolor";
           mappings =
