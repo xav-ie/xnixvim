@@ -55,19 +55,19 @@
       ''
         local ls = require("luasnip")
 
-        vim.keymap.set({ "i", "s" }, "<C-.>", function() 
+        vim.keymap.set({ "i", "s" }, "<C-f>", function()
           if ls.expand_or_jumpable() then
             ls.expand_or_jump()
           end
         end, { silent = true })
 
-        vim.keymap.set({ "i", "s" }, "<C-,>", function() 
+        vim.keymap.set({ "i", "s" }, "<C-d>", function()
           if ls.jumpable(-1) then
             ls.jump(-1)
           end
         end, { silent = true })
 
-        vim.keymap.set({ "i", "s" }, "<C-n>", function() 
+        vim.keymap.set({ "i", "s" }, "<C-n>", function()
           if ls.choice_active() then
             ls.change_choice(1)
           end
@@ -110,7 +110,7 @@
             },
             fmt([[
                 > [!TIP]
-                > 
+                >
                 ]],
               {
               }
@@ -267,7 +267,7 @@
           -- `LS_SELECT_RAW` and how to combine it with yanked text and
           -- dynamically create node if it matches the pattern
           s("co", {
-            d(1, function(_, snip) 
+            d(1, function(_, snip)
               local empty_node = sn(nil, {})
               local ls_select_raw = snip.env.LS_SELECT_RAW or {}
               if type(ls_select_raw) == "string" then
