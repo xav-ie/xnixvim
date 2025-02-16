@@ -41,15 +41,8 @@
           "<C-d>" = "cmp.mapping.scroll_docs(3)";
           "<C-Space>" = "cmp.mapping.complete()";
           "<tab>" = "cmp.mapping.close()";
-          # TODO: <c-n> and <c-p> seem to be overloaded and
-          # do not always do the right thing
-
-          # "<c-n>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })";
-          # "<c-p>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert })";
           "<c-n>" = "cmp.mapping.select_next_item({})";
-          # "<c-.>" = "cmp.mapping.select_next_item({})";
           "<c-p>" = "cmp.mapping.select_prev_item({})";
-          # "<c-,>" = "cmp.mapping.select_prev_item({})";
           "<CR>" = "cmp.mapping.confirm({ select = true })";
         };
         snippet.expand = # lua
