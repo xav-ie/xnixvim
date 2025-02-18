@@ -97,9 +97,9 @@
         incremental_selection = {
           enable = true;
           keymaps = {
-            init_selection = "<C-space>";
+            init_selection = "<C-n>";
             node_decremental = "<bs>";
-            node_incremental = "<C-space>";
+            node_incremental = "<C-n>";
             # IDK what this does
             scope_incremental = "grc";
           };
