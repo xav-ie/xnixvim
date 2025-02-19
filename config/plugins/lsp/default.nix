@@ -133,7 +133,8 @@
         };
         # https://docs.deno.com/runtime/reference/lsp_integration/
         denols = {
-          enable = true;
+          # makes to many network requests when it should not
+          enable = false;
           rootDir = # lua
             ''
               require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
