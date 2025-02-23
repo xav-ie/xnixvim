@@ -53,7 +53,7 @@
             typescriptreact = prettierFormat;
             nix = [ "nixfmt" ];
             # Use the "*" file-type to run formatters on all file-types.
-            #"*" = [ "codespell" ];
+            "*" = [ "trim_whitespace" ];
             # Use the "_" file-type to run formatters on file-types that don't
             # have other formatters configured.
             "_" = [
