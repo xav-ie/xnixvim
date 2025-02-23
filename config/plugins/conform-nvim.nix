@@ -15,16 +15,23 @@
       lazyLoad.enable = config.lazyLoad.enable;
       # Map of file-type to formatters
       settings = {
+        formatters = {
+          prettier = {
+            command.__raw = ''
+              require("conform.util").find_executable({
+                -- Try to find in project
+                "node_modules/.bin/prettier",
+                -- Absolute as fallback
+                "${lib.getExe pkgs.nodePackages.prettier}", 
+              }, "prettier")
+            '';
+          };
+        };
         formatters_by_ft =
           let
-            prettierFormat = {
-              # prefer node_modules/.bin/prettier
-              __unkeyed-1 = "prettier";
-              # fallback to global prettier
-              __unkeyed-2 = "${pkgs.nodePackages.prettier}/bin/prettier";
-              # choose the first formatter that works, not all
-              stop_after_first = true;
-            };
+            prettierFormat = [
+              "prettier"
+            ];
             shellFormat = [
               "shellcheck"
               "shellharden"
