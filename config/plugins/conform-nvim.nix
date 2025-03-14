@@ -22,7 +22,7 @@
                 -- Try to find in project
                 "node_modules/.bin/prettier",
                 -- Absolute as fallback
-                "${lib.getExe pkgs.nodePackages.prettier}", 
+                "${lib.getExe pkgs.nodePackages.prettier}",
               }, "prettier")
             '';
             # Fixes issue of sub-git repos using greater git repo as root.
@@ -94,11 +94,11 @@
     extraConfigLua = # lua
       ''
         vim.api.nvim_create_user_command("ToggleFormat", function(args)
-          if args.bang then 
+          if args.bang then
             -- ToggleFormat! will toggle formatting just for this buffer
             vim.b.disable_autoformat = not vim.b.disable_autoformat
             vim.notify("Buffer formatting: " .. tostring(not vim.b.disable_autoformat), vim.log.levels.INFO)
-          else 
+          else
             vim.g.disable_autoformat = not vim.g.disable_autoformat
             vim.notify("Global formatting: " .. tostring(not vim.g.disable_autoformat), vim.log.levels.INFO)
           end
