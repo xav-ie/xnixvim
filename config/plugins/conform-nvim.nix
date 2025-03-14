@@ -25,6 +25,15 @@
                 "${lib.getExe pkgs.nodePackages.prettier}", 
               }, "prettier")
             '';
+            # Fixes issue of sub-git repos using greater git repo as root.
+            cwd.__raw = ''
+              require("conform.util").root_file({
+                ".prettierrc",
+                ".prettierrc.json",
+                "package.json",
+                ".git"
+              })
+            '';
           };
         };
         formatters_by_ft =
