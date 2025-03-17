@@ -266,12 +266,77 @@
           enable = true;
           # onAttach.function = # lua
           #   ''
-          #     if client.server_capabilities.inlayHintProvider then
-          #       vim.lsp.inlay_hint.enable(true)
-          #     end
+          #     vim.print(client.config.init_options)
           #   '';
           extraOptions = {
             single_file_support = false;
+            # Adds basic support for reading .vscode/settings.json. Does not account for project root.
+            # Should add project root support eventually or make separate `init_options` parser plugin
+            init_options.preferences.__raw = # lua
+              ''
+                (function()
+                    local settings_path = vim.fs.find('.vscode/settings.json', { upward = true })[1]
+                    if not settings_path then return nil end
+                    local file = io.open(settings_path, 'r')
+                    if not file then return nil end
+
+                    local content = file:read('*a')
+                    file:close()
+
+                    local ok, settings = pcall(vim.json.decode, content)
+                    if not ok then
+                        vim.notify('Failed to parse .vscode/settings.json: ' .. (settings or 'unknown error'), vim.log.levels.WARN)
+                        return nil
+                    end
+                    if not settings then return nil end
+
+                    -- Recursively build nested tables from dotted keys
+                    local function build_nested(tbl)
+                      local result = {}
+                      for key, value in pairs(tbl) do
+                        local parts = {}
+                        for part in key:gmatch('[^.]+') do
+                          table.insert(parts, part)
+                        end
+
+                        local current = result
+                        for i = 1, #parts - 1 do
+                          local part = parts[i]
+                          if not current[part] then
+                            current[part] = {}
+                          end
+                          current = current[part]
+                        end
+
+                        current[parts[#parts]] = value
+                      end
+                      return result
+                    end
+
+                    -- Transform the settings object
+                    local nested_settings = build_nested(settings)
+
+                    -- Extract the importModuleSpecifier preference
+                    if nested_settings.typescript and nested_settings.typescript.preferences then
+                      local preferences = nested_settings.typescript.preferences
+                      -- .vscode/settings json has proprietary config format
+                      -- that is not 100% LSP 1:1 compatible. So we must perform some
+                      -- transformations on the preferences to proper LSP settings
+                      -- https://github.com/microsoft/vscode/blob/da1f16ceaced7682eac0b6c8e3dac4dd0f8575a1/extensions/typescript-language-features/src/languageFeatures/fileConfigurationManager.ts#L187
+
+                      -- rename "importModuleSpecifier" to "importModuleSpecifierPreference"
+                      if preferences.importModuleSpecifier then
+                          preferences.importModuleSpecifierPreference = preferences.importModuleSpecifier
+                          preferences.importModuleSpecifier = nil
+                      end
+
+
+                      return preferences
+                    end
+
+                    return nil
+                end)()
+              '';
             settings =
               let
                 inlayHints = {
