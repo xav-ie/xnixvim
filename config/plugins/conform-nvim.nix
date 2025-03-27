@@ -48,19 +48,26 @@
             ];
           in
           {
-            bash = shellFormat;
-            sh = shellFormat;
-            lua = [ "stylua" ];
             astro = prettierFormat;
+            bash = shellFormat;
+            css = prettierFormat;
+            graphql = prettierFormat;
             html = prettierFormat;
-            markdown = prettierFormat;
             javascript = prettierFormat;
             javascriptreact = prettierFormat;
             json = prettierFormat;
             jsonc = prettierFormat;
+            less = prettierFormat;
+            lua = [ "stylua" ];
+            markdown = prettierFormat;
+            mdx = prettierFormat;
+            nix = [ "nixfmt" ];
+            scss = prettierFormat;
+            sh = shellFormat;
             typescript = prettierFormat;
             typescriptreact = prettierFormat;
-            nix = [ "nixfmt" ];
+            vue = prettierFormat;
+            yaml = prettierFormat;
             # Use the "*" file-type to run formatters on all file-types.
             "*" = [ "trim_whitespace" ];
             # Use the "_" file-type to run formatters on file-types that don't
