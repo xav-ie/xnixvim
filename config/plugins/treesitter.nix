@@ -62,7 +62,7 @@
         mermaid
         nickel
         nix
-        org
+        # org
         proto
         python
         regex
