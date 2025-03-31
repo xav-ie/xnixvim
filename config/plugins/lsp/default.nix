@@ -151,7 +151,14 @@
         # https://github.com/golang/tools/tree/master/gopls
         gopls.enable = true;
         # https://github.com/graphql/graphiql/tree/main/packages/graphql-language-service-cli#readme
-        graphql.enable = true;
+        # Must specify our own package:
+        # https://github.com/nix-community/nixvim/commit/e8025891b24036bcc76fd355a5edec9fbf2e359b
+        # https://github.com/NixOS/nixpkgs/pull/382557
+        # https://github.com/NixOS/nixpkgs/pull/384397
+        graphql = {
+          enable = true;
+          package = pkgs.graphql-language-service-cli;
+        };
         # https://github.com/hrsh7th/vscode-langservers-extracted
         jsonls = {
           enable = true;
