@@ -201,6 +201,9 @@
           enable = true;
           settings.formatting.command = [ "nixfmt-rfc-style" ];
         };
+        ruff = {
+          enable = true;
+        };
         # https://rust-analyzer.github.io/
         rust_analyzer = {
           enable = true;
