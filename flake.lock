@@ -102,6 +102,42 @@
         "type": "github"
       }
     },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_4"
+      },
+      "locked": {
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -194,6 +230,22 @@
       }
     },
     "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1743315132,
+        "narHash": "sha256-6hl6L/tRnwubHcA4pfUUtk542wn2Om+D4UnDhlDW9BE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "52faf482a3889b7619003c0daec593a1912fddc1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1743315132,
         "narHash": "sha256-6hl6L/tRnwubHcA4pfUUtk542wn2Om+D4UnDhlDW9BE=",
@@ -332,6 +384,29 @@
         "type": "github"
       }
     },
+    "rocq-master": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
+        "nixpkgs": [
+          "vscoq",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1739118541,
+        "narHash": "sha256-9/ECjP8BeyOWbJMsfULJhNNdORDHypS7Jcj+NuuxVOc=",
+        "owner": "coq",
+        "repo": "coq",
+        "rev": "9d13cf5137c82610893241ac3c5c756f01c2aaa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "coq",
+        "repo": "coq",
+        "rev": "9d13cf5137c82610893241ac3c5c756f01c2aaa1",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "cmp-luasnip-choice": "cmp-luasnip-choice",
@@ -351,6 +426,7 @@
         "tabscope-nvim": "tabscope-nvim",
         "treefmt-nix": "treefmt-nix",
         "vim-guise": "vim-guise",
+        "vscoq": "vscoq",
         "witt-neovim": "witt-neovim"
       }
     },
@@ -386,6 +462,36 @@
       }
     },
     "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_4": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -447,6 +553,26 @@
       "original": {
         "owner": "lambdalisue",
         "repo": "vim-guise",
+        "type": "github"
+      }
+    },
+    "vscoq": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_4",
+        "rocq-master": "rocq-master"
+      },
+      "locked": {
+        "lastModified": 1743070946,
+        "narHash": "sha256-pwSyJOHUTQxlpTcb3D0399cpKNX13ybm4bECyD5QBJs=",
+        "owner": "rocq-prover",
+        "repo": "vscoq",
+        "rev": "19417e202f2d6d8d0915e00b3b0bcb3fc5ec0a7b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rocq-prover",
+        "repo": "vscoq",
         "type": "github"
       }
     },
