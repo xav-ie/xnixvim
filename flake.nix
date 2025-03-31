@@ -7,6 +7,7 @@
     nixvim.url = "github:nix-community/nixvim";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     systems.url = "github:nix-systems/default";
+    vscoq.url = "github:rocq-prover/vscoq";
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # vendored

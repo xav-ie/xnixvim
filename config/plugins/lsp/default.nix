@@ -1,4 +1,13 @@
-{ helpers, pkgs, ... }:
+{
+  helpers,
+  pkgs,
+  inputs,
+  system,
+  ...
+}:
+let
+  rocq-lsp = inputs.vscoq.packages.${system}.default;
+in
 {
   imports = [ ./SchemaStore-nvim.nix ];
 
@@ -128,8 +137,7 @@
         # https://github.com/ejgallego/coq-lsp
         coq_lsp = {
           enable = true;
-          # not sure what the right default is?
-          package = pkgs.coqPackages.coq-lsp;
+          package = rocq-lsp;
         };
         # https://docs.deno.com/runtime/reference/lsp_integration/
         denols = {
