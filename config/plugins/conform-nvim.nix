@@ -11,6 +11,16 @@
     # auto-formatting
     plugins.conform-nvim = {
       enable = true;
+      # strange SSL error fetching...?
+      package = pkgs.vimPlugins.conform-nvim.overrideAttrs (_: {
+        src = pkgs.fetchFromGitHub {
+          owner = "stevearc";
+          repo = "conform.nvim";
+          rev = "9180320205d250429f0f80e073326c674e2a7149";
+          sha256 = "128dby40rlzm6sy9ga0xbb9534rla1nc8k4apjsb8kyir40bgbi7";
+          fetchSubmodules = true;
+        };
+      });
       lazyLoad.settings.event = "BufEnter";
       lazyLoad.enable = config.lazyLoad.enable;
       # Map of file-type to formatters
