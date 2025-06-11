@@ -85,26 +85,46 @@
         zig
       ];
 
-      settings = {
-        # auto install grammars on encounter
-        auto_install = true;
+      settings =
+        let
+          # fix large file crash
+          disable.__raw = ''
+            function(lang, buf)
+              local max_filesize = 100 * 1024 -- 100 KB
+              local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+              if ok and stats and stats.size > max_filesize then
+                return true
+              end
+            end
+          '';
+        in
+        {
+          # auto install grammars on encounter
+          auto_install = true;
 
-        ensure_installed = [ ];
-        # indent based on ast
-        indent.enable = true;
-        highlight.enable = true;
-        # this is SO useful
-        incremental_selection = {
-          enable = true;
-          keymaps = {
-            init_selection = "<C-n>";
-            node_decremental = "<bs>";
-            node_incremental = "<C-n>";
-            # IDK what this does
-            scope_incremental = "grc";
+          ensure_installed = [ ];
+          # indent based on ast
+          indent = {
+            enable = true;
+            inherit disable;
+          };
+          highlight = {
+            enable = true;
+            inherit disable;
+          };
+          # this is SO useful
+          incremental_selection = {
+            enable = true;
+            inherit disable;
+            keymaps = {
+              init_selection = "<C-n>";
+              node_decremental = "<bs>";
+              node_incremental = "<C-n>";
+              # IDK what this does
+              scope_incremental = "grc";
+            };
           };
         };
-      };
     };
   };
 }

@@ -26,6 +26,17 @@ in
 
     plugins.lsp = {
       enable = true;
+      # Disable for large files
+      onAttach = # lua
+        ''
+          -- Disable LSP for large files
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+          if ok and stats and stats.size > max_filesize then
+              vim.lsp.buf_detach_client(bufnr, client.id)
+              return
+          end
+        '';
       # TODO: Is this good idea?
       # lazyLoad.settings.event = "BufEnter";
       keymaps = {
