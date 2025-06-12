@@ -141,6 +141,27 @@
           action.__raw = # lua
             ''function() require("gitsigns").toggle_current_line_blame() end'';
         };
+        "<leader>td" = {
+          options = {
+            silent = true;
+            desc = "Toggle [d]iff (deleted + word)";
+          };
+          action.__raw = # lua
+            ''
+              function()
+                local gitsigns = require("gitsigns")
+                local config = require("gitsigns.config").config
+                local target_state = not (config.show_deleted and config.word_diff)
+
+                if config.show_deleted ~= target_state then
+                  gitsigns.toggle_deleted()
+                end
+                if config.word_diff ~= target_state then
+                  gitsigns.toggle_word_diff()
+                end
+              end
+            '';
+        };
         "<leader>tgd" = {
           options = {
             silent = true;
