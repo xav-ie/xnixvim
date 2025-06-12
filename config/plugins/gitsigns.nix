@@ -45,28 +45,26 @@
       helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
         "[c" = {
           options = {
-            silent = true;
             desc = "Previous hunk";
           };
           action.__raw = # lua
             ''
-              function() 
+              function()
                 if vim.wo.diff then return "[c" end
-                vim.schedule(function() require("gitsigns").prev_hunk() end)
+                vim.schedule(function() require("gitsigns").nav_hunk('prev', {target = 'all'}) end)
                 return '<Ignore>'
               end
             '';
         };
         "]c" = {
           options = {
-            silent = true;
             desc = "Next hunk";
           };
           action.__raw = # lua
             ''
-              function() 
+              function()
                 if vim.wo.diff then return "]c" end
-                vim.schedule(function() require("gitsigns").next_hunk() end)
+                vim.schedule(function() require("gitsigns").nav_hunk('next', {target = 'all'}) end)
                 return '<Ignore>'
               end
             '';
