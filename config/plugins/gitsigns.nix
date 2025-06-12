@@ -22,6 +22,7 @@
           ignore_whitespace = false;
           virt_text_priority = 100;
         };
+        numhl = true;
         # TODO: comb through and make better
         # https://github.com/fpletz/flake/blob/f97512e2f7cfb555bcebefd96f8cf61155b8dc42/home/nixvim/gitsigns.nix#L21
       };
