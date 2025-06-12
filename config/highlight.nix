@@ -1,21 +1,25 @@
 _: {
   config = {
     highlight = {
+      # Fix code background
+      ColorColumn.bg = "#200020";
       # ColorColumn.underline = true;
+      DiffChange.fg = "#ffb20f";
+      DiffDelete.fg = "#ff0000";
       FloatBorder.fg = "#a89984";
       Pmenu.bg = "#282828";
       Pmenu.fg = "#ebdbb2";
       PmenuSel.bg = "#504945";
       PmenuSel.fg = "NONE";
-      # Fix code background
-      ColorColumn.bg = "#200020";
       # tab bar background
       TabLineFill.bg = "NONE";
+      TermCursor.undercurl = true;
+      TermCursor.sp = "#ffb20f";
+      TSLiteral.bg = "#200020";
+      TSLiteral.fg = "#00a0f0";
       TSNumber.fg = "#be620a";
       TSProperty.fg = "#FFD242";
       TSType.fg = "#00a0f0";
-      TSLiteral.fg = "#00a0f0";
-      TSLiteral.bg = "#200020";
     };
     # TODO: get this working
     # extraFiles = {
