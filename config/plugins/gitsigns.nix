@@ -141,13 +141,21 @@
           action.__raw = # lua
             ''function() require("gitsigns").toggle_current_line_blame() end'';
         };
-        "<leader>td" = {
+        "<leader>tgd" = {
           options = {
             silent = true;
             desc = "Toggle [d]eleted";
           };
           action.__raw = # lua
             ''function() require("gitsigns").toggle_deleted() end'';
+        };
+        "<leader>tgw" = {
+          options = {
+            silent = true;
+            desc = "Toggle [w]ord diff";
+          };
+          action.__raw = # lua
+            ''function() require("gitsigns").toggle_word_diff() end'';
         };
       })
       ++ (ox {
