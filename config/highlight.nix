@@ -16,9 +16,10 @@ _: {
       TermCursor.underdotted = true;
       TermCursor.sp = "#ffb20f";
       GitSignsAddInline.underdotted = true;
-      GitSignsAddInline.sp = "#00732b";
+      GitSignsAddInline.sp = "#00ff00";
       GitSignsDeleteInline.underdotted = true;
       GitSignsDeleteInline.sp = "#ff0000";
+      GitSignsDeleteInline.fg = "#ff4400";
       TSLiteral.bg = "#200020";
       TSLiteral.fg = "#00a0f0";
       TSNumber.fg = "#be620a";
