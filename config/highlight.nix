@@ -13,8 +13,12 @@ _: {
       PmenuSel.fg = "NONE";
       # tab bar background
       TabLineFill.bg = "NONE";
-      TermCursor.undercurl = true;
+      TermCursor.underdotted = true;
       TermCursor.sp = "#ffb20f";
+      GitSignsAddInline.underdotted = true;
+      GitSignsAddInline.sp = "#00732b";
+      GitSignsDeleteInline.underdotted = true;
+      GitSignsDeleteInline.sp = "#ff0000";
       TSLiteral.bg = "#200020";
       TSLiteral.fg = "#00a0f0";
       TSNumber.fg = "#be620a";
