@@ -25,17 +25,39 @@ in
 
     plugins.lsp = {
       enable = true;
-      # Disable for large files
-      onAttach = # lua
-        ''
-          -- Disable LSP for large files
+      # Youch! Detaching LSP is annoying and there is no such should_attach method :/
+      # https://github.com/neovim/nvim-lspconfig/issues/2626#issuecomment-2117022664
+      # https://github.com/neovim/nvim-lspconfig/issues/2508#issuecomment-1966885690
+      luaConfig.pre = ''
+        local bufIsBig = function(bufnr)
           local max_filesize = 100 * 1024 -- 100 KB
-          local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
           if ok and stats and stats.size > max_filesize then
-              vim.lsp.buf_detach_client(bufnr, client.id)
-              return
+            return true
+          else
+            return false
           end
-        '';
+        end
+        vim.api.nvim_create_autocmd('LspAttach', {
+          callback = function(t)
+            if bufIsBig(t.buf) then
+              for _,client in pairs(vim.lsp.get_active_clients({bufnr = t.buf})) do
+                -- Using vim.defer_fn because when this event is fired, we are
+                -- not really attached. See:
+                -- https://www.reddit.com/r/neovim/comments/168u3e4/comment/jyyluyo/
+                vim.defer_fn(function()
+                  vim.lsp.buf_detach_client(t.buf, client.id)
+                  print(
+                    "Detaching client " .. client.name .. " because buffer " ..
+                    vim.fn.bufname(t.buf) .. " is too big"
+                  )
+                end, 10)
+              end
+            end
+          end
+        })
+      '';
+
       # TODO: Is this good idea?
       # lazyLoad.settings.event = "BufEnter";
       keymaps = {
