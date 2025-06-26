@@ -37,7 +37,7 @@ in
       # lua
       else
         ''
-          require("oil-git-status").setup()
+          require("oil-git-status").setup({})
         '';
 
     extraPlugins = [ oil-git-status ];

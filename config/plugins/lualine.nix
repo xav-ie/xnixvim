@@ -55,7 +55,7 @@
                     -- window local cwd ~ cw[d]
                     local wcwd = vim.fn.getcwd(-1, -1)
                     -- TODO: fix logic...
-                    return vim.fn.fnamemodify(tcwd, ':~') 
+                    return vim.fn.fnamemodify(tcwd, ':~')
                     -- if wcwd ~= tcwd then
                     --   return wcwd
                     -- elseif tcwd ~= cwd then
@@ -81,7 +81,7 @@
                   function()
                     local ok, oil = pcall(require, 'oil')
                     if ok then
-                      local dirname = vim.fn.fnamemodify(oil.get_current_dir(), ':~')
+                      local dirname = vim.fn.fnamemodify(oil.get_current_dir() or vim.fn.getcwd(), ":~")
                       local entry = oil.get_cursor_entry()
                       if not entry then
                         return dirname
@@ -105,7 +105,7 @@
               # https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets
               source.__raw = # lua
                 ''
-                  function() 
+                  function()
                     local gitsigns = vim.b.gitsigns_status_dict
                       if gitsigns then
                         return {
@@ -132,7 +132,7 @@
               __unkeyed-1 = "";
               fmt.__raw = # lua
                 ''
-                  function(str)
+                  function()
                     local function progress()
                       local cur = vim.fn.line('.')
                       local total = vim.fn.line('$')

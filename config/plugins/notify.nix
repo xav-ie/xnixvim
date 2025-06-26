@@ -8,6 +8,7 @@ _: {
       settings = {
         background_colour = "#00000000";
         fps = 60;
+        merge_duplicates = true;
       };
     };
   };
