@@ -144,6 +144,7 @@
         # TODO: move out somehow
         "friendly-snippets"
         "luasnip"
+        "minuet-ai.nvim"
       ];
     };
   };

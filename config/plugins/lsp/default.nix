@@ -153,10 +153,10 @@ in
         denols = {
           # makes to many network requests when it should not
           enable = false;
-          rootDir = # lua
-            ''
-              require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
-            '';
+          rootMarkers = [
+            "deno.json"
+            "deno.jsonc"
+          ];
           extraOptions.init_options = {
             lint = true;
             unstable = true;
@@ -237,10 +237,12 @@ in
           # TODO: checkout
           # https://github.com/tlegasse/kickstart.nvim/blob/d30ee6e30be0e82ece0f18164a91adb02356ef5f/lua/lsp-config.lua#L7
           # and improve this awful code
-          rootDir.__raw = # lua
-            ''
-              vim.fn.getcwd()
-            '';
+          rootMarkers = [
+            ".theme-check.yml"
+            "templates"
+            "sections"
+            ".git"
+          ];
         };
 
         # https://nix-community.github.io/nixvim/plugins/lsp/servers/sourcekit
@@ -381,10 +383,7 @@ in
                   }
                 '';
             };
-            rootDir = # lua
-              ''
-                require('lspconfig').util.root_pattern("package.json")
-              '';
+            rootMarkers = [ "package.json" ];
           };
         };
       };
