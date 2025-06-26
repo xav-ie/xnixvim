@@ -41,7 +41,8 @@
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
-    ./vim-guise.nix
+    # TODO: fix
+    # ./vim-guise.nix
     ./vim-matchup.nix
     ./which-key
     ./witt-neovim.nix
