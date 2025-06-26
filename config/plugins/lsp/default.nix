@@ -28,8 +28,6 @@ in
       # Disable for large files
       onAttach = # lua
         ''
-          -- nixvim broke this :/
-          local bufnr = args.buf
           -- Disable LSP for large files
           local max_filesize = 100 * 1024 -- 100 KB
           local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
