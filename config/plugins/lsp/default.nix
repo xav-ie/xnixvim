@@ -31,17 +31,25 @@ in
       luaConfig.pre = ''
         local bufIsBig = function(bufnr)
           local max_filesize = 100 * 1024 -- 100 KB
-          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
-          if ok and stats and stats.size > max_filesize then
-            return true
-          else
-            return false
-          end
+          local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+          return ok and stats and stats.size > max_filesize
         end
-        vim.api.nvim_create_autocmd('LspAttach', {
+
+        -- Track manually started buffers
+        local manual_buffers = {}
+
+        -- Create command to force LSP on large files
+        vim.api.nvim_create_user_command("LspStartForce", function()
+          local bufnr = vim.api.nvim_get_current_buf()
+          manual_buffers[bufnr] = true
+          -- Re-trigger LSP setup for this buffer
+          vim.cmd("edit!")
+        end, {})
+
+        vim.api.nvim_create_autocmd("LspAttach", {
           callback = function(t)
-            if bufIsBig(t.buf) then
-              for _,client in pairs(vim.lsp.get_active_clients({bufnr = t.buf})) do
+            if bufIsBig(t.buf) and not manual_buffers[t.buf] then
+              for _, client in pairs(vim.lsp.get_active_clients({bufnr = t.buf})) do
                 -- Using vim.defer_fn because when this event is fired, we are
                 -- not really attached. See:
                 -- https://www.reddit.com/r/neovim/comments/168u3e4/comment/jyyluyo/
@@ -49,11 +57,18 @@ in
                   vim.lsp.buf_detach_client(t.buf, client.id)
                   print(
                     "Detaching client " .. client.name .. " because buffer " ..
-                    vim.fn.bufname(t.buf) .. " is too big"
+                    vim.fn.bufname(t.buf) .. " is too big (use :LspStartForce to override)"
                   )
                 end, 10)
               end
             end
+          end
+        })
+
+        -- Clean up when buffer is deleted
+        vim.api.nvim_create_autocmd("BufDelete", {
+          callback = function(t)
+            manual_buffers[t.buf] = nil
           end
         })
       '';
