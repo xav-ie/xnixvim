@@ -16,6 +16,7 @@
     ./fugitive.nix
     ./gitsigns.nix
     ./lsp
+    ./lazydev.nix
     ./lspkind.nix
     ./lsp-lines.nix
     # TODO: optimize

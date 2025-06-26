@@ -129,7 +129,7 @@
         configs = true;
         initLua = true;
         nvimRuntime = true;
-        plugins = true;
+        plugins = false;
       };
       combinePlugins.enable = true;
       combinePlugins.standalonePlugins = [
