@@ -423,6 +423,9 @@ in
             rootMarkers = [ "package.json" ];
           };
         };
+        zls = {
+          enable = true;
+        };
       };
     };
   };
