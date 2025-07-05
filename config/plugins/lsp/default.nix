@@ -179,6 +179,8 @@ in
       # all servers come from:
       # https://github.com/nix-community/nixvim/blob/c4ad4d0b2e7de04fa9ae0652b006807f42062080/plugins/lsp/lsp-packages.nix#L179
       servers = {
+        # https://github.com/arduino/arduino-language-server
+        arduino_language_server.enable = true;
         # https://github.com/withastro/language-tools
         astro.enable = true;
         # https://github.com/ejgallego/coq-lsp
