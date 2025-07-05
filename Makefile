@@ -9,10 +9,14 @@ build:
 check:
 	nix flake check --no-write-lock-file
 
+.PHONY: follow
+follow:
+	nix run github:fzakaria/nix-auto-follow -- -i
+
 .PHONY: format
 format:
 	nix fmt --no-write-lock-file
 
 .PHONY: update
 update:
-	nix flake update && nix run github:fzakaria/nix-auto-follow -- -i
+	nix flake update && $(MAKE) follow
