@@ -56,7 +56,26 @@ in
           -- Check if buffer is too big and not manually allowed
           if bufIsBig(bufnr) and not manual_buffers[bufnr] then
             local server_name = config.name or "LSP server"
-            vim.notify("Buffer too large for " .. server_name .. ". Use :LspStartForce to override.", vim.log.levels.WARN)
+
+            -- Initialize counter for new buffers
+            if not vim.b[bufnr].lsp_block_counter then
+              vim.b[bufnr].lsp_block_counter = 0
+            end
+
+            vim.schedule(function()
+              local delay = vim.b[bufnr].lsp_block_counter * 700
+              vim.b[bufnr].lsp_block_counter = vim.b[bufnr].lsp_block_counter + 1
+
+              vim.defer_fn(function()
+                vim.api.nvim_echo({
+                  {"Buffer too large for ", "Normal"},
+                  {server_name, "Function"},
+                  {". Use ", "Normal"},
+                  {":LspStartForce", "Special"},
+                  {" to override.", "Normal"},
+                }, true, {})
+              end, delay)
+            end)
             return
           end
 
