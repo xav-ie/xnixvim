@@ -46,24 +46,22 @@ in
           vim.cmd("edit!")
         end, {})
 
-        vim.api.nvim_create_autocmd("LspAttach", {
-          callback = function(t)
-            if bufIsBig(t.buf) and not manual_buffers[t.buf] then
-              for _, client in pairs(vim.lsp.get_active_clients({bufnr = t.buf})) do
-                -- Using vim.defer_fn because when this event is fired, we are
-                -- not really attached. See:
-                -- https://www.reddit.com/r/neovim/comments/168u3e4/comment/jyyluyo/
-                vim.defer_fn(function()
-                  vim.lsp.buf_detach_client(t.buf, client.id)
-                  print(
-                    "Detaching client " .. client.name .. " because buffer " ..
-                    vim.fn.bufname(t.buf) .. " is too big (use :LspStartForce to override)"
-                  )
-                end, 10)
-              end
-            end
+        -- Override LSP attachment behavior because default lsp attachment
+        -- behavior is bad and annoying to configure, see above links
+        local original_start = vim.lsp.start
+        vim.lsp.start = function(config, opts)
+          opts = opts or {}
+          local bufnr = opts.bufnr or 0
+
+          -- Check if buffer is too big and not manually allowed
+          if bufIsBig(bufnr) and not manual_buffers[bufnr] then
+            local server_name = config.name or "LSP server"
+            vim.notify("Buffer too large for " .. server_name .. ". Use :LspStartForce to override.", vim.log.levels.WARN)
+            return
           end
-        })
+
+          return original_start(config, opts)
+        end
 
         -- Clean up when buffer is deleted
         vim.api.nvim_create_autocmd("BufDelete", {
