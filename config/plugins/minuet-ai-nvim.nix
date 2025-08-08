@@ -170,8 +170,8 @@ in
     enabled = true;
     settings = {
       # notify = "verbose";
-      # provider = "openai_fim_compatible";
-      provider = "codestral";
+      # provider = "codestral";
+      provider = "openai_fim_compatible";
       context_window = 1000;
       # no need to throttle on local connections
       throttle = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
@@ -187,7 +187,8 @@ in
         openai_fim_compatible = {
           api_key = "TERM";
           end_point = "http://localhost:11434/v1/completions";
-          model = "qwen2.5-coder:0.5b";
+          # TODO: find a better way to do this lol
+          model = if pkgs.stdenv.isDarwin then "qwen2.5-coder:1.5b" else "qwen2.5-coder:7b";
           name = "Ollama";
           stream = true;
           optional = {
