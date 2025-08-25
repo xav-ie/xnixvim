@@ -2,6 +2,8 @@
   config,
   helpers,
   lib,
+  pkgs,
+  inputs,
   ...
 }:
 {
@@ -11,6 +13,9 @@
     # git indicators in the left gutter
     plugins.gitsigns = {
       enable = true;
+      package = pkgs.vimPlugins.gitsigns-nvim.overrideAttrs (_oldAttrs: {
+        src = inputs.gitsigns-nvim;
+      });
       lazyLoad.settings.event = "BufEnter";
       lazyLoad.enable = config.lazyLoad.enable;
       settings = {

@@ -68,7 +68,7 @@
     },
     "flake-parts_2": {
       "inputs": {
-        "nixpkgs-lib": "nixpkgs-lib"
+        "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
         "lastModified": 1749398372,
@@ -135,6 +135,23 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "gitsigns-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1756085793,
+        "narHash": "sha256-Wm+2DhLRjdCz2Lgtp/B6cqDFwEIqtrk2dWM9EuwdIEY=",
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "rev": "4edc6dda39b3b0d36552d67b255e5e4380b11d25",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lewis6991",
+        "ref": "pull/1400/head",
+        "repo": "gitsigns.nvim",
         "type": "github"
       }
     },
@@ -429,6 +446,7 @@
         "coq-lsp": "coq-lsp",
         "coqtail": "coqtail",
         "flake-parts": "flake-parts",
+        "gitsigns-nvim": "gitsigns-nvim",
         "minuet-ai-nvim": "minuet-ai-nvim",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",

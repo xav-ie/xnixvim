@@ -37,6 +37,8 @@
     witt-neovim.url = "github:typed-rocks/witt-neovim";
     cmp-luasnip-choice.url = "github:L3MON4D3/cmp-luasnip-choice";
     cmp-luasnip-choice.flake = false;
+    gitsigns-nvim.url = "github:lewis6991/gitsigns.nvim/pull/1400/head";
+    gitsigns-nvim.flake = false;
   };
 
   outputs =
