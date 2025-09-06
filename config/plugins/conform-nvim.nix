@@ -102,7 +102,7 @@
                   return
               end
 
-              return { timeout_ms = 1000, lsp_format = "fallback" }
+              return { timeout_ms = 3000, lsp_format = "fallback" }
             end
           '';
         notify_on_error = true;
