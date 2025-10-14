@@ -181,9 +181,26 @@ in
           # Global maps
           {
             key = "K";
-            options.desc = "LSP Hover";
+            options.desc = "LSP Hover or enter float";
             action.__raw = # lua
-              ''function() vim.lsp.buf.hover() end'';
+              ''
+                function()
+                  local win_config = vim.api.nvim_win_get_config(vim.api.nvim_get_current_win())
+                  if not win_config.relative or win_config.relative == "" then
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                      local config = vim.api.nvim_win_get_config(win)
+                      if config.relative ~= "" then
+                        local ft = vim.api.nvim_get_option_value('filetype', { buf = vim.api.nvim_win_get_buf(win) })
+                        if ft ~= 'scrollview' and ft ~= 'notify' then
+                          vim.api.nvim_set_current_win(win)
+                          return
+                        end
+                      end
+                    end
+                  end
+                  vim.lsp.buf.hover()
+                end
+              '';
           }
           {
             key = "<leader>th";
