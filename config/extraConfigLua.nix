@@ -193,9 +193,34 @@ _: {
             vim.api.nvim_create_autocmd("User", {
               pattern = "FugitiveIndex",
               callback = function()
-                vim.cmd("normal gu")  
+                vim.cmd("normal gu")
               end,
             })
+          '';
+
+        diagnosticFloatHighlighting = # lua
+          ''
+            -- Highlight quoted text in diagnostic floats
+            local original_open_float = vim.diagnostic.open_float
+            vim.diagnostic.open_float = function(opts, ...)
+              local bufnr = original_open_float(opts, ...)
+              if bufnr then
+                vim.defer_fn(function()
+                  local ns = vim.api.nvim_create_namespace('diagnostic_quoted')
+                  for i, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
+                    for s, e in string.gmatch(line, "()'[^']*'()") do
+                      vim.api.nvim_buf_set_extmark(bufnr, ns, i - 1, s - 1, {
+                        end_col = e - 1,
+                        hl_group = 'DiagnosticQuoted',
+                        hl_mode = 'replace',
+                        priority = 10000
+                      })
+                    end
+                  end
+                end, 0)
+              end
+              return bufnr
+            end
           '';
 
       in
@@ -207,6 +232,7 @@ _: {
         ${quickfixToggle}
         ${recordingMacroNotification}
         ${fugitiveJumper}
+        ${diagnosticFloatHighlighting}
       '';
   };
 }

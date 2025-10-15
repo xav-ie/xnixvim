@@ -25,6 +25,8 @@ _: {
       TSNumber.fg = "#be620a";
       TSProperty.fg = "#FFD242";
       TSType.fg = "#00a0f0";
+      # Diagnostic quoted text highlight
+      DiagnosticQuoted.fg = "#61afef";
     };
     # TODO: get this working
     # extraFiles = {
