@@ -185,19 +185,30 @@ in
             action.__raw = # lua
               ''
                 function()
-                  local win_config = vim.api.nvim_win_get_config(vim.api.nvim_get_current_win())
-                  if not win_config.relative or win_config.relative == "" then
-                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                  local current_win = vim.api.nvim_get_current_win()
+                  local win_config = vim.api.nvim_win_get_config(current_win)
+
+                  -- If we're already in a floating window, do nothing (stay in the window)
+                  if win_config.relative ~= "" then
+                    return
+                  end
+
+                  -- We're in a normal window, look for floating windows to jump into
+                  for _, win in ipairs(vim.api.nvim_list_wins()) do
+                    if win ~= current_win then
                       local config = vim.api.nvim_win_get_config(win)
                       if config.relative ~= "" then
-                        local ft = vim.api.nvim_get_option_value('filetype', { buf = vim.api.nvim_win_get_buf(win) })
-                        if ft ~= 'scrollview' and ft ~= 'notify' then
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        local ft = vim.api.nvim_get_option_value('filetype', { buf = buf })
+                        if config.focusable ~= false and ft ~= 'scrollview' and ft ~= 'notify' and ft ~= 'noice' then
                           vim.api.nvim_set_current_win(win)
                           return
                         end
                       end
                     end
                   end
+
+                  -- No floating windows found, open hover
                   vim.lsp.buf.hover()
                 end
               '';
