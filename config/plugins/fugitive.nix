@@ -4,9 +4,9 @@ _: {
       ''
         vim.keymap.set('n', '<leader>g', function()
           -- Ensure :Git command is available
-          if vim.fn.exists(':Git') > 0 then 
+          if vim.fn.exists(':Git') > 0 then
             -- Call :Git command
-            vim.cmd('Git | only')                  
+            vim.cmd('Git | only!')
           else
             vim.notify('vim-fugitive is not loaded', vim.log.levels.ERROR)
           end
