@@ -37,6 +37,7 @@
     # ./ollama.nix
     # ./orgmode.nix
     # ./org-roam-nvim.nix # buggy as hell
+    # ./pretty-ts-errors-nvim.nix
     ./render-markdown.nix
     ./tabscope.nix
     ./telescope

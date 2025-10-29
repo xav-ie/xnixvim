@@ -39,6 +39,8 @@
     cmp-luasnip-choice.flake = false;
     gitsigns-nvim.url = "github:lewis6991/gitsigns.nvim/pull/1400/head";
     gitsigns-nvim.flake = false;
+    pretty-ts-errors-nvim.url = "github:youyoumu/pretty-ts-errors.nvim";
+    pretty-ts-errors-nvim.flake = false;
   };
 
   outputs =
