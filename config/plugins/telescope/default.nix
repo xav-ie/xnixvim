@@ -69,6 +69,11 @@
           layout_config.height = 0.5;
           sorting_strategy = "ascending";
         };
+        pickers = {
+          colorscheme = {
+            enable_preview = true;
+          };
+        };
       };
 
       keymaps = {
@@ -119,6 +124,10 @@
         "<leader>fg" = {
           action = "grep_string";
           options.desc = "[g]rep_string";
+        };
+        "<leader>fc" = {
+          action = "colorscheme";
+          options.desc = "[c]olorscheme";
         };
       };
 
