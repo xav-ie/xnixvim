@@ -20,3 +20,10 @@ format:
 .PHONY: update
 update:
 	nix flake update && $(MAKE) follow
+
+# Useful if you would not like this binary and dependencies garbage collected.
+.PHONY: gc-root
+gc-root:
+	@mkdir -p /nix/var/nix/gcroots/per-user/$(USER)
+	@ln -sfn $(PWD)/result /nix/var/nix/gcroots/per-user/$(USER)/xnixvim
+	@echo "Created GC root: /nix/var/nix/gcroots/per-user/$(USER)/xnixvim -> $(PWD)/result"
