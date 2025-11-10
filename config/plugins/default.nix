@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./bgwinch.nix
     ./bufferline.nix
     ./cmp.nix
     # ./coq

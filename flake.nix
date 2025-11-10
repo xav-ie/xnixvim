@@ -11,6 +11,8 @@
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # vendored
+    bgwinch.flake = false;
+    bgwinch.url = "github:will/bgwinch.nvim";
     coq-lsp.flake = false;
     coq-lsp.url = "github:tomtomjhj/coq-lsp.nvim";
     coqtail.flake = false;
