@@ -223,6 +223,19 @@ _: {
             end
           '';
 
+        # Override EditorConfig's tab settings to use 2-space visual indents
+        forceTabstop = # lua
+          ''
+            vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+              callback = function()
+                vim.opt_local.tabstop = 2
+                vim.opt_local.shiftwidth = 2
+                vim.opt_local.softtabstop = 2
+              end,
+              desc = "Force 2-space tab display and indentation",
+            })
+          '';
+
       in
       # lua
       ''
@@ -233,6 +246,7 @@ _: {
         ${recordingMacroNotification}
         ${fugitiveJumper}
         ${diagnosticFloatHighlighting}
+        ${forceTabstop}
       '';
   };
 }
