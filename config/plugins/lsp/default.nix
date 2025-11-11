@@ -228,6 +228,15 @@ in
         arduino_language_server.enable = true;
         # https://github.com/withastro/language-tools
         astro.enable = true;
+        # https://clangd.llvm.org/
+        clangd = {
+          enable = true;
+          # Automatically finds compile_commands.json in project root
+          cmd = [
+            "clangd"
+            "--log=error" # Only log errors and warnings, not info messages
+          ];
+        };
         # https://github.com/ejgallego/coq-lsp
         coq_lsp = {
           enable = true;
@@ -330,7 +339,11 @@ in
         };
 
         # https://nix-community.github.io/nixvim/plugins/lsp/servers/sourcekit
-        sourcekit.enable = true;
+        sourcekit = {
+          enable = true;
+          # Only run on Swift files, not C files
+          filetypes = [ "swift" ];
+        };
         # You need to do this for every svelte project
         # `npm install --save-dev typescript-svelte-plugin`
         # Ajust tsconfig.json to include the plugin:
