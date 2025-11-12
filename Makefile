@@ -1,7 +1,7 @@
 # dynamically resolve nom
 nom := $(shell command -v nom || echo 'nix shell nixpkgs#nix-output-monitor --command nom')
 dix := $(shell command -v dix || echo 'nix shell nixpkgs#dix --command dix')
-auto-follow := $(shell command -v auto-follow || echo 'nix shell github:fzakaria/nix-auto-follow --command auto-follow')
+auto-follow := $(shell command -v auto-follow || echo 'nix shell github:xav-ie/nix-auto-follow/feat-consolidation --command auto-follow')
 
 .PHONY: build
 build:

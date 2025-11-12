@@ -220,15 +220,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1754073254,
-        "narHash": "sha256-CQp/v2HQ7AtGJQqFGRZLHt4MZAK3NF94I6GDaRyhbsc=",
-        "owner": "fzakaria",
+        "lastModified": 1762958948,
+        "narHash": "sha256-v8mPlcgVpbx2ng+JFV/sd6LjTUlwnfobQoN3Kv9hK88=",
+        "owner": "xav-ie",
         "repo": "nix-auto-follow",
-        "rev": "5baa00b79d4cc46523da0b8b3532c5163d151be4",
+        "rev": "ce89b02423903d51ede69c9522e0f094a2c922e9",
         "type": "github"
       },
       "original": {
-        "owner": "fzakaria",
+        "owner": "xav-ie",
+        "ref": "feat-consolidation",
         "repo": "nix-auto-follow",
         "type": "github"
       }

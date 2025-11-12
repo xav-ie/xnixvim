@@ -3,7 +3,7 @@
 
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nix-auto-follow.url = "github:fzakaria/nix-auto-follow";
+    nix-auto-follow.url = "github:xav-ie/nix-auto-follow/feat-consolidation";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixvim.url = "github:nix-community/nixvim";
     systems.url = "github:nix-systems/default";
