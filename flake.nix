@@ -2,12 +2,16 @@
   description = "A nixvim configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    nix-auto-follow.url = "github:fzakaria/nix-auto-follow";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixvim.url = "github:nix-community/nixvim";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
     systems.url = "github:nix-systems/default";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
+    # transitive dependencies pinned for nix-auto-follow
+    flake-utils.url = "github:numtide/flake-utils";
 
     # vendored
     vscoq.flake = true;
@@ -75,6 +79,22 @@
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
         in
         {
+          devShells.default = pkgs.mkShell {
+            packages =
+              (with pkgs; [
+                nix-output-monitor # nom
+                dix # derivation differ
+              ])
+              ++ [ inputs.nix-auto-follow.packages.${system}.default ];
+
+            shellHook = ''
+              printf "\n📝 xnixvim development environment"
+              printf "\n🔨 Use \e[1;32mmake \e[2m(build)\e[0m to build the project."
+              printf "\n✨ Use \e[1;32mmake format\e[0m to format the files."
+              printf "\n🔄 Use \e[1;32mmake update\e[0m to update flake inputs.\n"
+            '';
+          };
+
           checks = {
             # Run `nix flake check` to verify that your config is not broken
             default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
