@@ -364,9 +364,9 @@ in
           enable = true;
 
         };
-        # https://github.com/vuejs/vetur/tree/master/server
+        # https://github.com/vuejs/language-tools#readme
         # https://nix-community.github.io/nixvim/plugins/lsp/servers/vuels/index.html
-        volar = {
+        vue_ls = {
           enable = true;
         };
         # https://github.com/typescript-language-server/typescript-language-server
