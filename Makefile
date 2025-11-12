@@ -4,7 +4,12 @@ dix := $(shell command -v dix || echo 'nix shell nixpkgs#dix --command dix')
 
 .PHONY: build
 build:
-	$(nom) build --no-write-lock-file
+	@OLD_PATH=$$(readlink -f ./result 2>/dev/null || echo ""); \
+	$(nom) build --no-write-lock-file; \
+	if [ -n "$$OLD_PATH" ]; then \
+		echo -e "\n=== Comparing derivations ===" && \
+		$(dix) "$$OLD_PATH" ./result; \
+	fi
 
 .PHONY: check
 check:
@@ -20,16 +25,7 @@ format:
 
 .PHONY: update
 update:
-	@OLD_PATH=$$(readlink -f ./result 2>/dev/null || echo ""); \
-	if [ -z "$$OLD_PATH" ]; then \
-		echo "No existing ./result found. Building initial version..."; \
-		$(MAKE) update-flake && $(MAKE) build; \
-	else \
-		echo "Saving old derivation: $$OLD_PATH"; \
-		$(MAKE) update-flake && $(MAKE) build && \
-		echo "\n=== Comparing derivations ===" && \
-		$(dix) "$$OLD_PATH" ./result; \
-	fi
+	$(MAKE) update-flake && $(MAKE) build
 
 .PHONY: update-flake
 update-flake:
