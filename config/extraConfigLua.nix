@@ -236,6 +236,25 @@ _: {
             })
           '';
 
+        # Prevent 1-second delay when switching to deleted file buffers
+        skipDeletedFileDelay = # lua
+          ''
+            vim.api.nvim_create_autocmd("FileChangedShell", {
+              callback = function()
+                if vim.v.fcs_reason == 'deleted' then
+                  -- Set to empty string: autocommand handles everything
+                  vim.v.fcs_choice = ""
+                  vim.schedule(function()
+                    vim.api.nvim_echo({
+                      {string.format('File "%s" no longer available', vim.fn.expand('%:t')), 'WarningMsg'}
+                    }, false, {})
+                  end)
+                end
+              end,
+              desc = "Skip 1-second delay for deleted files"
+            })
+          '';
+
       in
       # lua
       ''
@@ -247,6 +266,7 @@ _: {
         ${fugitiveJumper}
         ${diagnosticFloatHighlighting}
         ${forceTabstop}
+        ${skipDeletedFileDelay}
       '';
   };
 }
