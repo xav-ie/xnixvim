@@ -1,5 +1,6 @@
 # dynamically resolve nom
 nom := $(shell command -v nom || echo 'nix shell nixpkgs#nix-output-monitor --command nom')
+dix := $(shell command -v dix || echo 'nix shell nixpkgs#dix --command dix')
 
 .PHONY: build
 build:
@@ -19,6 +20,19 @@ format:
 
 .PHONY: update
 update:
+	@OLD_PATH=$$(readlink -f ./result 2>/dev/null || echo ""); \
+	if [ -z "$$OLD_PATH" ]; then \
+		echo "No existing ./result found. Building initial version..."; \
+		$(MAKE) update-flake && $(MAKE) build; \
+	else \
+		echo "Saving old derivation: $$OLD_PATH"; \
+		$(MAKE) update-flake && $(MAKE) build && \
+		echo "\n=== Comparing derivations ===" && \
+		$(dix) "$$OLD_PATH" ./result; \
+	fi
+
+.PHONY: update-flake
+update-flake:
 	nix flake update && $(MAKE) follow
 
 # Useful if you would not like this binary and dependencies garbage collected.
