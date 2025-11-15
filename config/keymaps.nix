@@ -27,16 +27,6 @@ in
           "<S-tab>" = ":bprevious <CR>";
           # located in ./plugins/tabscope.nix
           # "<leader>x" = ":bdelete <CR>";
-          "<leader>/" = {
-            action = "<ESC><cmd>lua require('Comment.api').toggle.linewise.current()<CR>";
-            options.desc = "Comment Line";
-            # TODO: enable support for icons somehow
-            # options.icon = "";
-          };
-          "<leader>?" = {
-            action = "<ESC><cmd>lua require('Comment.api').toggle.blockwise.current()<CR>";
-            options.desc = "Comment Line Blockwise";
-          };
           "<leader>rn" = {
             mode = [ "n" ];
             action.__raw = # lua
