@@ -14,15 +14,16 @@ _: {
         }
 
         wk.add {
-          { "<leader>c", group = "[c]opy", icon = "", },
-          { "<leader>f", group = "[f]ind", icon = "", },
-          { "<leader>fy", group = "s[y]mbol", icon = "", },
-          { "<leader>h", group = "[h]unk", icon = "", },
-          { "<leader>l", group = "[l]sp", icon = "󰁨", },
-          { "<leader>n", group = "[n]ode", icon = "", },
-          { "<leader>o", group = "[o]rg", icon = "", },
-          { "<leader>s", group = "fla[s]h", icon = "󱐋", },
-          { "<leader>t", group = "[t]oggle", icon = "", },
+          { "<leader>c", group = "[c]opy", icon = " ", },
+          { "<leader>d", group = "[d]iagnostic", icon = " ", },
+          { "<leader>f", group = "[f]ind", icon = " ", },
+          { "<leader>fy", group = "s[y]mbol", icon = " ", },
+          { "<leader>h", group = "[h]unk", icon = " ", },
+          { "<leader>l", group = "[l]sp", icon = "󰁨 ", },
+          { "<leader>n", group = "[n]ode", icon = " ", },
+          { "<leader>o", group = "[o]rg", icon = " ", },
+          { "<leader>s", group = "fla[s]h", icon = " ", },
+          { "<leader>t", group = "[t]oggle", icon = " ", },
         }
       '';
   };

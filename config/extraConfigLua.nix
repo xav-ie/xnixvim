@@ -255,6 +255,74 @@ _: {
             })
           '';
 
+        inlineDiagnostics = # lua
+          ''
+            -- Inline diagnostic messages as comments in the buffer
+            function InlineDiagnostics(errors_only)
+              local bufnr = vim.api.nvim_get_current_buf()
+              local diagnostics = vim.diagnostic.get(bufnr)
+
+              -- Filter by severity if errors_only is true
+              if errors_only then
+                diagnostics = vim.tbl_filter(function(d)
+                  return d.severity == vim.diagnostic.severity.ERROR
+                end, diagnostics)
+              end
+
+              if #diagnostics == 0 then
+                vim.notify('No diagnostics to inline', vim.log.levels.INFO)
+                return
+              end
+
+              -- Sort by line number descending to avoid line shifts
+              table.sort(diagnostics, function(a, b)
+                return a.lnum > b.lnum
+              end)
+
+              -- Get comment string for the current filetype
+              local commentstring = vim.bo.commentstring
+              local comment_prefix = commentstring:match("^(.*)%%s") or "//"
+              comment_prefix = vim.trim(comment_prefix)
+
+              -- Insert diagnostic comments
+              local inserted_count = 0
+              for _, diagnostic in ipairs(diagnostics) do
+                local line = diagnostic.lnum
+                local message = diagnostic.message:gsub("\n", " ")
+
+                -- Get the line content to extract indentation
+                local line_content = vim.api.nvim_buf_get_lines(bufnr, line, line + 1, false)[1]
+                local indent = line_content and line_content:match("^%s*") or ""
+
+                -- Format the comment with proper prefix and indentation
+                local comment_line = indent .. comment_prefix .. " Diagnostic: " .. message
+
+                -- Insert the comment line above the diagnostic
+                vim.api.nvim_buf_set_lines(bufnr, line, line, false, {comment_line})
+                inserted_count = inserted_count + 1
+              end
+
+              local severity_text = errors_only and "error" or "diagnostic"
+              vim.notify(
+                string.format('Inlined %d %s comment%s',
+                  inserted_count,
+                  severity_text,
+                  inserted_count == 1 and "" or "s"
+                ),
+                vim.log.levels.INFO
+              )
+            end
+
+            -- Register keybinds
+            vim.keymap.set('n', '<leader>di', function()
+              InlineDiagnostics(true)
+            end, { desc = "[D]iagnostic [i]nline errors" })
+
+            vim.keymap.set('n', '<leader>dI', function()
+              InlineDiagnostics(false)
+            end, { desc = "[D]iagnostic [I]nline all" })
+          '';
+
       in
       # lua
       ''
@@ -267,6 +335,7 @@ _: {
         ${diagnosticFloatHighlighting}
         ${forceTabstop}
         ${skipDeletedFileDelay}
+        ${inlineDiagnostics}
       '';
   };
 }
