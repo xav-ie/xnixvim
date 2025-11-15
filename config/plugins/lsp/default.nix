@@ -2,6 +2,8 @@
   pkgs,
   inputs,
   system,
+  config,
+  lib,
   ...
 }:
 let
@@ -151,12 +153,16 @@ in
             options.desc = "LSP D[o]cument Symbols";
             action = "<cmd>Telescope lsp_document_symbols<CR>";
           }
+        ]
+        ++ (lib.optionals (!config.plugins.inc-rename.enable) [
           {
             key = "<leader>ln";
             options.desc = "LSP Re[n]ame";
             action.__raw = # lua
               ''function() vim.lsp.buf.rename() end'';
           }
+        ])
+        ++ [
           {
             key = "<leader>lr";
             options.desc = "LSP [r]eferences";

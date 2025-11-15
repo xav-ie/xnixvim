@@ -27,15 +27,6 @@ in
           "<S-tab>" = ":bprevious <CR>";
           # located in ./plugins/tabscope.nix
           # "<leader>x" = ":bdelete <CR>";
-          "<leader>rn" = {
-            mode = [ "n" ];
-            action.__raw = # lua
-              ''function() return ":IncRename " .. vim.fn.expand("<cword>") end'';
-            options = {
-              expr = true;
-              desc = "Incremental [r]e[n]ame";
-            };
-          };
         }
       )
       ++ (modeKeys.vs {

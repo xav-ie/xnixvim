@@ -16,6 +16,7 @@
     # ./firenvim.nix
     ./fugitive.nix
     ./gitsigns.nix
+    ./inc-rename.nix
     ./lsp
     ./lazydev.nix
     ./lspkind.nix
