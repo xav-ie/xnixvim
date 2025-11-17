@@ -24,12 +24,12 @@ _: {
             -- Fix copy/paste for Neovide
             -- https://neovide.dev/faq.html?highlight=clipboard#how-can-i-use-cmd-ccmd-v-to-copy-and-paste
             if vim.g.neovide then
-              vim.keymap.set('n', '<D-s>', ':w<CR>')      -- save
-              vim.keymap.set('v', '<D-c>', '"+y')         -- copy
-              vim.keymap.set('n', '<D-v>', '"+P')         -- paste
-              vim.keymap.set('v', '<D-v>', '"+P')         -- paste
-              vim.keymap.set('c', '<D-v>', '<C-R>+')      -- paste
-              vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- paste
+              vim.keymap.set('n', '<D-s>', ':w<CR>', { desc = "Save file" })
+              vim.keymap.set('v', '<D-c>', '"+y', { desc = "Copy to clipboard" })
+              vim.keymap.set('n', '<D-v>', '"+P', { desc = "Paste from clipboard" })
+              vim.keymap.set('v', '<D-v>', '"+P', { desc = "Paste from clipboard" })
+              vim.keymap.set('c', '<D-v>', '<C-R>+', { desc = "Paste from clipboard" })
+              vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli', { desc = "Paste from clipboard" })
               -- set clipboard to unnamedplus
               vim.opt.clipboard = "unnamedplus"
             else
@@ -57,14 +57,14 @@ _: {
               }
             end
 
-            vim.api.nvim_set_keymap("",  '<D-v>', '+p<CR>',
-              {noremap = true, silent=true})
-            vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+',
-              {noremap = true, silent=true})
-            vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+',
-              {noremap = true, silent=true})
-            vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+',
-              {noremap = true, silent=true})
+            vim.keymap.set("",  '<D-v>', '+p<CR>',
+              {noremap = true, silent=true, desc = "Paste from clipboard"})
+            vim.keymap.set('!', '<D-v>', '<C-R>+',
+              {noremap = true, silent=true, desc = "Paste from clipboard"})
+            vim.keymap.set('t', '<D-v>', '<C-R>+',
+              {noremap = true, silent=true, desc = "Paste from clipboard"})
+            vim.keymap.set('v', '<D-v>', '<C-R>+',
+              {noremap = true, silent=true, desc = "Paste from clipboard"})
           '';
 
         # better nu support in nvim

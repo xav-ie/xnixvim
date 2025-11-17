@@ -1,9 +1,68 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  helpers,
+  ...
+}:
 {
   # useful code expansions
   # https://github.com/L3MON4D3/LuaSnip
   # https://nix-community.github.io/nixvim/plugins/luasnip
   config = {
+    keymaps = helpers.keymaps.mkKeymaps { options.silent = true; } [
+      {
+        mode = [
+          "i"
+          "s"
+        ];
+        key = "<C-f>";
+        action.__raw = # lua
+          ''
+            function()
+              local ls = require("luasnip")
+              if ls.expand_or_jumpable() then
+                ls.expand_or_jump()
+              end
+            end
+          '';
+        options.desc = "LuaSnip: Expand or jump forward";
+      }
+      {
+        mode = [
+          "i"
+          "s"
+        ];
+        key = "<C-d>";
+        action.__raw = # lua
+          ''
+            function()
+              local ls = require("luasnip")
+              if ls.jumpable(-1) then
+                ls.jump(-1)
+              end
+            end
+          '';
+        options.desc = "LuaSnip: Jump backward";
+      }
+      {
+        mode = [
+          "i"
+          "s"
+        ];
+        key = "<C-n>";
+        action.__raw = # lua
+          ''
+            function()
+              local ls = require("luasnip")
+              if ls.choice_active() then
+                ls.change_choice(1)
+              end
+            end
+          '';
+        options.desc = "LuaSnip: Next choice";
+      }
+    ];
+
     plugins.luasnip = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
@@ -54,25 +113,6 @@
     extraConfigLua = # lua
       ''
         local ls = require("luasnip")
-
-        vim.keymap.set({ "i", "s" }, "<C-f>", function()
-          if ls.expand_or_jumpable() then
-            ls.expand_or_jump()
-          end
-        end, { silent = true })
-
-        vim.keymap.set({ "i", "s" }, "<C-d>", function()
-          if ls.jumpable(-1) then
-            ls.jump(-1)
-          end
-        end, { silent = true })
-
-        vim.keymap.set({ "i", "s" }, "<C-n>", function()
-          if ls.choice_active() then
-            ls.change_choice(1)
-          end
-        end, { silent = true })
-
         local c = ls.choice_node
         local d = ls.dynamic_node
         local f = ls.function_node
