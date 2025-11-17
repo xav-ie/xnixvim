@@ -323,6 +323,36 @@ _: {
             end, { desc = "[D]iagnostic [I]nline all" })
           '';
 
+        # Automatically remove the initial unedited [No Name] buffer when switching
+        autoDeleteNoNameBuffer = # lua
+          ''
+            vim.api.nvim_create_autocmd("BufEnter", {
+              once = true,
+              callback = function()
+                local initial_buf = vim.api.nvim_get_current_buf()
+                local bufname = vim.api.nvim_buf_get_name(initial_buf)
+
+                -- Only set up cleanup if this is a [No Name] buffer
+                if bufname == "" then
+                  vim.api.nvim_create_autocmd("BufEnter", {
+                    once = true,
+                    callback = function()
+                      -- Delete the initial buffer if it's still unmodified
+                      if vim.api.nvim_buf_is_valid(initial_buf) then
+                        local modified = vim.api.nvim_buf_get_option(initial_buf, 'modified')
+                        if not modified then
+                          vim.api.nvim_buf_delete(initial_buf, { force = false })
+                        end
+                      end
+                    end,
+                    desc = "Delete initial [No Name] buffer"
+                  })
+                end
+              end,
+              desc = "Set up cleanup for initial [No Name] buffer"
+            })
+          '';
+
       in
       # lua
       ''
@@ -336,6 +366,7 @@ _: {
         ${forceTabstop}
         ${skipDeletedFileDelay}
         ${inlineDiagnostics}
+        ${autoDeleteNoNameBuffer}
       '';
   };
 }
