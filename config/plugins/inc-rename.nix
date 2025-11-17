@@ -5,7 +5,6 @@
     # https://nix-community.github.io/nixvim/plugins/inc-rename
     plugins.inc-rename = {
       enable = true;
-      cmdName = "IncRename"; # This is the default, but making it explicit
     };
 
     # Disable noice floating input for inc-rename to prevent overlap at top of file
