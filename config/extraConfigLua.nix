@@ -186,18 +186,6 @@ _: {
             })
           '';
 
-        # automatically jump to unstaged section when fugitive-summary buffer
-        # is loaded
-        fugitiveJumper = # lua
-          ''
-            vim.api.nvim_create_autocmd("User", {
-              pattern = "FugitiveIndex",
-              callback = function()
-                vim.cmd("normal gu")
-              end,
-            })
-          '';
-
         diagnosticFloatHighlighting = # lua
           ''
             -- Highlight quoted text in diagnostic floats
@@ -361,7 +349,6 @@ _: {
         ${copyHelpers}
         ${quickfixToggle}
         ${recordingMacroNotification}
-        ${fugitiveJumper}
         ${diagnosticFloatHighlighting}
         ${forceTabstop}
         ${skipDeletedFileDelay}
