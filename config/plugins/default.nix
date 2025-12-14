@@ -17,6 +17,7 @@
     ./fugitive.nix
     ./gitsigns.nix
     ./inc-rename.nix
+    ./jjdescription.nix
     ./lsp
     ./lazydev.nix
     ./lspkind.nix

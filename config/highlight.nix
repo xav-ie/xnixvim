@@ -27,6 +27,11 @@ _: {
       TSType.fg = "#00a0f0";
       # Diagnostic quoted text highlight
       DiagnosticQuoted.fg = "#61afef";
+      # Diff file status colors (for jjdescription, git, etc.)
+      diffAdded.fg = "#00E756"; # green
+      diffChanged.fg = "#FFD242"; # yellow
+      diffRemoved.fg = "#ff3a8e"; # red/pink
+      diffFile.fg = "#9A5FEB"; # purple
     };
     # TODO: get this working
     # extraFiles = {
