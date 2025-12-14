@@ -4,6 +4,17 @@
   # https://github.com/folke/noice.nvim
   # https://nix-community.github.io/nixvim/plugins/noice
   config = {
+    keymaps = [
+      {
+        key = "<leader><leader>";
+        action = "<cmd>Noice dismiss<CR>";
+        mode = "n";
+        options = {
+          silent = true;
+          desc = "Dismiss all notifications";
+        };
+      }
+    ];
     plugins.noice = {
       enable = true;
       lazyLoad.settings.event = "BufEnter";
