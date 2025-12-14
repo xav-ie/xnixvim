@@ -67,6 +67,10 @@
       enable = true;
       lazyLoad.settings.event = "BufEnter";
       lazyLoad.enable = config.lazyLoad.enable;
+      filetypeExtend = {
+        # Enable git commit snippets for jjdescription files (Jujutsu VCS)
+        jjdescription = [ "gitcommit" ];
+      };
       settings = {
         # Press <Tab> to cut visual selection and fill in a snippet
         cut_selection_keys = "<Tab>";
