@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./augment.nix
     ./bgwinch.nix
     ./bufferline.nix
     ./cmp.nix
