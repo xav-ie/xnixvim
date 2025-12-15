@@ -42,7 +42,7 @@
     # ./org-roam-nvim.nix # buggy as hell
     # ./pretty-ts-errors-nvim.nix
     ./render-markdown.nix
-    ./supermaven.nix
+    # ./supermaven.nix
     ./tabscope.nix
     ./telescope
     ./treesitter.nix
