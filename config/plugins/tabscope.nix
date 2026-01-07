@@ -3,6 +3,13 @@ let
   tabscope-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "tabscope.nvim";
     src = inputs.tabscope-nvim;
+    patches = [
+      # https://github.com/backdround/tabscope.nvim/pull/5
+      (pkgs.fetchpatch {
+        url = "https://github.com/backdround/tabscope.nvim/pull/5.patch";
+        hash = "sha256-xVblBIeriCm37EQSt8JgMqi52Ebapw3z4Qezdi3VH60=";
+      })
+    ];
   };
 in
 {
