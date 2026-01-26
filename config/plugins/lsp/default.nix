@@ -301,10 +301,47 @@ in
         lua_ls = {
           enable = true;
         };
-        # https://github.com/oxalica/nil
-        nil_ls = {
+        # https://github.com/nix-community/nixd
+        nixd = {
           enable = true;
-          settings.formatting.command = [ "nixfmt-rfc-style" ];
+          settings =
+            let
+              xnixvim = ''(builtins.getFlake "github:xav-ie/xnixvim")'';
+              dots = ''(builtins.getFlake "github:xav-ie/dots")'';
+            in
+            {
+              nixpkgs.expr = ''import ${xnixvim}.inputs.nixpkgs { }'';
+              formatting.command = [ "${pkgs.nixfmt-rfc-style}/bin/nixfmt" ];
+              options = {
+                # nixvim options
+                nixvim.expr = ''${xnixvim}.packages.''${builtins.currentSystem}.default.options'';
+                # NixOS options (Linux)
+                nixos.expr = ''${dots}.nixosConfigurations.praesidium.options'';
+                # nix-darwin options (macOS)
+                nix-darwin.expr = ''${dots}.darwinConfigurations.nox.options'';
+                # quadlet-nix options
+                quadlet.expr = ''${dots}.nixosConfigurations.praesidium.options.virtualisation.quadlet'';
+                # flake-parts options
+                flake-parts.expr = ''${dots}.debug.options'';
+                flake-parts-perSystem.expr = ''${dots}.currentSystem.options'';
+                # home-manager options (system-aware)
+                home-manager.expr = ''
+                  let
+                    flake = ${dots};
+                    isLinux = builtins.elem builtins.currentSystem [ "x86_64-linux" "aarch64-linux" ];
+                  in
+                    if isLinux
+                    then flake.nixosConfigurations.praesidium.options.home-manager.users.type.getSubOptions []
+                    else flake.darwinConfigurations.nox.options.home-manager.users.type.getSubOptions []
+                '';
+                # sops-nix options (secrets management)
+                sops.expr = ''${dots}.nixosConfigurations.praesidium.options.sops'';
+                # hyprland options (Linux)
+                hyprland.expr = ''${dots}.nixosConfigurations.praesidium.options.programs.hyprland'';
+                # nix-homebrew options (macOS)
+                nix-homebrew.expr = ''${dots}.darwinConfigurations.nox.options.nix-homebrew'';
+              };
+            };
         };
         ruff = {
           enable = true;
