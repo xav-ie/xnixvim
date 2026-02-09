@@ -1,7 +1,8 @@
 # https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
-{ helpers, lib, ... }:
+{ config, helpers, lib, ... }:
 let
   modeKeys = import ./modeKeys.nix { inherit lib; };
+  bufferLineEnabled = config.plugins.bufferline.enable;
 in
 {
   config = {
@@ -23,8 +24,8 @@ in
           "<C-t>x" = ":tabclose <CR>";
           "<C-t>c" = ":tcd ~/";
           # buffer navigation
-          "<tab>" = ":bnext <CR>";
-          "<S-tab>" = ":bprevious <CR>";
+          "<tab>" = if bufferLineEnabled then ":BufferLineCycleNext <CR>" else ":bnext <CR>";
+          "<S-tab>" = if bufferLineEnabled then ":BufferLineCyclePrev <CR>" else ":bprevious <CR>";
           # located in ./plugins/tabscope.nix
           # "<leader>x" = ":bdelete <CR>";
         }

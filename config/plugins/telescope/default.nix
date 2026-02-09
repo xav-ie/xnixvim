@@ -183,9 +183,7 @@
         project = {
           # breaks `nix flake check`
           enable = helpers.enableExceptInTests;
-          package = pkgs.vimPlugins.telescope-project-nvim.overrideAttrs (_: {
-            src = inputs.telescope-project-nvim;
-          });
+          package = pkgs.vimPlugins.telescope-project-nvim;
           settings = {
             base_dirs = [
               {

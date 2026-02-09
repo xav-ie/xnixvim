@@ -126,9 +126,8 @@ in
     log_level = "info";
 
     keymaps = {
-      accept = "<Tab>";
-      partial_accept = "<S-Tab>";
-      trigger = "<C-y>"; # Manually trigger completion
+      accept = "<C-y>";
+      partial_accept = "<C-S-y>";
     };
 
     provider = {
