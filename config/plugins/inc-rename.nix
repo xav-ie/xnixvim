@@ -1,10 +1,12 @@
-{ helpers, ... }:
+{ config, helpers, ... }:
 {
   config = {
     # https://github.com/smjonas/inc-rename.nvim
     # https://nix-community.github.io/nixvim/plugins/inc-rename
     plugins.inc-rename = {
       enable = true;
+      lazyLoad.enable = config.lazyLoad.enable;
+      lazyLoad.settings.cmd = "IncRename";
     };
 
     # Disable noice floating input for inc-rename to prevent overlap at top of file

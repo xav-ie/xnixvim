@@ -7,7 +7,7 @@
     # tabs
     plugins.bufferline = {
       enable = true;
-      lazyLoad.settings.event = "BufEnter";
+      lazyLoad.settings.event = "DeferredUIEnter";
       lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         options = {

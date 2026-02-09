@@ -64,6 +64,22 @@
         "type": "github"
       }
     },
+    "cursortab-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770329231,
+        "narHash": "sha256-PdSfk6v0TB9JHtaH9aCCRj0MXG10TcFHZ9OBd1IEEa0=",
+        "owner": "leonardcser",
+        "repo": "cursortab.nvim",
+        "rev": "c36de0042faa60ebe70cc8bcc5963f74a464fb39",
+        "type": "github"
+      },
+      "original": {
+        "owner": "leonardcser",
+        "repo": "cursortab.nvim",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -532,6 +548,7 @@
         "cmp-luasnip-choice": "cmp-luasnip-choice",
         "coq-lsp": "coq-lsp",
         "coqtail": "coqtail",
+        "cursortab-nvim": "cursortab-nvim",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",

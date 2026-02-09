@@ -1,4 +1,11 @@
-{ helpers, ... }:
+{
+  helpers,
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 {
   # FZF client
   # https://github.com/BenjaminTalbi/my-nixos/blob/a9c5d8ad7680bbfd7a6854cf2420870f2038bb00/home/nixvim/telescope.nix
@@ -6,11 +13,47 @@
   imports = [ ./telescope-symbols-nvim.nix ];
 
   config = {
+    # telescope.nvim ends up in both start/ and opt/ (extensions pull it into
+    # start/ as a dependency). Its plugin/telescope.lua runs after init.lua,
+    # overwriting lz.n's Telescope command stub, so lz.n's after handler
+    # (setup + extensions) never fires. Fix: re-wrap the Telescope command
+    # after plugin scripts via VimEnter to trigger lz.n on first use.
+    # telescope.nvim ends up in both start/ and opt/ (extensions pull it into
+    # start/ as a dependency). Its plugin/telescope.lua runs after init.lua,
+    # overwriting lz.n's Telescope command stub, so lz.n's after handler
+    # (setup + extensions) never fires. Fix: re-wrap the Telescope command
+    # after plugin scripts via VimEnter to trigger lz.n on first use.
+    extraConfigLua = lib.mkIf config.lazyLoad.enable ''
+      vim.api.nvim_create_autocmd("VimEnter", {
+        once = true,
+        callback = function()
+          local function telescope_cmd(opts)
+            require('telescope.command').load_command(unpack(opts.fargs))
+          end
+          local function telescope_complete(_, line)
+            return require('telescope.command').completion(_, line)
+          end
+          local cmd_opts = { nargs = '*', complete = telescope_complete }
+
+          vim.api.nvim_create_user_command('Telescope', function(opts)
+            -- First use: trigger lz.n's after handler (setup + extensions)
+            require('lz.n').trigger_load('telescope.nvim')
+            -- trigger_load cleans up cmd triggers, deleting the command.
+            -- Re-register a permanent one.
+            vim.api.nvim_create_user_command('Telescope', telescope_cmd, cmd_opts)
+            -- Dispatch current invocation
+            telescope_cmd(opts)
+          end, cmd_opts)
+        end,
+      })
+    '';
     # Find, Filter, Preview, Pick.
     # https://github.com/nvim-telescope/telescope.nvim/
     # https://nix-community.github.io/nixvim/plugins/telescope
     plugins.telescope = {
       enable = true;
+      lazyLoad.enable = config.lazyLoad.enable;
+      lazyLoad.settings.cmd = [ "Telescope" ];
       settings = {
         defaults = {
           # see :h telescope.defaults.file_ignore_patterns
@@ -140,10 +183,19 @@
         project = {
           # breaks `nix flake check`
           enable = helpers.enableExceptInTests;
+          package = pkgs.vimPlugins.telescope-project-nvim.overrideAttrs (_: {
+            src = inputs.telescope-project-nvim;
+          });
           settings = {
             base_dirs = [
-              "~/Projects"
-              "~/Work"
+              {
+                path = "~/Projects";
+                max_depth = 2;
+              }
+              {
+                path = "~/Work";
+                max_depth = 2;
+              }
             ];
             # hidden_files = true;
             on_project_selected.__raw = ''

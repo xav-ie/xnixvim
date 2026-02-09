@@ -166,44 +166,41 @@ in
   };
 
   # my config
-  config.programs.minuet-ai = {
-    enabled = true;
-    settings = {
-      # notify = "verbose";
-      # provider = "codestral";
-      # TODO: find a better way to do this lol
-      provider = if pkgs.stdenv.isDarwin then "codestral" else "openai_fim_compatible";
-      context_window = 1000;
-      # no need to throttle on local connections
-      throttle = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
-      debounce = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
-      n_completions = if cfg.settings.provider == "openai_fim_compatible" then 3 else 1;
+  config.programs.minuet-ai.settings = {
+    # notify = "verbose";
+    # provider = "codestral";
+    # TODO: find a better way to do this lol
+    provider = if pkgs.stdenv.isDarwin then "codestral" else "openai_fim_compatible";
+    context_window = 1000;
+    # no need to throttle on local connections
+    throttle = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
+    debounce = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
+    n_completions = if cfg.settings.provider == "openai_fim_compatible" then 3 else 1;
 
-      cmp = {
-        auto_trigger_ft = [ "*" ];
-        enable_auto_complete = true;
-      };
+    cmp = {
+      auto_trigger_ft = [ "*" ];
+      enable_auto_complete = true;
+    };
 
-      provider_options = {
-        openai_fim_compatible = {
-          api_key = "TERM";
-          end_point = "http://localhost:11434/v1/completions";
-          model = "qwen2.5-coder:7b";
-          name = "Ollama";
-          stream = true;
-          optional = {
-            max_tokens = 25;
-          };
+    provider_options = {
+      openai_fim_compatible = {
+        api_key = "TERM";
+        end_point = "http://localhost:11434/v1/completions";
+        model = "qwen2.5-coder:7b";
+        name = "Ollama";
+        stream = true;
+        optional = {
+          max_tokens = 25;
         };
-        codestral = {
-          api_key = "CODESTRAL_API_KEY";
-          end_point = "https://codestral.mistral.ai/v1/fim/completions";
-          model = "codestral-latest";
-          stream = true;
-          optional = {
-            stop = "\n\n";
-            max_tokens = 25;
-          };
+      };
+      codestral = {
+        api_key = "CODESTRAL_API_KEY";
+        end_point = "https://codestral.mistral.ai/v1/fim/completions";
+        model = "codestral-latest";
+        stream = true;
+        optional = {
+          stop = "\n\n";
+          max_tokens = 25;
         };
       };
     };

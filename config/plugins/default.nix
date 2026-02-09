@@ -6,12 +6,12 @@
 }:
 {
   imports = [
-    ./augment.nix
     ./bgwinch.nix
     ./bufferline.nix
     ./cmp.nix
     # ./coq
     ./conform-nvim.nix
+    ./direnv.nix
     ./flash.nix
 
     # ./firenvim.nix
@@ -28,7 +28,7 @@
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
-    ./minuet-ai-nvim.nix
+    ./completion-providers
     ./noice.nix
     ./notify.nix
     ./nvim-colorizer.nix
@@ -57,9 +57,10 @@
 
   # Global lazyLoad on/off
   options.lazyLoad.enable = lib.mkEnableOption "lazyLoad";
-  # currently, makes negligible difference in start-up time with the byte
-  # compilation on. It even worsens start-up with byte compilation off.
-  config.lazyLoad.enable = false;
+  config.lazyLoad.enable = true;
+
+  # AI completion provider: null (disabled), "minuet", or "cursortab"
+  config.programs.ai-completion-provider = "cursortab";
 
   config = {
     plugins = {
@@ -68,17 +69,24 @@
       # smart comment/un-comment
       # https://github.com/numtostr/comment.nvim/
       # https://nix-community.github.io/nixvim/plugins/comment
-      comment.enable = true;
+      comment = {
+        enable = true;
+        lazyLoad.enable = config.lazyLoad.enable;
+        lazyLoad.settings.event = "BufReadPost";
+      };
 
       # luasnip expansions in cmp
       # https://github.com/saadparwaiz1/cmp_luasnip/
       # https://nix-community.github.io/nixvim/plugins/cmp_luasnip
-      cmp_luasnip.enable = true;
-
-      # automatic env updates
-      # https://github.com/direnv/direnv.vim/
-      # https://nix-community.github.io/nixvim/plugins/direnv
-      direnv.enable = true;
+      cmp_luasnip = {
+        enable = true;
+        # Strip luasnip from Nix dependencies so it stays in opt/ (managed
+        # by lz.n) instead of being pulled into start/ where its plugin
+        # scripts add ~7ms to startup.
+        package = pkgs.vimPlugins.cmp_luasnip.overrideAttrs (_: {
+          dependencies = [ ];
+        });
+      };
 
       # amazing snippets for every language
       # https://github.com/rafamadriz/friendly-snippets
@@ -94,7 +102,11 @@
       # ()[]{}...
       # https://github.com/windwp/nvim-autopairs/
       # https://nix-community.github.io/nixvim/plugins/nvim-autopairs
-      nvim-autopairs.enable = true;
+      nvim-autopairs = {
+        enable = true;
+        lazyLoad.enable = config.lazyLoad.enable;
+        lazyLoad.settings.event = "InsertEnter";
+      };
 
       # better folding UI
       # https://github.com/kevinhwang91/nvim-ufo/
@@ -114,31 +126,44 @@
       # todo comment highlighting
       # https://github.com/folke/todo-comments.nvim/
       # https://nix-community.github.io/nixvim/plugins/todo-comments
-      todo-comments.enable = true;
+      todo-comments = {
+        enable = true;
+        lazyLoad.enable = config.lazyLoad.enable;
+        lazyLoad.settings.event = "BufReadPost";
+      };
 
       tmux-navigator.enable = true;
 
       # diagnostics buffer
       # https://github.com/folke/trouble.nvim/
       # https://nix-community.github.io/nixvim/plugins/trouble
-      trouble.enable = true;
+      trouble = {
+        enable = true;
+        lazyLoad.enable = config.lazyLoad.enable;
+        lazyLoad.settings.cmd = "Trouble";
+      };
 
       # https://github.com/windwp/nvim-ts-autotag/
       # https://nix-community.github.io/nixvim/plugins/ts-autotag
       ts-autotag = {
         enable = true;
+        lazyLoad.enable = config.lazyLoad.enable;
+        lazyLoad.settings.event = "BufReadPost";
         settings.aliases.liquid = "html";
       };
 
       # icons 🍥
       # https://github.com/nvim-tree/nvim-web-devicons/
       # https://nix-community.github.io/nixvim/plugins/web-devicons
-      web-devicons.enable = true;
+      web-devicons = {
+        enable = true;
+        lazyLoad.enable = config.lazyLoad.enable;
+        lazyLoad.settings.event = "DeferredUIEnter";
+      };
     };
 
     extraPlugins = with pkgs.vimPlugins; [
       rhubarb # allows easily opening things in github
-      vim-unimpaired # better [] jumps
       vim-smoothie # smooth scrolling
     ];
   };

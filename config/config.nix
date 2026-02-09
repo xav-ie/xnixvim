@@ -106,6 +106,10 @@
       guifont = "Maple Mono NF:h14";
       linebreak = true; # visually wrap lines by word, not char
       number = true; # Show line numbers
+      numberwidth = 3; # Fixed-width number column to prevent jitter on file open
+      showtabline = 2; # Always show tabline to prevent content shift on buffer open
+      tabline = " "; # Blank tabline until bufferline loads
+      signcolumn = "yes"; # Always show sign column to prevent jitter
       relativenumber = false;
       scrolloff = 2; # min number of lines to keep above and below cursor. default is 0
       shiftwidth = 2; # Tab width should be 2
@@ -129,6 +133,7 @@
         configs = true;
         initLua = true;
         nvimRuntime = true;
+        # breaks lazydev type resolution
         plugins = false;
       };
       combinePlugins.enable = true;

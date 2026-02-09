@@ -4,6 +4,12 @@
   # https://github.com/stevearc/oil.nvim/
   # https://nix-community.github.io/nixvim/plugins/oil
   config = {
+    # Disable netrw (using oil instead) to save ~0.65ms startup
+    globals = lib.mkIf config.plugins.oil.enable {
+      loaded_netrwPlugin = 1;
+      loaded_netrw = 1;
+    };
+
     plugins.oil = {
       enable = true;
       lazyLoad = {

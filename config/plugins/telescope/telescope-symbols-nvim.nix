@@ -23,7 +23,13 @@
         telescopeSymbolsBinding =
           keyset: # lua
           ''
-            <cmd>lua require("telescope.builtin").symbols { sources = { '${keyset}' } }<CR>
+            <cmd>lua (function()
+              if not package.loaded['telescope'] then
+                local lzn_ok, lzn = pcall(require, 'lz.n')
+                if lzn_ok then lzn.trigger_load('telescope.nvim') end
+              end
+              require("telescope.builtin").symbols { sources = { '${keyset}' } }
+            end)()<CR>
           '';
       in
       helpers.keymaps.mkKeymaps { options.silent = true; } (nm {

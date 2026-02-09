@@ -16,7 +16,7 @@
       package = pkgs.vimPlugins.gitsigns-nvim.overrideAttrs (_oldAttrs: {
         src = inputs.gitsigns-nvim;
       });
-      lazyLoad.settings.event = "BufEnter";
+      lazyLoad.settings.event = "BufReadPost";
       lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         current_line_blame = true;

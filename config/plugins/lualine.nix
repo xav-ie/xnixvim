@@ -4,6 +4,14 @@
   # https://github.com/nvim-lualine/lualine.nvim/
   # https://nix-community.github.io/nixvim/plugins/lualine
   config = {
+    # Hide statusline until lualine loads to prevent blue flash
+    # https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/ui.lua
+    extraConfigLuaPre = ''
+      vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE", fg = "NONE" })
+      vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE", fg = "NONE" })
+      vim.o.statusline = " "
+      vim.o.laststatus = 0
+    '';
     plugins.lualine = {
       enable = true;
       settings = {

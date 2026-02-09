@@ -65,7 +65,7 @@
 
     plugins.luasnip = {
       enable = true;
-      lazyLoad.settings.event = "BufEnter";
+      lazyLoad.settings.event = "InsertEnter";
       lazyLoad.enable = config.lazyLoad.enable;
       filetypeExtend = {
         # Enable git commit snippets for jjdescription files (Jujutsu VCS)
@@ -116,37 +116,36 @@
     # TODO: does this behave the same as `cut_selection_keys`?
     extraConfigLua = # lua
       ''
-        local ls = require("luasnip")
-        local c = ls.choice_node
-        local d = ls.dynamic_node
-        local f = ls.function_node
-        local i = ls.insert_node
-        local r = ls.restore_node
-        local s = ls.snippet
-        local sn = ls.snippet_node
-        local t = ls.text_node
-        local extras = require("luasnip.extras")
-        local rep = extras.rep
-        local fmt = require("luasnip.extras.fmt").fmt
-        local fmta = require("luasnip.extras.fmt").fmta
-        local postfix = require("luasnip.extras.postfix").postfix
+        vim.api.nvim_create_autocmd("InsertEnter", {
+          once = true,
+          callback = function()
+            local ls = require("luasnip")
+            local c = ls.choice_node
+            local d = ls.dynamic_node
+            local f = ls.function_node
+            local i = ls.insert_node
+            local r = ls.restore_node
+            local s = ls.snippet
+            local sn = ls.snippet_node
+            local t = ls.text_node
+            local extras = require("luasnip.extras")
+            local rep = extras.rep
+            local fmt = require("luasnip.extras.fmt").fmt
+            local fmta = require("luasnip.extras.fmt").fmta
+            local postfix = require("luasnip.extras.postfix").postfix
 
-        -- This is the `get_visual` function I've been talking about.
-        -- ----------------------------------------------------------------------------
-        -- Summary: When `LS_SELECT_RAW` is populated with a visual selection, the function
-        -- returns an insert node whose initial text is set to the visual selection.
-        -- When `LS_SELECT_RAW` is empty, the function simply returns an empty insert node.
-        local get_visual = function(_, parent)
-          if (#parent.snippet.env.LS_SELECT_RAW > 0) then
-            return sn(nil, i(1, parent.snippet.env.LS_SELECT_RAW))
-          else  -- If LS_SELECT_RAW is empty, return a blank insert node
-            return sn(nil, i(1))
-          end
-        end
+            -- Summary: When `LS_SELECT_RAW` is populated with a visual selection, the function
+            -- returns an insert node whose initial text is set to the visual selection.
+            -- When `LS_SELECT_RAW` is empty, the function simply returns an empty insert node.
+            local get_visual = function(_, parent)
+              if (#parent.snippet.env.LS_SELECT_RAW > 0) then
+                return sn(nil, i(1, parent.snippet.env.LS_SELECT_RAW))
+              else  -- If LS_SELECT_RAW is empty, return a blank insert node
+                return sn(nil, i(1))
+              end
+            end
 
-
-        -- Example snippet that uses selected text
-        ls.add_snippets("all", {
+            ls.add_snippets("all", {
           s({
               trig = "tip",
               dscr = "Optional information to help a user be more successful.",
@@ -333,6 +332,8 @@
               end
             end),
           }),
+            })
+          end,
         })
       '';
   };

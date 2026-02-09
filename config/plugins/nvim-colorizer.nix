@@ -1,9 +1,28 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # colors in Neovim
   # https://github.com/catgoose/nvim-colorizer.lua/
   # https://nix-community.github.io/nixvim/plugins/colorizer
   config = {
+    # colorizer attaches via FileType autocmd, but lz.n's BufReadPost trigger
+    # fires before FileType. Schedule ColorizerAttachToBuffer for first buffer.
+    extraConfigLua = lib.mkIf config.lazyLoad.enable ''
+      vim.api.nvim_create_autocmd("BufReadPost", {
+        once = true,
+        callback = function()
+          vim.schedule(function()
+            if vim.fn.exists(":ColorizerAttachToBuffer") == 2 then
+              vim.cmd("ColorizerAttachToBuffer")
+            end
+          end)
+        end,
+      })
+    '';
     plugins.colorizer = {
       enable = true;
       package = pkgs.vimPlugins.nvim-colorizer-lua.overrideAttrs (_: {
@@ -14,7 +33,7 @@
           sha256 = "sha256-1faAhmHrYhCyeVc4vRaRWC1OW38POjTEwORjtnRdoV4=";
         };
       });
-      lazyLoad.settings.event = "BufEnter";
+      lazyLoad.settings.event = "BufReadPost";
       lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         user_default_options = {

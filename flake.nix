@@ -14,14 +14,18 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     # vendored
-    vscoq.flake = true;
-    vscoq.url = "github:rocq-prover/vscoq";
     bgwinch.flake = false;
     bgwinch.url = "github:will/bgwinch.nvim";
+    cmp-luasnip-choice.flake = false;
+    cmp-luasnip-choice.url = "github:L3MON4D3/cmp-luasnip-choice";
     coq-lsp.flake = false;
     coq-lsp.url = "github:tomtomjhj/coq-lsp.nvim";
     coqtail.flake = false;
     coqtail.url = "github:whonore/Coqtail";
+    cursortab-nvim.flake = false;
+    cursortab-nvim.url = "github:leonardcser/cursortab.nvim";
+    gitsigns-nvim.flake = false;
+    gitsigns-nvim.url = "github:lewis6991/gitsigns.nvim/pull/1400/head";
     minuet-ai-nvim.flake = false;
     minuet-ai-nvim.url = "github:milanglacier/minuet-ai.nvim";
     oatmeal.flake = false;
@@ -34,20 +38,17 @@
     org-roam-nvim.url = "github:chipsenkbeil/org-roam.nvim";
     orgmode.flake = false;
     orgmode.url = "github:nvim-orgmode/orgmode";
+    pretty-ts-errors-nvim.flake = false;
+    pretty-ts-errors-nvim.url = "github:youyoumu/pretty-ts-errors.nvim";
     schemastore-nvim.flake = false;
     schemastore-nvim.url = "github:b0o/SchemaStore.nvim";
     tabscope-nvim.flake = false;
     tabscope-nvim.url = "github:backdround/tabscope.nvim";
     vim-guise.flake = false;
     vim-guise.url = "github:lambdalisue/vim-guise";
+    vscoq.url = "github:rocq-prover/vscoq";
     witt-neovim.flake = false;
     witt-neovim.url = "github:typed-rocks/witt-neovim";
-    cmp-luasnip-choice.url = "github:L3MON4D3/cmp-luasnip-choice";
-    cmp-luasnip-choice.flake = false;
-    gitsigns-nvim.url = "github:lewis6991/gitsigns.nvim/pull/1400/head";
-    gitsigns-nvim.flake = false;
-    pretty-ts-errors-nvim.url = "github:youyoumu/pretty-ts-errors.nvim";
-    pretty-ts-errors-nvim.flake = false;
   };
 
   outputs =

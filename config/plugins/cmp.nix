@@ -1,10 +1,70 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  aiProvider = config.programs.ai-completion-provider;
+
+  # Lazy variant of autoEnableSources: adds cmp source plugins as optional
+  # (opt/) so they load with cmp on InsertEnter instead of at startup.
+  # Uses nixvim's cmpSourcePlugins mapping directly.
+  enabledSourceNames = map (s: s.name) config.plugins.cmp.settings.sources;
+
+  # Sources managed separately (e.g. with custom package overrides)
+  excludedSources = [ "luasnip" ];
+
+  lazySourcePlugins = lib.filter (p: p != null) (
+    map (
+      name:
+      let
+        pluginAttr = config.cmpSourcePlugins.${name} or null;
+      in
+      if
+        pluginAttr != null
+        && !(lib.elem name excludedSources)
+        && builtins.hasAttr pluginAttr pkgs.vimPlugins
+      then
+        {
+          plugin = pkgs.vimPlugins.${pluginAttr};
+          optional = true;
+        }
+      else
+        null
+    ) enabledSourceNames
+  );
+in
 {
   # imports = [
   #   ./cmp-luasnip-choice.nix
   # ];
 
   config = {
+    # Stub cmp module early so after/plugin/cmp_*.lua scripts don't error
+    # at startup when cmp is lazy-loaded via lz.n. The stub is overwritten
+    # when the real cmp loads on InsertEnter.
+    # See: https://github.com/hrsh7th/nvim-cmp/issues/2021
+    extraConfigLuaPre = lib.mkIf config.lazyLoad.enable ''
+      local _cmp_stub = function()
+        return setmetatable({}, {
+          __index = function() return function() end end
+        })
+      end
+      package.preload['cmp'] = _cmp_stub
+      package.preload['cmp_luasnip'] = _cmp_stub
+    '';
+
+    # Add cmp source plugins as optional (opt/) so they don't load at startup
+    extraPlugins = lib.mkIf config.lazyLoad.enable lazySourcePlugins;
+
+    # Restore cmp-nvim-lsp capabilities (normally set by autoEnableSources)
+    # packadd first since the plugin is in opt/ for lazy loading
+    plugins.lsp.capabilities = lib.mkIf (lib.elem "nvim_lsp" enabledSourceNames) ''
+      vim.cmd.packadd("cmp-nvim-lsp")
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+    '';
+
     # completions
     # https://github.com/hrsh7th/nvim-cmp
     # https://nix-community.github.io/nixvim/plugins/cmp
@@ -12,13 +72,37 @@
       enable = true;
       lazyLoad.settings.event = "InsertEnter";
       lazyLoad.enable = config.lazyLoad.enable;
-      # only works when sources is not set with __raw
-      autoEnableSources = true;
+      # Clear the cmp stub before setup so require('cmp') loads the real module
+      luaConfig.pre = ''
+        package.loaded['cmp'] = nil
+        package.preload['cmp'] = nil
+      '';
+      # lz.n's packadd doesn't source after/plugin scripts post-startup,
+      # so we re-source them after cmp loads.
+      # See: https://github.com/hrsh7th/nvim-cmp/issues/2021
+      luaConfig.post = ''
+        -- Clear cached cmp source modules and preload stubs
+        for name, _ in pairs(package.loaded) do
+          if name:match('^cmp_') then
+            package.loaded[name] = nil
+          end
+        end
+        for name, _ in pairs(package.preload) do
+          if name:match('^cmp_') then
+            package.preload[name] = nil
+          end
+        end
+        vim.cmd("runtime! after/plugin/cmp_*.lua")
+      '';
+      # Disabled — we manually add sources as optional plugins below
+      # so they don't load at startup from start/
+      autoEnableSources = false;
       settings = {
         sources = [
-          # TODO: how to dynamically add sources?
           { name = "nvim_lsp"; }
-          { name = "minuet"; }
+        ]
+        ++ lib.optional (aiProvider == "minuet") { name = "minuet"; }
+        ++ [
           # { name = "codeium"; }
           { name = "luasnip"; }
           # TODO: only add iff cmp-luasnip-choice enabled
@@ -36,14 +120,19 @@
         # wait 250ms before trying to reach out to minuet
         performance.fetching_timeout = 50;
         mapping = {
-          "<A-y>" = "require('minuet').make_cmp_map()";
           "<C-u>" = "cmp.mapping.scroll_docs(-3)";
           "<C-d>" = "cmp.mapping.scroll_docs(3)";
           "<C-Space>" = "cmp.mapping.complete()";
-          "<tab>" = "cmp.mapping.close()";
           "<c-n>" = "cmp.mapping.select_next_item({})";
           "<c-p>" = "cmp.mapping.select_prev_item({})";
           "<CR>" = "cmp.mapping.confirm({ select = true })";
+        }
+        # Tab is used by cursortab for accepting completions
+        // lib.optionalAttrs (aiProvider != "cursortab") {
+          "<tab>" = "cmp.mapping.close()";
+        }
+        // lib.optionalAttrs (aiProvider == "minuet") {
+          "<A-y>" = "require('minuet').make_cmp_map()";
         };
         snippet.expand = # lua
           ''

@@ -280,20 +280,6 @@ in
         jsonls = {
           enable = true;
           extraOptions.settings.json = {
-            schemas.__raw = # lua
-              ''
-                require('schemastore').json.schemas {
-                  replace = {
-                    -- Micro editor config is currently too greedy
-                    ['A micro editor config'] = {
-                      description = "A micro editor config",
-                      fileMatch = { "settings.json" },
-                      name = "A micro editor config",
-                      url = "https://json.schemastore.org/micro.json"
-                    },
-                  },
-                }
-              '';
             validate.enable = true;
           };
         };
