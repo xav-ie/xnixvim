@@ -1,12 +1,19 @@
-{ config, helpers, lib, ... }:
+{
+  config,
+  helpers,
+  lib,
+  ...
+}:
 let
   modeKeys = import ../modeKeys.nix { inherit lib; };
 in
 {
   config = {
-    keymaps = helpers.keymaps.mkKeymaps { options.silent = true; } (modeKeys.nm {
-      "<C-b>" = ":BufferLinePick <CR>";
-    });
+    keymaps = helpers.keymaps.mkKeymaps { options.silent = true; } (
+      modeKeys.nm {
+        "<C-b>" = ":BufferLinePick <CR>";
+      }
+    );
     # TODO: consider barbar.enable instead
     # https://github.com/akinsho/bufferline.nvim
     # https://nix-community.github.io/nixvim/plugins/bufferline

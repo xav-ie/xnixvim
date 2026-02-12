@@ -21,7 +21,10 @@
           fetchSubmodules = true;
         };
       });
-      lazyLoad.settings.event = "BufReadPost";
+      lazyLoad.settings.event = [
+        "BufReadPost"
+        "BufNewFile"
+      ];
       lazyLoad.enable = config.lazyLoad.enable;
       # Map of file-type to formatters
       settings = {

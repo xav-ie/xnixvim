@@ -12,7 +12,7 @@
     # colorizer attaches via FileType autocmd, but lz.n's BufReadPost trigger
     # fires before FileType. Schedule ColorizerAttachToBuffer for first buffer.
     extraConfigLua = lib.mkIf config.lazyLoad.enable ''
-      vim.api.nvim_create_autocmd("BufReadPost", {
+      vim.api.nvim_create_autocmd({"BufReadPost", "BufNewFile"}, {
         once = true,
         callback = function()
           vim.schedule(function()
@@ -33,7 +33,10 @@
           sha256 = "sha256-1faAhmHrYhCyeVc4vRaRWC1OW38POjTEwORjtnRdoV4=";
         };
       });
-      lazyLoad.settings.event = "BufReadPost";
+      lazyLoad.settings.event = [
+        "BufReadPost"
+        "BufNewFile"
+      ];
       lazyLoad.enable = config.lazyLoad.enable;
       settings = {
         user_default_options = {

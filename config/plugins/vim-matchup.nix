@@ -18,7 +18,10 @@
     plugins.lz-n.plugins = [
       {
         "__unkeyed-1" = "vim-matchup";
-        event = [ "BufReadPost" ];
+        event = [
+          "BufReadPost"
+          "BufNewFile"
+        ];
       }
     ];
     # Keep treesitter matchup integration

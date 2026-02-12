@@ -7,7 +7,10 @@
     # AST syntax highlighting
     plugins.treesitter = {
       enable = true;
-      lazyLoad.settings.event = "BufReadPost";
+      lazyLoad.settings.event = [
+        "BufReadPost"
+        "BufNewFile"
+      ];
       lazyLoad.enable = config.lazyLoad.enable;
       # TODO: figure out how to make this not open files pre-folded
       # fold based on AST

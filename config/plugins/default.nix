@@ -23,8 +23,6 @@
     ./lazydev.nix
     ./lspkind.nix
     ./lsp-lines.nix
-    # TODO: optimize
-    # adds 50ms to startup!
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
@@ -72,7 +70,10 @@
       comment = {
         enable = true;
         lazyLoad.enable = config.lazyLoad.enable;
-        lazyLoad.settings.event = "BufReadPost";
+        lazyLoad.settings.event = [
+          "BufReadPost"
+          "BufNewFile"
+        ];
       };
 
       # luasnip expansions in cmp
@@ -129,7 +130,10 @@
       todo-comments = {
         enable = true;
         lazyLoad.enable = config.lazyLoad.enable;
-        lazyLoad.settings.event = "BufReadPost";
+        lazyLoad.settings.event = [
+          "BufReadPost"
+          "BufNewFile"
+        ];
       };
 
       tmux-navigator.enable = true;
@@ -148,7 +152,10 @@
       ts-autotag = {
         enable = true;
         lazyLoad.enable = config.lazyLoad.enable;
-        lazyLoad.settings.event = "BufReadPost";
+        lazyLoad.settings.event = [
+          "BufReadPost"
+          "BufNewFile"
+        ];
         settings.aliases.liquid = "html";
       };
 

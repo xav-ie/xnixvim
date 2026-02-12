@@ -1,5 +1,10 @@
 # https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
-{ config, helpers, lib, ... }:
+{
+  config,
+  helpers,
+  lib,
+  ...
+}:
 let
   modeKeys = import ./modeKeys.nix { inherit lib; };
   bufferLineEnabled = config.plugins.bufferline.enable;
