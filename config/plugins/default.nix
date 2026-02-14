@@ -16,6 +16,7 @@
 
     # ./firenvim.nix
     ./fugitive.nix
+    ./git-heat.nix
     ./gitsigns.nix
     ./inc-rename.nix
     ./jjdescription.nix
