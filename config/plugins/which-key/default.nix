@@ -3,15 +3,16 @@ _: {
   # https://github.com/folke/which-key.nvim/
   # https://nix-community.github.io/nixvim/plugins/which-key
   config = {
-    plugins.which-key.enable = true;
+    plugins.which-key = {
+      enable = true;
+      settings.delay = 1000;
+    };
 
     # Stolen from:
     # https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/which-key.nix
     extraConfigLuaPost = # lua
       ''
         local wk = require("which-key")
-        wk.setup {
-        }
 
         wk.add {
           { "<leader>c", group = "[c]opy", icon = " ", },

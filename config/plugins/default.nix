@@ -18,6 +18,7 @@
     ./fugitive.nix
     ./git-heat.nix
     ./gitsigns.nix
+    ./himalaya.nix
     ./inc-rename.nix
     ./jjdescription.nix
     ./lsp

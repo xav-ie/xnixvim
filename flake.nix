@@ -47,6 +47,8 @@
     vim-guise.flake = false;
     vim-guise.url = "github:lambdalisue/vim-guise";
     vscoq.url = "github:rocq-prover/vscoq";
+    himalaya-nvim.flake = false;
+    himalaya-nvim.url = "github:xav-ie/himalaya-nvim";
     witt-neovim.flake = false;
     witt-neovim.url = "github:typed-rocks/witt-neovim";
   };

@@ -187,6 +187,22 @@
         "type": "github"
       }
     },
+    "himalaya-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772195100,
+        "narHash": "sha256-kQLinGdQXqYzODWWbPGMMR+1j6nmXOX5hEXoUVsTGGk=",
+        "owner": "xav-ie",
+        "repo": "himalaya-nvim",
+        "rev": "906dead6bb43d8a314d8588cd1f1572126b89607",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xav-ie",
+        "repo": "himalaya-nvim",
+        "type": "github"
+      }
+    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -552,6 +568,7 @@
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
+        "himalaya-nvim": "himalaya-nvim",
         "minuet-ai-nvim": "minuet-ai-nvim",
         "nix-auto-follow": "nix-auto-follow",
         "nixpkgs": "nixpkgs_2",
