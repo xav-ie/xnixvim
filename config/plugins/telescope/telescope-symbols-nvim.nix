@@ -21,16 +21,8 @@
           );
         nm = modeKeys [ "n" ];
         telescopeSymbolsBinding =
-          keyset: # lua
-          ''
-            <cmd>lua (function()
-              if not package.loaded['telescope'] then
-                local lzn_ok, lzn = pcall(require, 'lz.n')
-                if lzn_ok then lzn.trigger_load('telescope.nvim') end
-              end
-              require("telescope.builtin").symbols { sources = { '${keyset}' } }
-            end)()<CR>
-          '';
+          keyset:
+          "<cmd>lua require('lz.n').trigger_load('telescope.nvim'); require('telescope.builtin').symbols({ sources = { '${keyset}' } })<CR>";
       in
       helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
         # TODO: somehow prefix the keymap description properly
