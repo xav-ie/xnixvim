@@ -14,6 +14,7 @@ let
     version = "unstable";
     src = "${inputs.cursortab-nvim}/server";
     vendorHash = "sha256-jarX9JbCICHDhwQk36AMR8DbtZtWfWYR+y42ZhP1rQ0=";
+    doCheck = false;
   };
 
   cursortab-nvim = pkgs.vimUtils.buildVimPlugin {

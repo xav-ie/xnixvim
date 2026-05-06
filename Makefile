@@ -17,7 +17,7 @@ default:
 .PHONY: build
 build:
 	@OLD_PATH=$$(readlink -f ./result 2>/dev/null || echo ""); \
-	$(nom) build --option access-tokens "github.com=$(gh auth token)"; \
+	$(nom) build --option access-tokens "github.com=$$(gh auth token)"; \
 	if [ -n "$$OLD_PATH" ]; then \
 		echo -e "\n=== Comparing derivations ===" && \
 		$(dix) "$$OLD_PATH" ./result; \
