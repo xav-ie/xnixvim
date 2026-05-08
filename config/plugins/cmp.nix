@@ -15,7 +15,7 @@ let
   # Sources managed separately (e.g. with custom package overrides)
   excludedSources = [ "luasnip" ];
 
-  lazySourcePlugins = lib.filter (p: p != null) (
+  enabledLazySources = lib.filter (p: p != null) (
     map (
       name:
       let
@@ -27,13 +27,21 @@ let
         && builtins.hasAttr pluginAttr pkgs.vimPlugins
       then
         {
-          plugin = pkgs.vimPlugins.${pluginAttr};
-          optional = true;
+          inherit pluginAttr;
+          package = pkgs.vimPlugins.${pluginAttr};
         }
       else
         null
     ) enabledSourceNames
   );
+
+  lazySourcePlugins = map (s: {
+    plugin = s.package;
+    optional = true;
+  }) enabledLazySources;
+
+  # Names to :packadd post-load. pname matches the directory under opt/.
+  lazySourcePackaddNames = map (s: s.package.pname or s.pluginAttr) enabledLazySources;
 in
 {
   # imports = [
@@ -91,6 +99,13 @@ in
           if name:match('^cmp_') then
             package.preload[name] = nil
           end
+        end
+        -- :packadd each lazy cmp source so its lua/ dir is on rtp before
+        -- runtime! sources its after/plugin/cmp_*.lua registration script.
+        for _, name in ipairs(${
+          "{ " + lib.concatMapStringsSep ", " (n: ''"${n}"'') lazySourcePackaddNames + " }"
+        }) do
+          pcall(vim.cmd.packadd, name)
         end
         vim.cmd("runtime! after/plugin/cmp_*.lua")
       '';

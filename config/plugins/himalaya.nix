@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   himalaya-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "himalaya-nvim";
@@ -8,7 +13,7 @@ let
 
 in
 {
-  config = {
+  config = lib.mkIf pkgs.stdenv.isLinux {
     extraPlugins = [ himalaya-nvim ];
 
     extraConfigLua = ''

@@ -129,11 +129,13 @@ in
     keymaps = {
       accept = "<C-y>";
       partial_accept = "<C-S-y>";
+      trigger = "<C-/>";
     };
 
     provider = {
       type = "sweep";
-      url = "https://vllm.lalala.casa";
+      url = "https://llama.lalala.casa";
+      temperature = 0.2;
     };
 
     ui = {
@@ -145,6 +147,11 @@ in
     behavior = {
       idle_completion_delay = 50;
       text_change_debounce = 50;
+      cursor_prediction = {
+        enabled = true;
+        auto_advance = true;
+        proximity_threshold = 0;
+      };
     };
   };
 
@@ -153,9 +160,16 @@ in
     optional = true;
   };
 
+  # Author's README explicitly recommends lazy = false ("the server is already
+  # lazy loaded"). Loading on BufReadPost/BufNewFile lets the daemon spawn and
+  # warm up while you're still in normal mode reading the file, so the first
+  # InsertEnter doesn't pay daemon-spawn + first-request cold-start.
   config.plugins.lz-n.plugins = lib.optional cfg.enabled {
     "__unkeyed-1" = "cursortab.nvim";
-    event = [ "InsertEnter" ];
+    event = [
+      "BufReadPost"
+      "BufNewFile"
+    ];
     after = # lua
       ''
         function()

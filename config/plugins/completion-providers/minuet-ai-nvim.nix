@@ -29,12 +29,50 @@ let
     ];
   };
   cfg = config.programs.minuet-ai;
+
+  profiles = {
+    snappy = {
+      throttle = 200;
+      debounce = 80;
+      max_tokens = 64;
+      context_window = 1500;
+    };
+    maximal = {
+      throttle = 0;
+      debounce = 50;
+      max_tokens = 128;
+      context_window = 2000;
+    };
+    conservative = {
+      throttle = 500;
+      debounce = 200;
+      max_tokens = 25;
+      context_window = 1000;
+    };
+  };
+
+  formatProfile =
+    name: p:
+    "- ${name}: throttle ${toString p.throttle}ms, debounce ${toString p.debounce}ms, "
+    + "max_tokens ${toString p.max_tokens}, context_window ${toString p.context_window}";
+
+  profileDoc = lib.concatStringsSep "\n" (lib.mapAttrsToList formatProfile profiles);
+
+  active = profiles.${cfg.profile};
 in
 {
   # AI Code Completion
   # https://github.com/milanglacier/minuet-ai.nvim
   options.programs.minuet-ai = {
     enabled = lib.mkEnableOption "minuet-ai";
+    profile = lib.mkOption {
+      type = lib.types.enum (lib.attrNames profiles);
+      default = "snappy";
+      description = ''
+        Speed/cost profile for hosted providers (currently codestral).
+        ${profileDoc}
+      '';
+    };
     settings = lib.mkOption {
       type = lib.types.submodule {
         options =
@@ -171,10 +209,11 @@ in
     # provider = "codestral";
     # TODO: find a better way to do this lol
     provider = if pkgs.stdenv.isDarwin then "codestral" else "openai_fim_compatible";
-    context_window = 1000;
-    # no need to throttle on local connections
-    throttle = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
-    debounce = if cfg.settings.provider == "openai_fim_compatible" then 0 else null;
+    # Local Ollama overrides the profile (no network → no throttling needed).
+    context_window =
+      if cfg.settings.provider == "openai_fim_compatible" then 1000 else active.context_window;
+    throttle = if cfg.settings.provider == "openai_fim_compatible" then 0 else active.throttle;
+    debounce = if cfg.settings.provider == "openai_fim_compatible" then 0 else active.debounce;
     n_completions = if cfg.settings.provider == "openai_fim_compatible" then 3 else 1;
 
     cmp = {
@@ -200,17 +239,27 @@ in
         stream = true;
         optional = {
           stop = "\n\n";
-          max_tokens = 25;
+          inherit (active) max_tokens;
         };
       };
     };
   };
 
-  config.extraConfigLua =
+  # minuet's setup() registers a cmp source which captures `local cmp =
+  # require('cmp')` inside minuet/cmp.lua. If we ran setup at startup while
+  # cmp is stubbed (lazy-loading), that local would be permanently bound to
+  # the stub. Defer setup to cmp's post-load hook so it sees real cmp.
+  config.plugins.cmp.luaConfig.post = lib.mkAfter (
     lib.optionalString cfg.enabled # lua
       ''
+        for k, _ in pairs(package.loaded) do
+          if k:match('^minuet') then
+            package.loaded[k] = nil
+          end
+        end
         require'minuet'.setup ${lib.nixvim.toLuaObject cfg.settings}
-      '';
+      ''
+  );
 
   config.extraPlugins = lib.optional cfg.enabled minuet-ai-nvim;
 }
