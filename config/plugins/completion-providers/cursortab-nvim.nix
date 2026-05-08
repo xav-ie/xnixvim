@@ -13,7 +13,7 @@ let
     pname = "cursortab-server";
     version = "unstable";
     src = "${inputs.cursortab-nvim}/server";
-    vendorHash = "sha256-jarX9JbCICHDhwQk36AMR8DbtZtWfWYR+y42ZhP1rQ0=";
+    vendorHash = "sha256-IvJw+89eZ5Ghppjt0KT9IRL8XPyU6XbiAYL3axQO6u4=";
     doCheck = false;
   };
 
@@ -23,10 +23,19 @@ let
     src = inputs.cursortab-nvim;
     # Patch to use direct Nix store path for server binary
     # (nixvim bundles plugins into plugin-pack, losing the server/ directory)
+    # Also guard cmp.get_config() returning nil — upstream bug as of 6a5c210
+    # (cursortab loads on BufReadPost before cmp.setup() has run).
     postPatch = ''
       substituteInPlace lua/cursortab/daemon.lua \
         --replace-fail 'local binary_path = plugin_dir .. "/server/" .. binary_name' \
                        'local binary_path = "${cursortab-server}/bin/cursortab"'
+      substituteInPlace lua/cursortab/init.lua \
+        --replace-fail 'local cmp_config = cmp.get_config()
+		cmp.setup({ enabled = wrap_enabled(cmp_config.enabled) })' \
+                       'local cmp_config = cmp.get_config()
+		if cmp_config then
+			cmp.setup({ enabled = wrap_enabled(cmp_config.enabled) })
+		end'
     '';
     nvimRequireCheck = [ "cursortab" ];
   };

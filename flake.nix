@@ -47,6 +47,11 @@
     vim-guise.flake = false;
     vim-guise.url = "github:lambdalisue/vim-guise";
     vscoq.url = "github:rocq-prover/vscoq";
+    # Pin vscoq's nixpkgs: the latest nixpkgs has a broken coq.ocamlPackages
+    # (yojson 2.2.2 masquerading as 3.0.0) that breaks vscoq's build. Pin to
+    # the last revision where it built successfully.
+    vscoq.inputs.nixpkgs.url = "github:NixOS/nixpkgs/f6b44b2401525650256b977063dbcf830f762369";
+    vscoq.inputs.nixpkgs-unstable.follows = "vscoq/nixpkgs";
     himalaya-nvim.flake = false;
     himalaya-nvim.url = "github:xav-ie/himalaya-nvim";
     witt-neovim.flake = false;

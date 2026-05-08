@@ -1,10 +1,24 @@
 local M = {}
 
-local ts_utils = require("nvim-treesitter.ts_utils")
+local function get_named_children(node)
+	local children = {}
+	for i = 0, node:named_child_count() - 1 do
+		table.insert(children, node:named_child(i))
+	end
+	return children
+end
+
+local function get_node_text_first_line(node)
+	if node == nil then
+		return ""
+	end
+	local text = vim.treesitter.get_node_text(node, 0)
+	return text:match("([^\n]*)") or ""
+end
 
 -- Function to sort the markdown table by the current column
 function M.sort_markdown_table_by_current_column(reverse)
-	local current_node = ts_utils.get_node_at_cursor()
+	local current_node = vim.treesitter.get_node()
 
 	if current_node == nil or current_node:type() ~= "inline" then
 		print("Node is not an inline node, exiting.")
@@ -33,7 +47,7 @@ function M.sort_markdown_table_by_current_column(reverse)
 	end
 
 	-- Get the column cells for the current row
-	local column_cells = ts_utils.get_named_children(row_node)
+	local column_cells = get_named_children(row_node)
 
 	-- Find the column index of the current inline node
 	local col_index = -1
@@ -73,12 +87,8 @@ function M.sort_markdown_table_by_current_column(reverse)
 
 	-- Sort the rows based on the column index
 	table.sort(rows, function(a, b)
-		local field_a_arr = ts_utils.get_node_text(a:named_child(col_index - 1)) or ""
-		local field_b_arr = ts_utils.get_node_text(b:named_child(col_index - 1)) or ""
-
-		-- Ensure that field_a and field_b are strings
-		local field_a = tostring(field_a_arr[1])
-		local field_b = tostring(field_b_arr[1])
+		local field_a = get_node_text_first_line(a:named_child(col_index - 1))
+		local field_b = get_node_text_first_line(b:named_child(col_index - 1))
 
 		-- Check if the fields are numeric
 		local num_a = tonumber(field_a)
@@ -112,7 +122,7 @@ function M.sort_markdown_table_by_current_column(reverse)
 	-- Set the sorted lines back to the buffer, starting after the header and delimiter rows
 	local new_lines = {}
 	for i = 1, #rows do
-		table.insert(new_lines, ts_utils.get_node_text(rows[i])[1])
+		table.insert(new_lines, get_node_text_first_line(rows[i]))
 	end
 	local start_line = parent:start() + 3
 	vim.fn.setline(start_line, new_lines)

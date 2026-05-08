@@ -35,7 +35,7 @@
                 -- Try to find in project
                 "node_modules/.bin/prettier",
                 -- Absolute as fallback
-                "${lib.getExe pkgs.nodePackages.prettier}",
+                "${lib.getExe pkgs.prettier}",
               }, "prettier")
             '';
             # Fixes issue of sub-git repos using greater git repo as root.

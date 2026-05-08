@@ -53,7 +53,6 @@
         jq
         jsdoc
         json
-        jsonc
         kdl
         latex
         liquid
