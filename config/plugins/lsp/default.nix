@@ -16,14 +16,42 @@ in
   # https://github.com/neovim/nvim-lspconfig
   # https://nix-community.github.io/nixvim/plugins/lsp
   config = {
-    extraConfigLua =
-      # lua
+    extraConfigLua = # lua
       ''
-        -- add border to diagnostic windows
-        vim.diagnostic.config {
-          float = { border = "single" },
-        }
+        -- virtual_lines anchors messages to the diagnostic's column, which
+        -- clips when the source line is wider than the window. Use a float
+        -- on CursorHold instead — always visible, never clipped.
+        vim.diagnostic.config({
+          virtual_text = false,
+          virtual_lines = false,
+          float = {
+            scope = "cursor",
+            -- focusable so the `K` mapping can step into the float to scroll long
+            -- messages — its window loop skips floats with focusable = false.
+            focusable = true,
+            -- No BufLeave: entering the float leaves the source buffer, and a
+            -- BufLeave close-event would slam the float shut on the way in.
+            close_events = { "CursorMoved", "InsertEnter" },
+            source = "if_many",
+          },
+        })
+
+        vim.api.nvim_create_autocmd("CursorHold", {
+          group = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true }),
+          callback = function()
+            -- Only open if there's actually a diagnostic at the cursor; avoids
+            -- empty floats from triggering on every CursorHold.
+            local line = vim.fn.line(".") - 1
+            if next(vim.diagnostic.get(0, { lnum = line })) then
+              vim.diagnostic.open_float(nil, { focus = false })
+            end
+          end,
+        })
       '';
+
+    # CursorHold fires after 'updatetime' ms of cursor inactivity; default 4s
+    # is too sluggish for diagnostic peeks.
+    opts.updatetime = 500;
 
     plugins.lsp = {
       enable = true;
@@ -108,7 +136,7 @@ in
             key = "<leader>la";
             options.desc = "LSP Code [a]ctions";
             action.__raw = # lua
-              ''function() vim.lsp.buf.code_action() end'';
+              "function() vim.lsp.buf.code_action() end";
           }
           {
             key = "<leader>lc";
@@ -129,19 +157,19 @@ in
             key = "<leader>lf";
             options.desc = "LSP [f]ormatting";
             action.__raw = # lua
-              ''function() vim.lsp.buf.format { async = true } end'';
+              "function() vim.lsp.buf.format { async = true } end";
           }
           {
             key = "<leader>lg";
             options.desc = "LSP Dia[g]nostics";
             action.__raw = # lua
-              ''function() vim.lsp.diagnostic.open_float() end'';
+              "function() vim.lsp.diagnostic.open_float() end";
           }
           {
             key = "<leader>lh";
             options.desc = "LSP Toggle Inlay [h]ints";
             action.__raw = # lua
-              ''function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end'';
+              "function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end";
           }
           {
             key = "<leader>li";
@@ -159,7 +187,7 @@ in
             key = "<leader>ln";
             options.desc = "LSP Re[n]ame";
             action.__raw = # lua
-              ''function() vim.lsp.buf.rename() end'';
+              "function() vim.lsp.buf.rename() end";
           }
         ])
         ++ [
@@ -223,7 +251,7 @@ in
             key = "<leader>th";
             options.desc = "LSP Toggle Inlay [h]ints";
             action.__raw = # lua
-              ''function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end'';
+              "function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end";
           }
         ];
       };
@@ -296,20 +324,20 @@ in
               dots = ''(builtins.getFlake "github:xav-ie/dots")'';
             in
             {
-              nixpkgs.expr = ''import ${xnixvim}.inputs.nixpkgs { }'';
+              nixpkgs.expr = "import ${xnixvim}.inputs.nixpkgs { }";
               formatting.command = [ "${pkgs.nixfmt-rfc-style}/bin/nixfmt" ];
               options = {
                 # nixvim options
-                nixvim.expr = ''${xnixvim}.packages.''${builtins.currentSystem}.default.options'';
+                nixvim.expr = "${xnixvim}.packages.\${builtins.currentSystem}.default.options";
                 # NixOS options (Linux)
-                nixos.expr = ''${dots}.nixosConfigurations.praesidium.options'';
+                nixos.expr = "${dots}.nixosConfigurations.praesidium.options";
                 # nix-darwin options (macOS)
-                nix-darwin.expr = ''${dots}.darwinConfigurations.nox.options'';
+                nix-darwin.expr = "${dots}.darwinConfigurations.nox.options";
                 # quadlet-nix options
-                quadlet.expr = ''${dots}.nixosConfigurations.praesidium.options.virtualisation.quadlet'';
+                quadlet.expr = "${dots}.nixosConfigurations.praesidium.options.virtualisation.quadlet";
                 # flake-parts options
-                flake-parts.expr = ''${dots}.debug.options'';
-                flake-parts-perSystem.expr = ''${dots}.currentSystem.options'';
+                flake-parts.expr = "${dots}.debug.options";
+                flake-parts-perSystem.expr = "${dots}.currentSystem.options";
                 # home-manager options (system-aware)
                 home-manager.expr = ''
                   let
@@ -321,11 +349,11 @@ in
                     else flake.darwinConfigurations.nox.options.home-manager.users.type.getSubOptions []
                 '';
                 # sops-nix options (secrets management)
-                sops.expr = ''${dots}.nixosConfigurations.praesidium.options.sops'';
+                sops.expr = "${dots}.nixosConfigurations.praesidium.options.sops";
                 # hyprland options (Linux)
-                hyprland.expr = ''${dots}.nixosConfigurations.praesidium.options.programs.hyprland'';
+                hyprland.expr = "${dots}.nixosConfigurations.praesidium.options.programs.hyprland";
                 # nix-homebrew options (macOS)
-                nix-homebrew.expr = ''${dots}.darwinConfigurations.nox.options.nix-homebrew'';
+                nix-homebrew.expr = "${dots}.darwinConfigurations.nox.options.nix-homebrew";
               };
             };
         };

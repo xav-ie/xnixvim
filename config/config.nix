@@ -125,6 +125,7 @@
       # corrects command auto-complete to first show the completion list, then further tabs
       # will cause complete auto-complete
       wildmode = "list,full";
+      winborder = "single"; # default border for floating windows
     };
 
     performance = {
