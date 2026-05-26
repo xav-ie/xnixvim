@@ -12,6 +12,7 @@
     # ./coq
     ./conform-nvim.nix
     ./direnv.nix
+    ./fff.nix
     ./flash.nix
 
     # ./firenvim.nix

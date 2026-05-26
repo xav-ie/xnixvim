@@ -123,10 +123,7 @@
           action = "buffers";
           options.desc = "[b]uffers";
         };
-        "<leader>ff" = {
-          action = "find_files";
-          options.desc = "find_[f]iles";
-        };
+        # find_files + live_grep handled by fff (see ../fff.nix)
         "<leader>fi" = {
           action = "git_files";
           options.desc = "g[i]t_files";
@@ -138,10 +135,6 @@
         "<leader>fk" = {
           action = "keymaps";
           options.desc = "[k]eymaps";
-        };
-        "<leader>fl" = {
-          action = "live_grep";
-          options.desc = "[l]ive_grep";
         };
         "<leader>fn" = {
           action = "manix";
