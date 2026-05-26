@@ -7,7 +7,7 @@ let
 in
 {
   config = {
-    extraConfigLua = ''require('git-heat').setup()'';
+    extraConfigLua = "require('git-heat').setup()";
     extraPlugins = [ git-heat ];
   };
 }

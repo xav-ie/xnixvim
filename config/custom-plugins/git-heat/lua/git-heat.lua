@@ -52,38 +52,39 @@ local function get_file(bufnr)
 	return name
 end
 
-local function apply_marks(bufnr, timestamps)
+-- map per-line edit counts onto the sign gradient. heat values are >= 1
+-- (every existing line was added at least once). churn is power-law
+-- distributed, so we map on a log scale to spread the gradient usefully.
+local function apply_heat(bufnr, heat, priority)
 	if not vim.api.nvim_buf_is_valid(bufnr) then
 		return
 	end
 
 	vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 
-	if #timestamps == 0 then
+	if #heat == 0 then
 		return
 	end
 
-	-- find min/max
-	local min_ts, max_ts = math.huge, -math.huge
-	for _, ts in ipairs(timestamps) do
-		if ts < min_ts then
-			min_ts = ts
-		end
-		if ts > max_ts then
-			max_ts = ts
+	local max_heat = 1
+	for _, h in ipairs(heat) do
+		if h > max_heat then
+			max_heat = h
 		end
 	end
+	local denom = math.log(max_heat)
 
-	local range = max_ts - min_ts
-	for lnum, ts in ipairs(timestamps) do
+	for lnum, h in ipairs(heat) do
 		local t
-		if range == 0 then
-			t = 0.5 -- single-commit file: mid-range
+		if denom <= 0 then
+			t = 0 -- every line equally cold (single edit each)
 		else
-			t = (ts - min_ts) / range
+			t = math.log(h) / denom
 		end
-		-- quantize to bucket
 		local bucket = math.floor(t * (NUM_BUCKETS - 1) + 0.5) + 1
+		if bucket < 1 then
+			bucket = 1
+		end
 		if bucket > NUM_BUCKETS then
 			bucket = NUM_BUCKETS
 		end
@@ -91,14 +92,31 @@ local function apply_marks(bufnr, timestamps)
 		pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, lnum - 1, 0, {
 			sign_text = SIGN,
 			sign_hl_group = hl_groups[bucket],
-			priority = 1, -- low priority so gitsigns wins
+			priority = priority or 1, -- low priority so gitsigns wins
 		})
 	end
 
 	cache[bufnr] = true
 end
 
-local function run_blame(bufnr)
+-- table.insert requires 1 <= pos <= #t + 1; clamp to survive index drift
+-- caused by merges / rename gaps in the reconstructed history.
+local function clamp_ins(t, pos)
+	if pos < 1 then
+		return 1
+	end
+	if pos > #t + 1 then
+		return #t + 1
+	end
+	return pos
+end
+
+-- "hotness" = churn: how many times each *current* line has been edited
+-- across history. We replay the file's diffs oldest -> newest, maintaining a
+-- per-line edit count that tracks lines as they move. A line replaced N times
+-- accumulates heat N; a line added once and never touched stays at 1, even if
+-- it is the most recent change. This is the opposite of recency/newness.
+local function run_churn(bufnr)
 	local file = get_file(bufnr)
 	if not file then
 		return
@@ -112,51 +130,88 @@ local function run_blame(bufnr)
 			return -- not tracked
 		end
 
-		vim.system({ "git", "blame", "--line-porcelain", file }, { cwd = dir, text = true }, function(blame_out)
-			if blame_out.code ~= 0 then
-				return
-			end
-
-			local timestamps = {}
-			local now = os.time()
-			local line_idx = 0
-
-			for line in blame_out.stdout:gmatch("[^\n]+") do
-				-- each porcelain block starts with a hash line containing the line number
-				local orig_line, final_line = line:match("^%x+ (%d+) (%d+)")
-				if final_line then
-					line_idx = tonumber(final_line)
+		-- --first-parent --reverse gives a linear oldest->newest patch stream
+		-- whose hunks, applied in order, reconstruct the current file.
+		-- -U0 drops context lines so hunk headers alone drive the bookkeeping.
+		vim.system(
+			{ "git", "log", "--first-parent", "--reverse", "--format=", "-p", "-U0", "--no-color", "--", file },
+			{ cwd = dir, text = true },
+			function(log_out)
+				if log_out.code ~= 0 then
+					return
 				end
 
-				local ts_str = line:match("^author%-time (%d+)")
-				if ts_str then
-					local ts = tonumber(ts_str)
-					-- uncommitted lines have ts=0 or very small; treat as newest
-					if ts == 0 then
-						ts = now
+				local heat = {}
+				-- net lines added by prior hunks within the *current* commit;
+				-- each commit's hunk numbers are relative to its own parent, so
+				-- this resets at every commit (marked by a `diff --git` line).
+				local offset = 0
+
+				for line in log_out.stdout:gmatch("[^\n]+") do
+					if line:match("^diff %-%-git") then
+						offset = 0
 					end
-					timestamps[line_idx] = ts
-				end
-			end
+					-- @@ -old_start[,old_len] +new_start[,new_len] @@
+					local os_, ol_, nl_ = line:match("^@@ %-(%d+),?(%d*) %+%d+,?(%d*) @@")
+					if os_ then
+						os_ = tonumber(os_)
+						ol_ = (ol_ == "") and 1 or tonumber(ol_)
+						nl_ = (nl_ == "") and 1 or tonumber(nl_)
 
-			-- convert sparse table to dense array
-			if line_idx == 0 then
-				return
-			end
-			local dense = {}
-			for i = 1, line_idx do
-				dense[i] = timestamps[i] or now -- fallback uncommitted
-			end
+						if ol_ == 0 then
+							-- pure insertion: new lines go after old line os_
+							local ins = clamp_ins(heat, os_ + offset + 1)
+							for k = 0, nl_ - 1 do
+								table.insert(heat, ins + k, 1)
+							end
+						else
+							-- deletion / replacement: drop the old lines, carry
+							-- their hottest value forward so a hot region stays hot
+							local idx = os_ + offset
+							local carry = 0
+							for _ = 1, ol_ do
+								if heat[idx] ~= nil then
+									if heat[idx] > carry then
+										carry = heat[idx]
+									end
+									table.remove(heat, idx)
+								end
+							end
+							local val = carry + 1
+							local base = clamp_ins(heat, idx)
+							for k = 0, nl_ - 1 do
+								table.insert(heat, base + k, val)
+							end
+						end
 
-			vim.schedule(function()
-				if enabled then
-					apply_marks(bufnr, dense)
+						offset = offset + (nl_ - ol_)
+					end
 				end
-			end)
-		end)
+
+				vim.schedule(function()
+					if not enabled then
+						return
+					end
+					if not vim.api.nvim_buf_is_valid(bufnr) then
+						return
+					end
+					-- align to current buffer: uncommitted/extra lines fall back
+					-- to cold (1) rather than inheriting a neighbour's heat.
+					local n = vim.api.nvim_buf_line_count(bufnr)
+					local dense = {}
+					for i = 1, n do
+						dense[i] = heat[i] or 1
+					end
+					apply_heat(bufnr, dense)
+				end)
+			end
+		)
 	end)
 end
 
+-- oil heat = how often each entry has been committed (its churn), not its
+-- mtime (which is just newness). One git log over the directory tallies
+-- commits per file.
 local function run_oil_heat(bufnr)
 	local ok, oil = pcall(require, "oil")
 	if not ok then
@@ -167,49 +222,39 @@ local function run_oil_heat(bufnr)
 		return
 	end
 
-	local line_count = vim.api.nvim_buf_line_count(bufnr)
-	local timestamps = {}
-	local has_any = false
+	vim.system({ "git", "log", "--format=", "--name-only", "--", "." }, { cwd = dir, text = true }, function(out)
+		if out.code ~= 0 then
+			return
+		end
 
-	for lnum = 1, line_count do
-		local entry = oil.get_entry_on_line(bufnr, lnum)
-		if entry then
-			local stat = vim.uv.fs_stat(dir .. entry.name)
-			if stat then
-				timestamps[lnum] = stat.mtime.sec
-				has_any = true
+		-- tally commits per basename (unique within a single directory)
+		local counts = {}
+		for line in out.stdout:gmatch("[^\n]+") do
+			local base = line:match("([^/]+)$")
+			if base then
+				counts[base] = (counts[base] or 0) + 1
 			end
 		end
-	end
 
-	if not has_any then
-		return
-	end
+		vim.schedule(function()
+			if not enabled then
+				return
+			end
+			if not vim.api.nvim_buf_is_valid(bufnr) then
+				return
+			end
 
-	-- rank-based coloring: sort by mtime, assign gradient evenly
-	local sorted = {}
-	for lnum, ts in pairs(timestamps) do
-		sorted[#sorted + 1] = { lnum = lnum, ts = ts }
-	end
-	table.sort(sorted, function(a, b)
-		return a.ts < b.ts
+			local line_count = vim.api.nvim_buf_line_count(bufnr)
+			local heat = {}
+			for lnum = 1, line_count do
+				local entry = oil.get_entry_on_line(bufnr, lnum)
+				-- untracked / never-committed entries stay cold (1)
+				heat[lnum] = (entry and counts[entry.name]) or 1
+			end
+
+			apply_heat(bufnr, heat, 200)
+		end)
 	end)
-
-	vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-	local n = #sorted
-	for rank, entry in ipairs(sorted) do
-		local t = n == 1 and 0.5 or (rank - 1) / (n - 1)
-		local bucket = math.floor(t * (NUM_BUCKETS - 1) + 0.5) + 1
-		if bucket > NUM_BUCKETS then
-			bucket = NUM_BUCKETS
-		end
-		pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, entry.lnum - 1, 0, {
-			sign_text = SIGN,
-			sign_hl_group = hl_groups[bucket],
-			priority = 200,
-		})
-	end
-	cache[bufnr] = true
 end
 
 local function clear_buf(bufnr)
@@ -221,7 +266,7 @@ local function run_heat(bufnr)
 	if is_oil(bufnr) then
 		run_oil_heat(bufnr)
 	else
-		run_blame(bufnr)
+		run_churn(bufnr)
 	end
 end
 
