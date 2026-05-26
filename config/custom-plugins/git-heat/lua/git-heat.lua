@@ -6,8 +6,17 @@ local COLD = { r = 0x3a, g = 0x3a, b = 0x4a }
 local HOT = { r = 0xff, g = 0x3a, b = 0x8e }
 local SIGN = "▎"
 
+-- skip the history walk + per-line signs on very large files: the gradient is
+-- useless at that scale and the work is expensive. Overridable via setup().
+local MAX_LINES = 5000
+
 local enabled = true
-local cache = {} -- bufnr -> true (marks already placed)
+
+-- committed-heat memo: filepath -> { head = sha, heat = {committed vector} }.
+-- The churn binary only produces different output when the file's git history
+-- changes, so a cheap `git rev-parse HEAD` gates the expensive walk: same HEAD
+-- means the committed vector is identical and we reuse it across reopens.
+local churn_cache = {}
 
 local function lerp(a, b, t)
 	return math.floor(a + (b - a) * t + 0.5)
@@ -95,8 +104,6 @@ local function apply_heat(bufnr, heat, priority)
 			priority = priority or 1, -- low priority so gitsigns wins
 		})
 	end
-
-	cache[bufnr] = true
 end
 
 -- path to the git-heat-churn binary, injected by setup() from Nix
@@ -109,46 +116,73 @@ local churn_bin = "git-heat-churn"
 -- ~N; a line added once and never touched stays at 1, even if it is the most
 -- recent change. This is the opposite of recency/newness. It prints one
 -- integer per current line and exits non-zero for untracked / non-repo files.
+-- paint a committed-heat vector onto the current buffer. uncommitted/extra
+-- lines fall back to cold (1) rather than inheriting a neighbour's heat.
+local function align_and_apply(bufnr, committed)
+	if not enabled then
+		return
+	end
+	if not vim.api.nvim_buf_is_valid(bufnr) then
+		return
+	end
+	local n = vim.api.nvim_buf_line_count(bufnr)
+	local dense = {}
+	for i = 1, n do
+		dense[i] = committed[i] or 1
+	end
+	apply_heat(bufnr, dense)
+end
+
 local function run_churn(bufnr)
 	local file = get_file(bufnr)
 	if not file then
 		return
 	end
 
+	-- the churn walk and per-line signs don't pay off on huge files
+	if vim.api.nvim_buf_line_count(bufnr) > MAX_LINES then
+		return
+	end
+
 	local dir = vim.fn.fnamemodify(file, ":h")
 
-	vim.system({ churn_bin, file }, { cwd = dir, text = true }, function(out)
-		if out.code ~= 0 then
-			return -- untracked, not a repo, or the binary is unavailable
-		end
+	-- cheap HEAD lookup gates the expensive churn walk: a cache hit for the same
+	-- HEAD reuses the committed vector without spawning the churn binary.
+	vim.system({ "git", "-C", dir, "rev-parse", "HEAD" }, { text = true }, function(rev)
+		local head = (rev.code == 0) and vim.trim(rev.stdout) or nil
 
-		local heat = {}
-		for line in out.stdout:gmatch("[^\n]+") do
-			local n = tonumber(line)
-			if not n then
-				return -- unexpected output; skip rather than paint wrong heat
-			end
-			heat[#heat + 1] = n
-		end
-		if #heat == 0 then
+		local cached = churn_cache[file]
+		if cached and head and cached.head == head then
+			vim.schedule(function()
+				align_and_apply(bufnr, cached.heat)
+			end)
 			return
 		end
 
-		vim.schedule(function()
-			if not enabled then
+		vim.system({ churn_bin, file }, { cwd = dir, text = true }, function(out)
+			if out.code ~= 0 then
+				return -- untracked, not a repo, or the binary is unavailable
+			end
+
+			local heat = {}
+			for line in out.stdout:gmatch("[^\n]+") do
+				local n = tonumber(line)
+				if not n then
+					return -- unexpected output; skip rather than paint wrong heat
+				end
+				heat[#heat + 1] = n
+			end
+			if #heat == 0 then
 				return
 			end
-			if not vim.api.nvim_buf_is_valid(bufnr) then
-				return
+
+			if head then
+				churn_cache[file] = { head = head, heat = heat }
 			end
-			-- align to current buffer: uncommitted/extra lines fall back to
-			-- cold (1) rather than inheriting a neighbour's heat.
-			local n = vim.api.nvim_buf_line_count(bufnr)
-			local dense = {}
-			for i = 1, n do
-				dense[i] = heat[i] or 1
-			end
-			apply_heat(bufnr, dense)
+
+			vim.schedule(function()
+				align_and_apply(bufnr, heat)
+			end)
 		end)
 	end)
 end
@@ -210,7 +244,6 @@ end
 
 local function clear_buf(bufnr)
 	vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-	cache[bufnr] = nil
 end
 
 local function run_heat(bufnr)
@@ -247,6 +280,9 @@ function M.setup(opts)
 	opts = opts or {}
 	if opts.churn_bin then
 		churn_bin = opts.churn_bin
+	end
+	if opts.max_lines then
+		MAX_LINES = opts.max_lines
 	end
 
 	vim.api.nvim_create_user_command("GitHeatToggle", toggle, {})
@@ -313,14 +349,6 @@ function M.setup(opts)
 			vim.defer_fn(function()
 				try_oil(10)
 			end, 100)
-		end,
-	})
-
-	-- cleanup on buffer wipe
-	vim.api.nvim_create_autocmd("BufWipeout", {
-		group = group,
-		callback = function(ev)
-			cache[ev.buf] = nil
 		end,
 	})
 end

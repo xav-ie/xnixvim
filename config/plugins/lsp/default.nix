@@ -325,7 +325,7 @@ in
             in
             {
               nixpkgs.expr = "import ${xnixvim}.inputs.nixpkgs { }";
-              formatting.command = [ "${pkgs.nixfmt-rfc-style}/bin/nixfmt" ];
+              formatting.command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
               options = {
                 # nixvim options
                 nixvim.expr = "${xnixvim}.packages.\${builtins.currentSystem}.default.options";

@@ -64,7 +64,7 @@
     extraPackages = with pkgs; [
       coq
       git
-      nixfmt-rfc-style
+      nixfmt
       ripgrep
       stylua
       # vimPlugins.friendly-snippets

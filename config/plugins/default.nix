@@ -173,7 +173,7 @@
     };
 
     extraPlugins = with pkgs.vimPlugins; [
-      rhubarb # allows easily opening things in github
+      vim-rhubarb # allows easily opening things in github
       vim-smoothie # smooth scrolling
     ];
   };

@@ -1,5 +1,4 @@
 {
-  helpers,
   lib,
   pkgs,
   ...
@@ -24,7 +23,7 @@
           keyset:
           "<cmd>lua require('lz.n').trigger_load('telescope.nvim'); require('telescope.builtin').symbols({ sources = { '${keyset}' } })<CR>";
       in
-      helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
+      lib.nixvim.keymaps.mkKeymaps { options.silent = true; } (nm {
         # TODO: somehow prefix the keymap description properly
         # and get rid of repetition
         "<leader>fye" = {

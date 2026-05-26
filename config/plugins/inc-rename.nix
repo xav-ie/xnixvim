@@ -1,4 +1,4 @@
-{ config, helpers, ... }:
+{ config, lib, ... }:
 {
   config = {
     # https://github.com/smjonas/inc-rename.nvim
@@ -12,7 +12,7 @@
     # Disable noice floating input for inc-rename to prevent overlap at top of file
     plugins.noice.settings.presets.inc_rename = false;
 
-    keymaps = helpers.keymaps.mkKeymaps { } [
+    keymaps = lib.nixvim.keymaps.mkKeymaps { } [
       {
         mode = "n";
         key = "<leader>ln";

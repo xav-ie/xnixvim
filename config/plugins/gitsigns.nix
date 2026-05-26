@@ -1,6 +1,5 @@
 {
   config,
-  helpers,
   lib,
   pkgs,
   inputs,
@@ -48,7 +47,7 @@
           "x"
         ];
       in
-      helpers.keymaps.mkKeymaps { options.silent = true; } (nm {
+      lib.nixvim.keymaps.mkKeymaps { options.silent = true; } (nm {
         "[c" = {
           options = {
             desc = "Previous hunk";

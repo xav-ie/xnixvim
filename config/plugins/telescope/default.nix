@@ -1,5 +1,4 @@
 {
-  helpers,
   config,
   lib,
   pkgs,
@@ -193,7 +192,7 @@
         # project management
         project = {
           # breaks `nix flake check`
-          enable = helpers.enableExceptInTests;
+          enable = lib.nixvim.enableExceptInTests;
           package = pkgs.vimPlugins.telescope-project-nvim;
           settings = {
             base_dirs = [

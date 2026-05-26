@@ -110,23 +110,78 @@
             enable = true;
             inherit disable;
           };
+          # `disable` is intentionally omitted here: nixvim's modern treesitter
+          # module flags `settings.highlight.disable` as a legacy option (and
+          # its native replacement only takes a language list, not a size-based
+          # function). Large-file highlighting is guarded by the autocmd below
+          # instead. indent/incremental_selection keep the function — they are
+          # not flagged.
           highlight = {
             enable = true;
-            inherit disable;
-          };
-          # this is SO useful
-          incremental_selection = {
-            enable = true;
-            inherit disable;
-            keymaps = {
-              init_selection = "<C-n>";
-              node_decremental = "<bs>";
-              node_incremental = "<C-n>";
-              # IDK what this does
-              scope_incremental = "grc";
-            };
           };
         };
     };
+
+    # Large-file highlight guard. Replaces the old `highlight.disable` size
+    # callback: tree-sitter attaches via core `vim.treesitter.start`, so once
+    # it has, we stop it for oversized buffers to avoid parse/redraw stalls.
+    # Scheduled so it runs after tree-sitter's own FileType handler.
+    extraConfigLua = # lua
+      ''
+        do
+          local max_filesize = 100 * 1024 -- 100 KB
+          vim.api.nvim_create_autocmd("FileType", {
+            callback = function(args)
+              local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+              if ok and stats and stats.size > max_filesize then
+                vim.schedule(function()
+                  if vim.api.nvim_buf_is_valid(args.buf) then
+                    pcall(vim.treesitter.stop, args.buf)
+                  end
+                end)
+              end
+            end,
+            desc = "Disable tree-sitter highlighting on large files",
+          })
+        end
+
+        -- Incremental selection. nvim-treesitter's `main` rewrite dropped its
+        -- incremental_selection module; the feature was upstreamed into Neovim
+        -- 0.12 (default visual maps an/in/]n/[n). Remap to the old <C-n>/<bs>
+        -- flow: <C-n> starts then grows the selection, <bs> shrinks it.
+        -- 0.12.x exposes the private vim.treesitter._select module; newer Nvim
+        -- promotes it to public vim.treesitter.select(dir, count) — prefer the
+        -- public API and fall back to the private one.
+        do
+          local has_parser = function()
+            return vim.treesitter.get_parser(nil, nil, { error = false }) ~= nil
+          end
+          local grow = function()
+            if vim.treesitter.select then
+              vim.treesitter.select("parent", vim.v.count1)
+            else
+              require("vim.treesitter._select").select_parent(vim.v.count1)
+            end
+          end
+          local shrink = function()
+            if vim.treesitter.select then
+              vim.treesitter.select("child", vim.v.count1)
+            else
+              require("vim.treesitter._select").select_child(vim.v.count1)
+            end
+          end
+          vim.keymap.set("n", "<C-n>", function()
+            if not has_parser() then return end
+            vim.cmd.normal({ "v", bang = true })
+            grow()
+          end, { desc = "TS: start/grow node selection" })
+          vim.keymap.set("x", "<C-n>", function()
+            if has_parser() then grow() end
+          end, { desc = "TS: grow node selection" })
+          vim.keymap.set("x", "<BS>", function()
+            if has_parser() then shrink() end
+          end, { desc = "TS: shrink node selection" })
+        end
+      '';
   };
 }

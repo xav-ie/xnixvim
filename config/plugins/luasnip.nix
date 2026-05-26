@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  helpers,
   ...
 }:
 {
@@ -9,7 +8,7 @@
   # https://github.com/L3MON4D3/LuaSnip
   # https://nix-community.github.io/nixvim/plugins/luasnip
   config = {
-    keymaps = helpers.keymaps.mkKeymaps { options.silent = true; } [
+    keymaps = lib.nixvim.keymaps.mkKeymaps { options.silent = true; } [
       {
         mode = [
           "i"

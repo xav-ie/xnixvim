@@ -113,6 +113,9 @@ in
       # so they don't load at startup from start/
       autoEnableSources = false;
       settings = {
+        # winborder (config.nix) draws a border on every float, including the
+        # completion menu. Force it off here so the menu stays borderless.
+        window.completion.border = "none";
         sources = [
           { name = "nvim_lsp"; }
         ]

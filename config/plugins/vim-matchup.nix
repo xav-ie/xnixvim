@@ -7,7 +7,6 @@
   # The nixvim module doesn't support lazyLoad, so we bypass it:
   # - Add plugin as optional (opt/) via extraPlugins
   # - Load via lz.n on BufReadPost
-  # - Treesitter already configures matchup in its after function
   config = {
     extraPlugins = [
       {
@@ -24,10 +23,8 @@
         ];
       }
     ];
-    # Keep treesitter matchup integration
-    plugins.treesitter.settings.matchup = {
-      enable = true;
-      include_match_words = true;
-    };
+    # NOTE: nvim-treesitter's `main` branch dropped the configs module, so the
+    # old `plugins.treesitter.settings.matchup` integration is a no-op and was
+    # removed. vim-matchup's regex-based `%` matching is unaffected.
   };
 }

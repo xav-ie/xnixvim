@@ -1,7 +1,6 @@
 # https://github.com/traxys/nvim-flake/blob/c753bb1e624406ef454df9e8cb59d0996000dc93/config.nix#L94-L107
 {
   config,
-  helpers,
   lib,
   ...
 }:
@@ -12,7 +11,7 @@ in
 {
   config = {
     keymaps =
-      helpers.keymaps.mkKeymaps { options.silent = true; } (
+      lib.nixvim.keymaps.mkKeymaps { options.silent = true; } (
         modeKeys.nm {
           "-" = "<cmd>Oil<CR>";
           # remove highlights

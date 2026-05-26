@@ -166,3 +166,47 @@ fn main() -> ExitCode {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::churn_step;
+
+    #[test]
+    fn insertion_from_empty_is_all_cold() {
+        // first appearance of every line: pure insertion -> heat 1
+        assert_eq!(churn_step(&[], "", "a\nb\nc\n"), vec![1, 1, 1]);
+    }
+
+    #[test]
+    fn no_change_copies_heat_through() {
+        // an identical revision must not bump any line's heat
+        assert_eq!(churn_step(&[1, 2, 3], "a\nb\nc\n", "a\nb\nc\n"), vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn replacement_bumps_only_that_line() {
+        // rewriting b -> B is removed==1 -> carry(1) + 1; neighbours untouched
+        assert_eq!(churn_step(&[1, 1, 1], "a\nb\nc\n", "a\nB\nc\n"), vec![1, 2, 1]);
+    }
+
+    #[test]
+    fn repeated_replacement_carries_heat_forward() {
+        // rewriting the same line twice should climb 1 -> 2 -> 3, not reset
+        let step1 = churn_step(&[1, 1, 1], "a\nb\nc\n", "a\nB\nc\n");
+        assert_eq!(step1, vec![1, 2, 1]);
+        let step2 = churn_step(&step1, "a\nB\nc\n", "a\nC\nc\n");
+        assert_eq!(step2, vec![1, 3, 1]);
+    }
+
+    #[test]
+    fn mid_file_insertion_is_cold() {
+        // a freshly inserted line (removed==0) is brand new -> heat 1
+        assert_eq!(churn_step(&[1, 1], "a\nb\n", "a\nX\nb\n"), vec![1, 1, 1]);
+    }
+
+    #[test]
+    fn deletion_drops_the_line_and_keeps_survivors() {
+        // deleting b yields no output line for it; a and c keep their heat
+        assert_eq!(churn_step(&[1, 2, 3], "a\nb\nc\n", "a\nc\n"), vec![1, 3]);
+    }
+}

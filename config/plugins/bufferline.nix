@@ -1,6 +1,5 @@
 {
   config,
-  helpers,
   lib,
   ...
 }:
@@ -9,7 +8,7 @@ let
 in
 {
   config = {
-    keymaps = helpers.keymaps.mkKeymaps { options.silent = true; } (
+    keymaps = lib.nixvim.keymaps.mkKeymaps { options.silent = true; } (
       modeKeys.nm {
         "<C-b>" = ":BufferLinePick <CR>";
       }
