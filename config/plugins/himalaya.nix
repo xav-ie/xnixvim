@@ -16,6 +16,8 @@ in
   config = lib.mkIf pkgs.stdenv.isLinux {
     extraPlugins = [ himalaya-nvim ];
 
+    extraPackages = [ pkgs.himalaya ];
+
     extraConfigLua = ''
       require('himalaya').setup({
         folder_picker = 'telescope',
