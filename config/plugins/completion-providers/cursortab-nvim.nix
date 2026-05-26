@@ -26,16 +26,16 @@ let
     # Also guard cmp.get_config() returning nil — upstream bug as of 6a5c210
     # (cursortab loads on BufReadPost before cmp.setup() has run).
     postPatch = ''
-      substituteInPlace lua/cursortab/daemon.lua \
-        --replace-fail 'local binary_path = plugin_dir .. "/server/" .. binary_name' \
-                       'local binary_path = "${cursortab-server}/bin/cursortab"'
-      substituteInPlace lua/cursortab/init.lua \
-        --replace-fail 'local cmp_config = cmp.get_config()
-		cmp.setup({ enabled = wrap_enabled(cmp_config.enabled) })' \
-                       'local cmp_config = cmp.get_config()
-		if cmp_config then
-			cmp.setup({ enabled = wrap_enabled(cmp_config.enabled) })
-		end'
+            substituteInPlace lua/cursortab/daemon.lua \
+              --replace-fail 'local binary_path = plugin_dir .. "/server/" .. binary_name' \
+                             'local binary_path = "${cursortab-server}/bin/cursortab"'
+            substituteInPlace lua/cursortab/init.lua \
+              --replace-fail 'local cmp_config = cmp.get_config()
+      		cmp.setup({ enabled = wrap_enabled(cmp_config.enabled) })' \
+                             'local cmp_config = cmp.get_config()
+      		if cmp_config then
+      			cmp.setup({ enabled = wrap_enabled(cmp_config.enabled) })
+      		end'
     '';
     nvimRequireCheck = [ "cursortab" ];
   };
