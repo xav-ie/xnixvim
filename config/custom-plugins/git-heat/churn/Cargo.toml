@@ -1,0 +1,18 @@
+[package]
+name = "git-heat-churn"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "git-heat-churn"
+path = "src/main.rs"
+
+[dependencies]
+gix = { version = "0.66", default-features = false, features = ["revision"] }
+imara-diff = "=0.1.7"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

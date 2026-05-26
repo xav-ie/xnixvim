@@ -99,23 +99,16 @@ local function apply_heat(bufnr, heat, priority)
 	cache[bufnr] = true
 end
 
--- table.insert requires 1 <= pos <= #t + 1; clamp to survive index drift
--- caused by merges / rename gaps in the reconstructed history.
-local function clamp_ins(t, pos)
-	if pos < 1 then
-		return 1
-	end
-	if pos > #t + 1 then
-		return #t + 1
-	end
-	return pos
-end
+-- path to the git-heat-churn binary, injected by setup() from Nix
+local churn_bin = "git-heat-churn"
 
--- "hotness" = churn: how many times each *current* line has been edited
--- across history. We replay the file's diffs oldest -> newest, maintaining a
--- per-line edit count that tracks lines as they move. A line replaced N times
--- accumulates heat N; a line added once and never touched stays at 1, even if
--- it is the most recent change. This is the opposite of recency/newness.
+-- "hotness" = churn: how many times each *current* line has been edited across
+-- history. The git-heat-churn binary (gitoxide) walks first-parent history,
+-- diffs each version of the file against the previous one, and tracks a
+-- per-line edit count as lines move. A line replaced N times accumulates heat
+-- ~N; a line added once and never touched stays at 1, even if it is the most
+-- recent change. This is the opposite of recency/newness. It prints one
+-- integer per current line and exits non-zero for untracked / non-repo files.
 local function run_churn(bufnr)
 	local file = get_file(bufnr)
 	if not file then
@@ -124,94 +117,45 @@ local function run_churn(bufnr)
 
 	local dir = vim.fn.fnamemodify(file, ":h")
 
-	-- check git-tracked
-	vim.system({ "git", "ls-files", "--error-unmatch", file }, { cwd = dir }, function(ls_out)
-		if ls_out.code ~= 0 then
-			return -- not tracked
+	vim.system({ churn_bin, file }, { cwd = dir, text = true }, function(out)
+		if out.code ~= 0 then
+			return -- untracked, not a repo, or the binary is unavailable
 		end
 
-		-- --first-parent --reverse gives a linear oldest->newest patch stream
-		-- whose hunks, applied in order, reconstruct the current file.
-		-- -U0 drops context lines so hunk headers alone drive the bookkeeping.
-		vim.system(
-			{ "git", "log", "--first-parent", "--reverse", "--format=", "-p", "-U0", "--no-color", "--", file },
-			{ cwd = dir, text = true },
-			function(log_out)
-				if log_out.code ~= 0 then
-					return
-				end
-
-				local heat = {}
-				-- net lines added by prior hunks within the *current* commit;
-				-- each commit's hunk numbers are relative to its own parent, so
-				-- this resets at every commit (marked by a `diff --git` line).
-				local offset = 0
-
-				for line in log_out.stdout:gmatch("[^\n]+") do
-					if line:match("^diff %-%-git") then
-						offset = 0
-					end
-					-- @@ -old_start[,old_len] +new_start[,new_len] @@
-					local os_, ol_, nl_ = line:match("^@@ %-(%d+),?(%d*) %+%d+,?(%d*) @@")
-					if os_ then
-						os_ = tonumber(os_)
-						ol_ = (ol_ == "") and 1 or tonumber(ol_)
-						nl_ = (nl_ == "") and 1 or tonumber(nl_)
-
-						if ol_ == 0 then
-							-- pure insertion: new lines go after old line os_
-							local ins = clamp_ins(heat, os_ + offset + 1)
-							for k = 0, nl_ - 1 do
-								table.insert(heat, ins + k, 1)
-							end
-						else
-							-- deletion / replacement: drop the old lines, carry
-							-- their hottest value forward so a hot region stays hot
-							local idx = os_ + offset
-							local carry = 0
-							for _ = 1, ol_ do
-								if heat[idx] ~= nil then
-									if heat[idx] > carry then
-										carry = heat[idx]
-									end
-									table.remove(heat, idx)
-								end
-							end
-							local val = carry + 1
-							local base = clamp_ins(heat, idx)
-							for k = 0, nl_ - 1 do
-								table.insert(heat, base + k, val)
-							end
-						end
-
-						offset = offset + (nl_ - ol_)
-					end
-				end
-
-				vim.schedule(function()
-					if not enabled then
-						return
-					end
-					if not vim.api.nvim_buf_is_valid(bufnr) then
-						return
-					end
-					-- align to current buffer: uncommitted/extra lines fall back
-					-- to cold (1) rather than inheriting a neighbour's heat.
-					local n = vim.api.nvim_buf_line_count(bufnr)
-					local dense = {}
-					for i = 1, n do
-						dense[i] = heat[i] or 1
-					end
-					apply_heat(bufnr, dense)
-				end)
+		local heat = {}
+		for line in out.stdout:gmatch("[^\n]+") do
+			local n = tonumber(line)
+			if not n then
+				return -- unexpected output; skip rather than paint wrong heat
 			end
-		)
+			heat[#heat + 1] = n
+		end
+		if #heat == 0 then
+			return
+		end
+
+		vim.schedule(function()
+			if not enabled then
+				return
+			end
+			if not vim.api.nvim_buf_is_valid(bufnr) then
+				return
+			end
+			-- align to current buffer: uncommitted/extra lines fall back to
+			-- cold (1) rather than inheriting a neighbour's heat.
+			local n = vim.api.nvim_buf_line_count(bufnr)
+			local dense = {}
+			for i = 1, n do
+				dense[i] = heat[i] or 1
+			end
+			apply_heat(bufnr, dense)
+		end)
 	end)
 end
 
 -- oil heat = how often each entry has been committed (its churn), not its
 -- mtime (which is just newness). One git log over the directory tallies
--- commits per file.
+-- commits per entry.
 local function run_oil_heat(bufnr)
 	local ok, oil = pcall(require, "oil")
 	if not ok then
@@ -222,39 +166,46 @@ local function run_oil_heat(bufnr)
 		return
 	end
 
-	vim.system({ "git", "log", "--format=", "--name-only", "--", "." }, { cwd = dir, text = true }, function(out)
-		if out.code ~= 0 then
-			return
-		end
-
-		-- tally commits per basename (unique within a single directory)
-		local counts = {}
-		for line in out.stdout:gmatch("[^\n]+") do
-			local base = line:match("([^/]+)$")
-			if base then
-				counts[base] = (counts[base] or 0) + 1
-			end
-		end
-
-		vim.schedule(function()
-			if not enabled then
-				return
-			end
-			if not vim.api.nvim_buf_is_valid(bufnr) then
+	-- --relative prints paths relative to `dir`, so the first path component is
+	-- the direct child (the oil entry) a change belongs to. Tallying by that
+	-- component avoids basename collisions with files in nested subdirectories
+	-- and gives directory entries the aggregate churn of everything beneath.
+	vim.system(
+		{ "git", "log", "--relative", "--format=", "--name-only", "--", "." },
+		{ cwd = dir, text = true },
+		function(out)
+			if out.code ~= 0 then
 				return
 			end
 
-			local line_count = vim.api.nvim_buf_line_count(bufnr)
-			local heat = {}
-			for lnum = 1, line_count do
-				local entry = oil.get_entry_on_line(bufnr, lnum)
-				-- untracked / never-committed entries stay cold (1)
-				heat[lnum] = (entry and counts[entry.name]) or 1
+			local counts = {}
+			for line in out.stdout:gmatch("[^\n]+") do
+				local child = line:match("^[^/]+")
+				if child then
+					counts[child] = (counts[child] or 0) + 1
+				end
 			end
 
-			apply_heat(bufnr, heat, 200)
-		end)
-	end)
+			vim.schedule(function()
+				if not enabled then
+					return
+				end
+				if not vim.api.nvim_buf_is_valid(bufnr) then
+					return
+				end
+
+				local line_count = vim.api.nvim_buf_line_count(bufnr)
+				local heat = {}
+				for lnum = 1, line_count do
+					local entry = oil.get_entry_on_line(bufnr, lnum)
+					-- untracked / never-committed entries stay cold (1)
+					heat[lnum] = (entry and counts[entry.name]) or 1
+				end
+
+				apply_heat(bufnr, heat, 200)
+			end)
+		end
+	)
 end
 
 local function clear_buf(bufnr)
@@ -292,7 +243,12 @@ local function toggle()
 	vim.notify("GitHeat " .. (enabled and "enabled" or "disabled"))
 end
 
-function M.setup()
+function M.setup(opts)
+	opts = opts or {}
+	if opts.churn_bin then
+		churn_bin = opts.churn_bin
+	end
+
 	vim.api.nvim_create_user_command("GitHeatToggle", toggle, {})
 	vim.api.nvim_create_user_command("GitHeatRefresh", refresh_current, {})
 
