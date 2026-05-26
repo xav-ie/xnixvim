@@ -45,6 +45,25 @@
           end, cmd_opts)
         end,
       })
+
+      -- The ui-select extension swaps vim.ui.select for telescope, but only
+      -- once telescope's after handler runs. Things like vim.lsp.buf.code_action
+      -- call vim.ui.select directly (not the Telescope command), so without this
+      -- telescope never loads and the list renders with the plain builtin.
+      -- Wrap vim.ui.select to trigger lz.n on first use, then hand off to the
+      -- (now telescope-backed) implementation.
+      local builtin_select = vim.ui.select
+      local wrapper
+      wrapper = function(...)
+        require('lz.n').trigger_load('telescope.nvim')
+        -- If the ui-select extension replaced vim.ui.select, it is no longer
+        -- our wrapper; otherwise fall back to the builtin to avoid recursion.
+        if vim.ui.select == wrapper then
+          vim.ui.select = builtin_select
+        end
+        return vim.ui.select(...)
+      end
+      vim.ui.select = wrapper
     '';
     # Find, Filter, Preview, Pick.
     # https://github.com/nvim-telescope/telescope.nvim/
