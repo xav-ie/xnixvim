@@ -1,38 +1,9 @@
 _: {
   config = {
-    highlight = {
-      # Fix code background
-      ColorColumn.bg = "#200020";
-      # ColorColumn.underline = true;
-      DiffChange.fg = "#ffb20f";
-      DiffDelete.fg = "#ff0000";
-      FloatBorder.fg = "#a89984";
-      Pmenu.bg = "#282828";
-      Pmenu.fg = "#ebdbb2";
-      PmenuSel.bg = "#504945";
-      PmenuSel.fg = "NONE";
-      # tab bar background
-      TabLineFill.bg = "NONE";
-      TermCursor.underdotted = true;
-      TermCursor.sp = "#ffb20f";
-      GitSignsAddInline.underdotted = true;
-      GitSignsAddInline.sp = "#00ff00";
-      GitSignsDeleteInline.underdotted = true;
-      GitSignsDeleteInline.sp = "#ff0000";
-      GitSignsDeleteInline.fg = "#ff4400";
-      TSLiteral.bg = "#200020";
-      TSLiteral.fg = "#00a0f0";
-      TSNumber.fg = "#be620a";
-      TSProperty.fg = "#FFD242";
-      TSType.fg = "#00a0f0";
-      # Diagnostic quoted text highlight
-      DiagnosticQuoted.fg = "#61afef";
-      # Diff file status colors (for jjdescription, git, etc.)
-      diffAdded.fg = "#00E756"; # green
-      diffChanged.fg = "#FFD242"; # yellow
-      diffRemoved.fg = "#ff3a8e"; # red/pink
-      diffFile.fg = "#9A5FEB"; # purple
-    };
+    # All custom highlights were extracted into the xdusk colorscheme
+    # (custom-plugins/xdusk). Edit the theme's palette.lua / init.lua to change
+    # colors rather than re-adding overrides here.
+
     # TODO: get this working
     # extraFiles = {
     #   "markdown/injections.scm" = {

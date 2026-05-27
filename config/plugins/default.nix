@@ -53,6 +53,7 @@
     ./vim-matchup.nix
     ./which-key
     ./witt-neovim.nix
+    ./xdusk.nix
   ];
   # ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 

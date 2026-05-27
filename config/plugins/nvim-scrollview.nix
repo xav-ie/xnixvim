@@ -25,10 +25,7 @@
           '';
       }
     ];
-    highlight = {
-      ScrollView = {
-        bg = "White";
-      };
-    };
+    # ScrollView thumb color was extracted into the xdusk colorscheme
+    # (custom-plugins/xdusk).
   };
 }

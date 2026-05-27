@@ -34,7 +34,7 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
   - [ ] [L3MON4D3/LuaSnip#resources-for-new-users](https://github.com/L3MON4D3/LuaSnip#resources-for-new-users)
   - [x] [The Best Neovim Plugin | Writing Lua Snippets With Luasnip](https://www.youtube.com/watch?v=FmHhonPjvvA)
         Learn the basics of Luasnip up to learning dynamic nodes. The last example is wrong, though.
-- [ ] separate theme out and share
+- [x] separate theme out and share
 - [x] local completions
       Thanks to minuet-ai-nvim.
 - [ ] better large file support
