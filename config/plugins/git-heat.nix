@@ -9,9 +9,13 @@ let
       pkgs.fetchurl (
         args
         // lib.optionalAttrs (args ? url) {
-          url = lib.replaceStrings [ "https://crates.io/api/v1/crates" ] [
-            "https://static.crates.io/crates"
-          ] args.url;
+          url =
+            lib.replaceStrings
+              [ "https://crates.io/api/v1/crates" ]
+              [
+                "https://static.crates.io/crates"
+              ]
+              args.url;
         }
       );
   };
