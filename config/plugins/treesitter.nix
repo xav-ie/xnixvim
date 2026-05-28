@@ -1,9 +1,46 @@
 { config, pkgs, ... }:
+let
+  # Upstream treesitter-context has no per-node filter — every node matched
+  # by a language's context queries shows up, including tiny scopes like a
+  # 2-line object property. Patch context_range() to short-circuit (return
+  # nil) for candidates whose body spans fewer lines than the threshold,
+  # set via vim.g.treesitter_context_min_lines (default 5).
+  treesitter-context-patched = pkgs.vimPlugins.nvim-treesitter-context.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace lua/treesitter-context/context.lua \
+        --replace-fail 'local range = { node:range() } --- @type Range4
+        range[3] = range[1] + 1' 'local range = { node:range() } --- @type Range4
+        if (range[3] - range[1]) < (vim.g.treesitter_context_min_lines or 5) then
+          return nil
+        end
+        range[3] = range[1] + 1'
+    '';
+  });
+in
 {
   # beautiful, wonderful, good-enough syntax highlighting/AST parsing
   # https://github.com/nvim-treesitter/nvim-treesitter/
   # https://nix-community.github.io/nixvim/plugins/treesitter
   config = {
+    # Sticky context header at top of viewport while scrolling.
+    # https://github.com/nvim-treesitter/nvim-treesitter-context
+    # https://nix-community.github.io/nixvim/plugins/treesitter-context
+    plugins.treesitter-context = {
+      enable = true;
+      package = treesitter-context-patched;
+      lazyLoad.enable = config.lazyLoad.enable;
+      lazyLoad.settings.event = [
+        "BufReadPost"
+        "BufNewFile"
+      ];
+      settings = {
+        max_lines = 3;
+        min_window_height = 20;
+        multiline_threshold = 1;
+        trim_scope = "outer";
+      };
+    };
+
     # AST syntax highlighting
     plugins.treesitter = {
       enable = true;

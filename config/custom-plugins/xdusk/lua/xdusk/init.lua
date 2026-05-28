@@ -35,19 +35,26 @@ function M.setup()
 		Exception = { fg = p.base08 },
 		FoldColumn = { fg = p.base0C, bg = p.base00 },
 		Folded = { fg = p.base03, bg = p.base01 },
-		IncSearch = { fg = p.base01, bg = p.base09 },
+		-- Search variants — mix purple/teal/orange/yellow across the four
+		-- match states so each carries its own identity:
+		--   IncSearch  (current match while typing /…)   → teal
+		--   CurSearch  (current match after Enter)        → purple
+		--   Search     (all other matches when hlsearch)  → orange
+		--   MatchParen (matching paren under cursor)      → yellow
+		IncSearch = { fg = p.bg_code, bg = p.base09 }, -- teal
+		CurSearch = { fg = p.bg_code, bg = p.base0D }, -- purple
 		Italic = { italic = true },
 		Macro = { fg = p.base08 },
-		MatchParen = { bg = p.base03 },
+		MatchParen = { fg = p.bg_code, bg = p.base0C, bold = true }, -- yellow
 		ModeMsg = { fg = p.base0B },
 		MoreMsg = { fg = p.base0B },
 		Question = { fg = p.base0D },
-		Search = { fg = p.base01, bg = p.base0A },
-		Substitute = { fg = p.base01, bg = p.base0A },
+		Search = { fg = p.bg_code, bg = p.base0A }, -- orange
+		Substitute = { fg = p.bg_code, bg = p.base0E }, -- pink (matches :s/// preview)
 		SpecialKey = { fg = p.base03 },
 		TooLong = { fg = p.base08 },
 		Underlined = { fg = p.base08 },
-		Visual = { bg = p.base02 },
+		Visual = { bg = "#38154f" },
 		VisualNOS = { fg = p.base08 },
 		WarningMsg = { fg = p.base08 },
 		WildMenu = { fg = p.base08, bg = p.base0A },
@@ -161,6 +168,22 @@ function M.setup()
 		GitGutterDelete = { fg = p.base08, bg = p.base00 },
 		GitGutterChangeDelete = { fg = p.base0E, bg = p.base00 },
 
+		-- vim-fugitive :Git status view. Defaults link Header/Heading/Modifier
+		-- to Label/PreProc/Type — all of which resolve to base0A (burnt
+		-- orange), so everything reads as "dark brown". Spread across the
+		-- palette so each row carries semantic color (matching arete-ish).
+		fugitiveHeader = { fg = p.base0D, bold = true }, -- "Head:", "Help:", "Pull:" — violet
+		fugitiveHelpTag = { fg = p.base0F }, -- "g?" help shortcuts — coral (warm red-orange)
+		fugitiveUntrackedHeading = { fg = p.base0E, bold = true }, -- "Untracked" — pink
+		fugitiveUnstagedHeading = { fg = p.base08, bold = true }, -- "Unstaged" — amber
+		fugitiveStagedHeading = { fg = p.base0B, bold = true }, -- "Staged" — green
+		fugitiveUntrackedModifier = { fg = p.base0E }, -- "?" — pink (matches Untracked heading)
+		fugitiveUnstagedModifier = { fg = p.base08 }, -- "M/A/D" — amber (needs action)
+		fugitiveStagedModifier = { fg = p.base0B }, -- staged — green (ready)
+		fugitiveHash = { fg = p.base09 }, -- commit hashes — cyan-blue
+		fugitiveSymbolicRef = { fg = p.base09 }, -- branch names ("main") — cyan-blue
+		fugitiveCount = { fg = p.base09 }, -- "(1)", "(6)" counts — cyan-blue
+
 		-- Spelling --------------------------------------------------------------
 		SpellBad = { undercurl = true, sp = p.base08 },
 		SpellLocal = { undercurl = true, sp = p.base0C },
@@ -168,15 +191,45 @@ function M.setup()
 		SpellRare = { undercurl = true, sp = p.base0E },
 
 		-- Diagnostics -----------------------------------------------------------
+		-- Hue split mirrors arete: warm = severe (error amber, warn pink),
+		-- cool = advisory (info violet, hint green). Hint deliberately uses
+		-- base0B green instead of base0C yellow because amber+yellow read as
+		-- the same hue in undercurl form.
+		-- Two emphasis tiers: error+warn get a tinted virtual-text bg ("loud");
+		-- info+hint stay backgroundless ("quiet"). All four still differ by fg
+		-- color, sign color, and undercurl color so the level is unambiguous.
 		DiagnosticError = { fg = p.base08 },
 		DiagnosticWarn = { fg = p.base0E },
 		DiagnosticInfo = { fg = p.base0D },
-		DiagnosticHint = { fg = p.base0C },
+		DiagnosticHint = { fg = p.base0B },
 		DiagnosticUnderlineError = { undercurl = true, sp = p.base08 },
+		-- Both the legacy "Warning/Information" names and the modern "Warn/Info"
+		-- names are defined; some plugins still reference the old ones.
 		DiagnosticUnderlineWarning = { undercurl = true, sp = p.base0E },
 		DiagnosticUnderlineWarn = { undercurl = true, sp = p.base0E },
-		DiagnosticUnderlineInformation = { undercurl = true, sp = p.base0F },
-		DiagnosticUnderlineHint = { undercurl = true, sp = p.base0C },
+		DiagnosticUnderlineInformation = { undercurl = true, sp = p.base0D },
+		DiagnosticUnderlineInfo = { undercurl = true, sp = p.base0D },
+		DiagnosticUnderlineHint = { undercurl = true, sp = p.base0B },
+		-- "Loud" tier: tinted bg makes errors/warnings pop in virtual-text.
+		DiagnosticVirtualTextError = { fg = p.base08, bg = p.diag_bg_error },
+		DiagnosticVirtualTextWarn = { fg = p.base0E, bg = p.diag_bg_warn },
+		-- "Quiet" tier: fg only, no bg — informational without screaming.
+		DiagnosticVirtualTextInfo = { fg = p.base0D },
+		DiagnosticVirtualTextHint = { fg = p.base0B },
+		DiagnosticSignError = { fg = p.base08 },
+		DiagnosticSignWarn = { fg = p.base0E },
+		DiagnosticSignInfo = { fg = p.base0D },
+		DiagnosticSignHint = { fg = p.base0B },
+		DiagnosticFloatingError = { fg = p.base08 },
+		DiagnosticFloatingWarn = { fg = p.base0E },
+		DiagnosticFloatingInfo = { fg = p.base0D },
+		DiagnosticFloatingHint = { fg = p.base0B },
+		-- Diagnostic tags (not severities — layered on top of the severity).
+		-- Unnecessary: rust-analyzer / tsserver flag unused code with this; we
+		-- want it visibly dimmed so the eye skips it. Deprecated: strikethrough
+		-- on a muted fg so it reads as "don't use this anymore".
+		DiagnosticUnnecessary = { fg = p.base03, italic = true },
+		DiagnosticDeprecated = { fg = p.base03, strikethrough = true },
 
 		LspReferenceText = { underline = true, sp = p.base04 },
 		LspReferenceRead = { underline = true, sp = p.base04 },
@@ -381,19 +434,31 @@ function M.setup()
 		User7 = { fg = p.base05, bg = p.base02 },
 		User8 = { fg = p.base00, bg = p.base02 },
 		User9 = { fg = p.base00, bg = p.base02 },
-		TreesitterContext = { bg = p.base01, italic = true },
+		-- TreesitterContext: sticky context header at top of viewport. Bg
+		-- matches the lualine main bar (bg_code) so it reads as "UI chrome,
+		-- not real code". A subtle bottom underline separates context from
+		-- the live buffer.
+		TreesitterContext = { bg = p.bg_code, italic = true },
+		TreesitterContextLineNumber = { fg = p.base04, bg = p.bg_code },
+		TreesitterContextBottom = { underline = true, sp = p.base03 },
+		TreesitterContextSeparator = { fg = p.base03, bg = p.bg_code },
 
-		-- Telescope (transparent base -> simple borders) ------------------------
-		TelescopeBorder = { fg = p.base05, bg = p.base00 },
-		TelescopePromptBorder = { fg = p.base05, bg = p.base00 },
+		-- Telescope: transparent main bg (terminal shows through), title chips
+		-- and selection still use accent colors so they pop against the void.
+		TelescopeNormal = { bg = p.base00, fg = p.base05 },
+		TelescopeBorder = { fg = p.base03, bg = p.base00 }, -- subtle mauve border
 		TelescopePromptNormal = { fg = p.base05, bg = p.base00 },
-		TelescopePromptPrefix = { fg = p.base05, bg = p.base00 },
-		TelescopeNormal = { bg = p.base00 },
-		TelescopePreviewTitle = { fg = p.base01, bg = p.base0B },
-		TelescopePromptTitle = { fg = p.base01, bg = p.base08 },
-		TelescopeResultsTitle = { fg = p.base05, bg = p.base00 },
-		TelescopeSelection = { bg = p.base01 },
-		TelescopePreviewLine = { bg = p.base01 },
+		TelescopePromptBorder = { fg = p.base03, bg = p.base00 },
+		TelescopePromptPrefix = { fg = p.base0D, bg = p.base00 }, -- violet `>` prompt
+		-- Title chips: one per pane, each a different theme accent
+		TelescopePromptTitle = { fg = p.bg_code, bg = p.base0D, bold = true }, -- violet
+		TelescopeResultsTitle = { fg = p.bg_code, bg = p.base0E, bold = true }, -- pink
+		TelescopePreviewTitle = { fg = p.bg_code, bg = p.base0B, bold = true }, -- green
+		-- Selection matches cmp's PmenuSel pattern: statusline_b bg + bold
+		TelescopeSelection = { bg = p.statusline_b, bold = true },
+		TelescopePreviewLine = { bg = p.statusline_b },
+		-- Match characters in results (the typed letters that matched)
+		TelescopeMatching = { fg = p.base08, bold = true }, -- amber (matches cmp's match chars)
 
 		-- nvim-notify -----------------------------------------------------------
 		NotifyERRORBorder = { fg = p.base08 },
@@ -544,8 +609,11 @@ function M.setup()
 		DiffChange = { fg = p.base08 },
 		DiffDelete = { fg = p.red },
 		FloatBorder = { fg = p.border },
-		Pmenu = { bg = p.menu_bg, fg = p.menu_fg },
-		PmenuSel = { bg = p.menu_sel_bg },
+		-- Pmenu container matches the lualine main bar (bg_code); selected row
+		-- matches the lualine branch section (statusline_b deep wine). Same
+		-- source colors → renders identically next to lualine.
+		Pmenu = { bg = p.bg_code, fg = p.menu_fg },
+		PmenuSel = { bg = p.statusline_b, bold = true },
 		TabLineFill = { bg = p.base00 },
 		TermCursor = { underdotted = true, sp = p.base08 },
 		GitSignsAddInline = { underdotted = true, sp = p.base06 },
@@ -561,35 +629,51 @@ function M.setup()
 		diffFile = { fg = p.base0D },
 
 		-- nvim-cmp kind chips (cmp.nix)
-		CmpItemAbbrDeprecated = { fg = p.gruv_yellow, strikethrough = true },
-		CmpItemAbbrMatch = { fg = p.gruv_cyan, bold = true },
-		CmpItemAbbrMatchFuzzy = { fg = p.gruv_cyan, bold = true },
-		CmpItemMenu = { fg = p.gruv_purple, italic = true },
-		CmpItemKindField = { fg = p.gruv_fg, bg = p.gruv_red },
-		CmpItemKindProperty = { fg = p.gruv_fg, bg = p.gruv_red },
-		CmpItemKindEvent = { fg = p.gruv_fg, bg = p.gruv_red },
-		CmpItemKindText = { fg = p.gruv_fg, bg = p.gruv_green },
-		CmpItemKindEnum = { fg = p.gruv_fg, bg = p.gruv_green },
-		CmpItemKindKeyword = { fg = p.gruv_fg, bg = p.gruv_green },
-		CmpItemKindConstant = { fg = p.gruv_fg, bg = p.gruv_orange },
-		CmpItemKindConstructor = { fg = p.gruv_fg, bg = p.gruv_orange },
-		CmpItemKindReference = { fg = p.gruv_fg, bg = p.gruv_orange },
-		CmpItemKindFunction = { fg = p.gruv_fg, bg = p.gruv_purple },
-		CmpItemKindStruct = { fg = p.gruv_fg, bg = p.gruv_purple },
-		CmpItemKindClass = { fg = p.gruv_fg, bg = p.gruv_purple },
-		CmpItemKindModule = { fg = p.gruv_fg, bg = p.gruv_purple },
-		CmpItemKindOperator = { fg = p.gruv_fg, bg = p.gruv_purple },
-		CmpItemKindVariable = { fg = p.gruv_fg, bg = p.gruv_blue },
-		CmpItemKindFile = { fg = p.gruv_fg, bg = p.gruv_blue },
-		CmpItemKindUnit = { fg = p.gruv_fg, bg = p.gruv_yellow },
-		CmpItemKindSnippet = { fg = p.gruv_fg, bg = p.gruv_yellow },
-		CmpItemKindFolder = { fg = p.gruv_fg, bg = p.gruv_yellow },
-		CmpItemKindMethod = { fg = p.gruv_fg, bg = p.gruv_aqua },
-		CmpItemKindValue = { fg = p.gruv_fg, bg = p.gruv_aqua },
-		CmpItemKindEnumMember = { fg = p.gruv_fg, bg = p.gruv_aqua },
-		CmpItemKindInterface = { fg = p.gruv_fg, bg = p.gruv_cyan },
-		CmpItemKindColor = { fg = p.gruv_fg, bg = p.gruv_cyan },
-		CmpItemKindTypeParameter = { fg = p.gruv_fg, bg = p.gruv_cyan },
+		-- Item names: no bg (let Pmenu's bg_code show through). Match chars:
+		-- violet (base0D) — the theme's primary accent. Kind labels: fg-only,
+		-- so they read as colored text on Pmenu rather than chips. Each kind
+		-- group maps onto one of xdusk's eight base accents so the palette
+		-- stays self-consistent.
+		CmpItemAbbr = { fg = p.base05 },
+		CmpItemAbbrDeprecated = { fg = p.base03, strikethrough = true },
+		CmpItemAbbrMatch = { fg = p.base08, bold = true },
+		CmpItemAbbrMatchFuzzy = { fg = p.base08, bold = true },
+		CmpItemMenu = { fg = p.base03, italic = true },
+		CmpItemKindField = { fg = p.base0E }, -- pink
+		CmpItemKindProperty = { fg = p.base0E },
+		CmpItemKindEvent = { fg = p.base0E },
+		CmpItemKindText = { fg = p.base0B }, -- green
+		CmpItemKindEnum = { fg = p.base0B },
+		CmpItemKindKeyword = { fg = p.base0B },
+		CmpItemKindConstant = { fg = p.base09 }, -- cyan-blue
+		CmpItemKindConstructor = { fg = p.base09 },
+		CmpItemKindReference = { fg = p.base09 },
+		CmpItemKindFunction = { fg = p.base0D }, -- violet
+		CmpItemKindStruct = { fg = p.base0D },
+		CmpItemKindClass = { fg = p.base0D },
+		CmpItemKindModule = { fg = p.base0D },
+		CmpItemKindOperator = { fg = p.base0D },
+		CmpItemKindVariable = { fg = p.base08 }, -- amber
+		CmpItemKindFile = { fg = p.base08 },
+		CmpItemKindUnit = { fg = p.base0C }, -- yellow
+		CmpItemKindSnippet = { fg = p.base0E }, -- pink
+		CmpItemKindFolder = { fg = p.base0C },
+		CmpItemKindMethod = { fg = p.base0A }, -- burnt orange
+		CmpItemKindValue = { fg = p.base0A },
+		CmpItemKindEnumMember = { fg = p.base0A },
+		CmpItemKindInterface = { fg = p.base0F }, -- coral
+		CmpItemKindColor = { fg = p.base0F },
+		CmpItemKindTypeParameter = { fg = p.base0F },
+
+		-- cursortab.nvim — single-line LLM suggestions arrive as
+		-- "modification" groups (the model is asked to replace the line, not
+		-- append to it), which renders as an overlay window with
+		-- `winhighlight = "Normal:CursorTabModification"`. So this group IS
+		-- the ghost-text styling, not CursorTabCompletion. Mauve italic, no
+		-- bg → reads as a hint.
+		CursorTabCompletion = { bg = p.ghost_text_bg, fg = p.base03, italic = true },
+		CursorTabModification = { bg = p.ghost_text_bg, fg = p.base03, italic = true },
+		CursorTabDeletion = { bg = p.deletion_bg },
 
 		-- render-markdown.nix
 		RenderMarkdownBullet = { fg = p.bullet },

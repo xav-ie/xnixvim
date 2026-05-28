@@ -35,6 +35,10 @@ p.menu_bg = "#282828" -- popup menu background
 p.menu_fg = "#ebdbb2" -- popup menu foreground
 p.menu_sel_bg = "#504945" -- popup menu selection background
 
+p.statusline_b = "#420f24" -- deep wine: lualine section b (warm counterpoint to bg_code plum)
+p.ghost_text_bg = "#143a18" -- muted dark green: cursortab ghost-text bg ("incoming/suggested" feel)
+p.deletion_bg = "#5a1a1a" -- dark red: cursortab deletion bg
+
 p.border = "#a89984" -- floating window border
 p.diag_quote = "#61afef" -- quoted text inside diagnostic floats
 
@@ -42,16 +46,14 @@ p.red = "#ff0000" -- hard red: deleted diff lines / inline removals
 p.delete_fg = "#ff4400" -- inline delete foreground (red-orange)
 p.white = "White" -- scrollbar thumb
 
--- gruvbox-derived palette for the completion menu kind icons ----------------
-p.gruv_fg = "#fbf1c7" -- cream foreground used on all kind chips
-p.gruv_red = "#fb4934"
-p.gruv_green = "#b8bb26"
-p.gruv_yellow = "#d79921"
-p.gruv_blue = "#458588"
-p.gruv_purple = "#b16286"
-p.gruv_aqua = "#8ec07c"
-p.gruv_cyan = "#83a598" -- also used for fuzzy-match text
-p.gruv_orange = "#fe8019"
+-- Diagnostic virtual-text backgrounds. Desaturated, very dark tints of each
+-- level's fg color so the inline labels read as "level X" at a glance
+-- without competing with code for attention. error+warn use these; info+hint
+-- stay backgroundless to keep two emphasis tiers (loud vs. quiet).
+p.diag_bg_error = "#3a1a00" -- dark amber tint  (pairs with base08)
+p.diag_bg_warn = "#3a0a1f" -- dark pink tint   (pairs with base0E)
+p.diag_bg_info = "#1f1234" -- dark violet tint (pairs with base0D)
+p.diag_bg_hint = "#2e2300" -- dark yellow tint (pairs with base0C)
 
 -- 256-color fallback. Nearest xterm-256 index for each color above, so the
 -- theme degrades gracefully in terminals without truecolor. base00 stays
@@ -84,15 +86,6 @@ p.cterm = {
 	["#61afef"] = 75, -- diag_quote
 	["#ff0000"] = 196, -- red
 	["#ff4400"] = 202, -- delete_fg
-	["#fbf1c7"] = 230, -- gruv_fg
-	["#fb4934"] = 203, -- gruv_red
-	["#b8bb26"] = 142, -- gruv_green
-	["#d79921"] = 172, -- gruv_yellow
-	["#458588"] = 66, -- gruv_blue
-	["#b16286"] = 132, -- gruv_purple
-	["#8ec07c"] = 108, -- gruv_aqua
-	["#83a598"] = 108, -- gruv_cyan
-	["#fe8019"] = 208, -- gruv_orange
 }
 
 return p

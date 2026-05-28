@@ -128,6 +128,21 @@
           layout_strategy = "bottom_pane";
           layout_config.height = 0.5;
           sorting_strategy = "ascending";
+          # Borderless frame: keep the top edge as the only visible border
+          # (matches fff's ivy look). Empty strings draw nothing and reserve
+          # no cell, so the content fills the reclaimed space.
+          # Indices: { top, right, bottom, left, top-left, top-right,
+          #            bottom-right, bottom-left }
+          borderchars = [
+            "─"
+            ""
+            ""
+            ""
+            "─"
+            "─"
+            ""
+            ""
+          ];
         };
         pickers = {
           colorscheme = {

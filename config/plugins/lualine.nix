@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
   # status line
   # https://github.com/nvim-lualine/lualine.nvim/
@@ -26,7 +26,7 @@
             right = ""; # "";
           };
           globalstatus = true;
-          theme = lib.mkForce "powerline_dark";
+          theme = "auto";
         };
 
         # Available Sections:
