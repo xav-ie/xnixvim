@@ -11,9 +11,6 @@ let
     name = "minuet-ai.nvim";
     src = inputs.minuet-ai-nvim;
     dependencies = with pkgs.vimPlugins; [
-      # TODO: add dependencies if you use the cmp
-      # or blink extensions only
-      nvim-cmp
       nvim-treesitter
       plenary-nvim
     ];
@@ -21,8 +18,6 @@ let
       "minuet"
       "minuet.backends.common"
       "minuet.blink"
-      # TODO: configure cmp?
-      # "minuet.cmp"
       "minuet.config"
       "minuet.utils"
       "minuet.virtualtext"
@@ -245,18 +240,12 @@ in
     };
   };
 
-  # minuet's setup() registers a cmp source which captures `local cmp =
-  # require('cmp')` inside minuet/cmp.lua. If we ran setup at startup while
-  # cmp is stubbed (lazy-loading), that local would be permanently bound to
-  # the stub. Defer setup to cmp's post-load hook so it sees real cmp.
-  config.plugins.cmp.luaConfig.post = lib.mkAfter (
+  # minuet.blink reads from minuet's config at completion time, so setup() must
+  # have run before the first request. Hook it onto blink-cmp's post-load so it
+  # runs once on the InsertEnter that loads blink.
+  config.plugins.blink-cmp.luaConfig.post = lib.mkAfter (
     lib.optionalString cfg.enabled # lua
       ''
-        for k, _ in pairs(package.loaded) do
-          if k:match('^minuet') then
-            package.loaded[k] = nil
-          end
-        end
         require'minuet'.setup ${lib.nixvim.toLuaObject cfg.settings}
       ''
   );

@@ -110,7 +110,9 @@
 
       };
 
-      # fromVscode = [ { } ];
+      # Load friendly-snippets (and any other VSCode-format snippet packages
+      # found on rtp) so blink's "snippets" source has something to surface.
+      fromVscode = [ { } ];
     };
     # TODO: does this behave the same as `cut_selection_keys`?
     extraConfigLua = # lua

@@ -16,8 +16,6 @@
     # vendored
     bgwinch.flake = false;
     bgwinch.url = "github:will/bgwinch.nvim";
-    cmp-luasnip-choice.flake = false;
-    cmp-luasnip-choice.url = "github:L3MON4D3/cmp-luasnip-choice";
     cursortab-nvim.flake = false;
     cursortab-nvim.url = "github:leonardcser/cursortab.nvim";
     minuet-ai-nvim.flake = false;

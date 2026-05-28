@@ -7,8 +7,8 @@
 {
   imports = [
     ./bgwinch.nix
+    ./blink-cmp.nix
     ./bufferline.nix
-    ./cmp.nix
     ./conform-nvim.nix
     ./direnv.nix
     ./fff.nix
@@ -23,7 +23,6 @@
     ./jjdescription.nix
     ./lsp
     ./lazydev.nix
-    ./lspkind.nix
     ./lsp-lines.nix
     ./lualine.nix
     ./luasnip.nix
@@ -72,19 +71,6 @@
           "BufReadPost"
           "BufNewFile"
         ];
-      };
-
-      # luasnip expansions in cmp
-      # https://github.com/saadparwaiz1/cmp_luasnip/
-      # https://nix-community.github.io/nixvim/plugins/cmp_luasnip
-      cmp_luasnip = {
-        enable = true;
-        # Strip luasnip from Nix dependencies so it stays in opt/ (managed
-        # by lz.n) instead of being pulled into start/ where its plugin
-        # scripts add ~7ms to startup.
-        package = pkgs.vimPlugins.cmp_luasnip.overrideAttrs (_: {
-          dependencies = [ ];
-        });
       };
 
       # amazing snippets for every language
