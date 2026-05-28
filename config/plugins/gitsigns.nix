@@ -1,8 +1,6 @@
 {
   config,
   lib,
-  pkgs,
-  inputs,
   ...
 }:
 {
@@ -12,9 +10,6 @@
     # git indicators in the left gutter
     plugins.gitsigns = {
       enable = true;
-      package = pkgs.vimPlugins.gitsigns-nvim.overrideAttrs (_oldAttrs: {
-        src = inputs.gitsigns-nvim;
-      });
       lazyLoad.settings.event = "BufReadPost";
       lazyLoad.enable = config.lazyLoad.enable;
       settings = {
@@ -32,20 +27,9 @@
         # https://github.com/fpletz/flake/blob/f97512e2f7cfb555bcebefd96f8cf61155b8dc42/home/nixvim/gitsigns.nix#L21
       };
     };
-    # TODO: deduplicate somehow
     keymaps =
       let
-        modeKeys =
-          mode:
-          lib.attrsets.mapAttrsToList (
-            key: action:
-            { inherit key mode; } // (if builtins.isString action then { inherit action; } else action)
-          );
-        nm = modeKeys [ "n" ];
-        ox = modeKeys [
-          "o"
-          "x"
-        ];
+        inherit (import ../modeKeys.nix { inherit lib; }) nm ox;
       in
       lib.nixvim.keymaps.mkKeymaps { options.silent = true; } (nm {
         "[c" = {

@@ -32,38 +32,6 @@
         "type": "github"
       }
     },
-    "coq-lsp": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1777802362,
-        "narHash": "sha256-F9X2fT+u0Fzr5hNObp2L5+nhd3gHm3jPc0DbMwKNv10=",
-        "owner": "tomtomjhj",
-        "repo": "coq-lsp.nvim",
-        "rev": "37d1fadbc7bed67dd677c01aa594ccd24cbe92ce",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tomtomjhj",
-        "repo": "coq-lsp.nvim",
-        "type": "github"
-      }
-    },
-    "coqtail": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1778201879,
-        "narHash": "sha256-v9ga3/P8n3MfxQ5K9XoucAUhuMy1SbpCqqdeiU0gOsM=",
-        "owner": "whonore",
-        "repo": "Coqtail",
-        "rev": "1c30ecc21b7555994691c1ee0db087f3d24c36a2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "whonore",
-        "repo": "Coqtail",
-        "type": "github"
-      }
-    },
     "cursortab-nvim": {
       "flake": false,
       "locked": {
@@ -152,23 +120,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "gitsigns-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1759230170,
-        "narHash": "sha256-mE7FcGmihPYQBjWBC/q3ZETf0glc5Ef8/uRTWm03ACY=",
-        "owner": "lewis6991",
-        "repo": "gitsigns.nvim",
-        "rev": "2c12410d77d5434ac21f0e0718f44c453799eea3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lewis6991",
-        "ref": "pull/1400/head",
-        "repo": "gitsigns.nvim",
         "type": "github"
       }
     },
@@ -338,38 +289,6 @@
         "type": "github"
       }
     },
-    "oatmeal": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1711805699,
-        "narHash": "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=",
-        "owner": "dustinblackman",
-        "repo": "oatmeal.nvim",
-        "rev": "c8cdd0a182cf77f88ea5fa4703229ddb3f47c1f7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dustinblackman",
-        "repo": "oatmeal.nvim",
-        "type": "github"
-      }
-    },
-    "octo-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1777940921,
-        "narHash": "sha256-XpQy7TOlwXCbfpZm/uufaeTtuWDTO3fVzr8D8vSFNjc=",
-        "owner": "pwntester",
-        "repo": "octo.nvim",
-        "rev": "bbd903ce905c301ac516d64c33b2511a05f6b59b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "pwntester",
-        "repo": "octo.nvim",
-        "type": "github"
-      }
-    },
     "oil-git-status": {
       "flake": false,
       "locked": {
@@ -383,54 +302,6 @@
       "original": {
         "owner": "refractalize",
         "repo": "oil-git-status.nvim",
-        "type": "github"
-      }
-    },
-    "org-roam-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1772769962,
-        "narHash": "sha256-K0OnM7PdTT4ypL0IAVWb9R83SDIhgko8j4KBzIkJJNM=",
-        "owner": "chipsenkbeil",
-        "repo": "org-roam.nvim",
-        "rev": "6c21c867b178a80fb4ad243c445545e5583d8232",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chipsenkbeil",
-        "repo": "org-roam.nvim",
-        "type": "github"
-      }
-    },
-    "orgmode": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1778003739,
-        "narHash": "sha256-FsSAY+HGUiemqIzDaNAQa6d6I3H7sSzoBHGX2nL/zoE=",
-        "owner": "nvim-orgmode",
-        "repo": "orgmode",
-        "rev": "af7029dd70e6513cd8c18b6098c4adcc55acd1dc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvim-orgmode",
-        "repo": "orgmode",
-        "type": "github"
-      }
-    },
-    "pretty-ts-errors-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1756133190,
-        "narHash": "sha256-pDteDGlZzzg0mPq1hPdh6/fCXO76vwgL0NmYCfxsFYs=",
-        "owner": "youyoumu",
-        "repo": "pretty-ts-errors.nvim",
-        "rev": "98ca383e6bf23d6868ff133edce26871ead1214e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "youyoumu",
-        "repo": "pretty-ts-errors.nvim",
         "type": "github"
       }
     },
@@ -464,23 +335,15 @@
       "inputs": {
         "bgwinch": "bgwinch",
         "cmp-luasnip-choice": "cmp-luasnip-choice",
-        "coq-lsp": "coq-lsp",
-        "coqtail": "coqtail",
         "cursortab-nvim": "cursortab-nvim",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
-        "gitsigns-nvim": "gitsigns-nvim",
         "himalaya-nvim": "himalaya-nvim",
         "minuet-ai-nvim": "minuet-ai-nvim",
         "nix-auto-follow": "nix-auto-follow",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
-        "oatmeal": "oatmeal",
-        "octo-nvim": "octo-nvim",
         "oil-git-status": "oil-git-status",
-        "org-roam-nvim": "org-roam-nvim",
-        "orgmode": "orgmode",
-        "pretty-ts-errors-nvim": "pretty-ts-errors-nvim",
         "schemastore-nvim": "schemastore-nvim",
         "systems": "systems_3",
         "tabscope-nvim": "tabscope-nvim",

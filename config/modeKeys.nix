@@ -19,4 +19,8 @@ in
     "x"
     "o"
   ];
+  ox = modeKeys [
+    "o"
+    "x"
+  ];
 }

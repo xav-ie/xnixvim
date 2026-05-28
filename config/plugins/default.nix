@@ -9,7 +9,6 @@
     ./bgwinch.nix
     ./bufferline.nix
     ./cmp.nix
-    # ./coq
     ./conform-nvim.nix
     ./direnv.nix
     ./fff.nix
@@ -35,14 +34,9 @@
     ./nvim-colorizer.nix
     # ./nvim-lightbulb.nix
     ./nvim-scrollview.nix
-    # ./oatmeal.nix
-    # ./octo-nvim.nix
     ./oil-git-status.nix
     ./oil.nix
     # ./ollama.nix
-    # ./orgmode.nix
-    # ./org-roam-nvim.nix # buggy as hell
-    # ./pretty-ts-errors-nvim.nix
     ./render-markdown.nix
     # ./supermaven.nix
     ./tabscope.nix

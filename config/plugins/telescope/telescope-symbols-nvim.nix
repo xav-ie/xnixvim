@@ -10,15 +10,8 @@
     extraPlugins = with pkgs.vimPlugins; [ telescope-symbols-nvim ];
 
     keymaps =
-      # TODO: somehow export from ../../keymaps.nix and avoid duplication
       let
-        modeKeys =
-          mode:
-          lib.attrsets.mapAttrsToList (
-            key: action:
-            { inherit key mode; } // (if builtins.isString action then { inherit action; } else action)
-          );
-        nm = modeKeys [ "n" ];
+        inherit (import ../../modeKeys.nix { inherit lib; }) nm;
         telescopeSymbolsBinding =
           keyset:
           "<cmd>lua require('lz.n').trigger_load('telescope.nvim'); require('telescope.builtin').symbols({ sources = { '${keyset}' } })<CR>";
