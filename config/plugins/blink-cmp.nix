@@ -96,19 +96,26 @@ in
           # completion menu. Force it off here so the menu stays borderless.
           menu = {
             border = "none";
-            draw.columns = [
-              {
-                __unkeyed-1 = "label";
-                __unkeyed-2 = "label_description";
-                gap = 1;
-              }
-              {
-                __unkeyed-1 = "kind_icon";
-                __unkeyed-2 = "kind";
-                gap = 1;
-              }
-              { __unkeyed-1 = "source_name"; }
-            ];
+            draw = {
+              # colorful-menu folds label_description into label, so it's
+              # omitted from the column list here.
+              columns = [
+                {
+                  __unkeyed-1 = "label";
+                  gap = 1;
+                }
+                {
+                  __unkeyed-1 = "kind_icon";
+                  __unkeyed-2 = "kind";
+                  gap = 1;
+                }
+                { __unkeyed-1 = "source_name"; }
+              ];
+              components.label = {
+                text.__raw = "function(ctx) return require('colorful-menu').blink_components_text(ctx) end";
+                highlight.__raw = "function(ctx) return require('colorful-menu').blink_components_highlight(ctx) end";
+              };
+            };
           };
           # Auto-show docs preview next to the menu while cycling items.
           documentation = {
