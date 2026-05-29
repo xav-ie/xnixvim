@@ -27,6 +27,20 @@ let
   # preview_position/prompt_position would need this revisited.
   fff-nvim = pkgs.vimPlugins.fff-nvim.overrideAttrs (old: {
     postPatch = (old.postPatch or "") + ''
+      # Teach send_to_quickfix an `append` option so we can bind a separate
+      # "add to qflist" key alongside the default replace. Upstream only
+      # exposes a single replacing send_to_quickfix; the patch turns the
+      # hard-coded setqflist(qf_list) into a mode-aware call without
+      # changing the default behavior (nil opts → " " → new list, same as
+      # the original no-arg call).
+      substituteInPlace lua/fff/picker_ui.lua \
+        --replace-fail \
+        'function M.send_to_quickfix()' \
+        'function M.send_to_quickfix(opts)' \
+        --replace-fail \
+        'vim.fn.setqflist(qf_list)' \
+        'vim.fn.setqflist(qf_list, opts and opts.append and "a" or " ")'
+
       substituteInPlace lua/fff/picker_ui.lua \
         --replace-fail \
         'local win_configs = build_window_configs(layout, config)' \
@@ -65,6 +79,14 @@ in
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "TelescopePrompt",
         callback = function() vim.g.fff_last_picker_tool = "telescope" end,
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "fff_input", "fff_list", "fff_preview" },
+        callback = function(args)
+          vim.keymap.set({ "i", "n" }, "<M-q>", function()
+            require("fff.picker_ui").send_to_quickfix({ append = true })
+          end, { buffer = args.buf, silent = true, desc = "fff add to quickfix" })
+        end,
       })
     '';
     plugins.fff = {

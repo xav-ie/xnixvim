@@ -38,6 +38,7 @@
     ./oil-git-status.nix
     ./oil.nix
     # ./ollama.nix
+    ./quicker.nix
     # ./supermaven.nix
     ./tabscope.nix
     ./telescope
