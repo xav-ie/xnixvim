@@ -685,6 +685,18 @@ function M.setup()
 		RenderMarkdownH5Bg = { bg = p.bg_header, fg = p.base0D },
 		RenderMarkdownH6Bg = { bg = p.bg_header, fg = p.base0D },
 
+		-- markview.nix
+		MarkviewListItemMinus = { fg = p.bullet },
+		MarkviewListItemPlus = { fg = p.bullet },
+		MarkviewListItemStar = { fg = p.bullet },
+		MarkviewCode = { bg = p.bg_code },
+		MarkviewHeading1 = { bg = p.bg_header, fg = p.base0D },
+		MarkviewHeading2 = { bg = p.bg_header, fg = p.base0D },
+		MarkviewHeading3 = { bg = p.bg_header, fg = p.base0D },
+		MarkviewHeading4 = { bg = p.bg_header, fg = p.base0D },
+		MarkviewHeading5 = { bg = p.bg_header, fg = p.base0D },
+		MarkviewHeading6 = { bg = p.bg_header, fg = p.base0D },
+
 		-- nvim-scrollview.nix
 		ScrollView = { bg = p.white },
 

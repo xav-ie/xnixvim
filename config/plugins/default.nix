@@ -28,6 +28,7 @@
     ./lualine.nix
     ./luasnip.nix
     ./markdown-table-sorter.nix
+    ./markview.nix
     ./completion-providers
     ./noice.nix
     ./notify.nix
@@ -37,7 +38,6 @@
     ./oil-git-status.nix
     ./oil.nix
     # ./ollama.nix
-    ./render-markdown.nix
     # ./supermaven.nix
     ./tabscope.nix
     ./telescope
