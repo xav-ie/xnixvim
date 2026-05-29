@@ -2,7 +2,7 @@ _: {
   config = {
     extraConfigLua = # lua
       ''
-        vim.keymap.set('n', '<leader>g', function()
+        vim.keymap.set('n', '<leader>G', function()
           -- Ensure :Git command is available
           if vim.fn.exists(':Git') > 0 then
             -- Call :Git command

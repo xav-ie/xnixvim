@@ -30,6 +30,7 @@
     ./markdown-table-sorter.nix
     ./markview.nix
     ./completion-providers
+    ./neogit.nix
     ./noice.nix
     ./notify.nix
     ./nvim-colorizer.nix

@@ -138,7 +138,6 @@ in
     keymaps = {
       accept = "<C-y>";
       partial_accept = "<C-S-y>";
-      trigger = "<C-/>";
     };
 
     provider = {

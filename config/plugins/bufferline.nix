@@ -34,13 +34,19 @@ in
                 if buf.path and buf.path:match("^fugitive://") then
                   return "Git"
                 end
+                if buf.bufnr and vim.bo[buf.bufnr].filetype == "NeogitStatus" then
+                  return "Git"
+                end
               end
             '';
           get_element_icon = {
             __raw = ''
               function(element)
-                -- Use git icon for fugitive buffers
+                -- Use git icon for fugitive and neogit status buffers
                 if element.path and element.path:match("^fugitive://") then
+                  return "󰊢", "DevIconGitConfig"
+                end
+                if element.filetype == "NeogitStatus" then
                   return "󰊢", "DevIconGitConfig"
                 end
 
@@ -70,7 +76,9 @@ in
                     name = "Git",
                     priority = 1,
                     matcher = function(buf)
-                      return buf.path:match("^fugitive://") ~= nil or buf.path:match("^%.git/") ~= nil
+                      return buf.path:match("^fugitive://") ~= nil
+                        or buf.path:match("^%.git/") ~= nil
+                        or vim.bo[buf.id].filetype == "NeogitStatus"
                     end,
                     separator = {
                       style = require("bufferline.groups").separator.none,

@@ -708,6 +708,43 @@ function M.setup()
 		RainbowDelimiterGreen = { fg = p.base0B }, -- green
 		RainbowDelimiterViolet = { fg = p.base0D }, -- violet
 		BlinkPairsUnmatched = { fg = p.red, bold = true },
+
+		-- neogit.nix — Neogit's defaults use bright bg2/line_green/line_red
+		-- panels which clash with the rest of the (mostly transparent) UI.
+		-- Context rows link to Normal: inherits the transparent base bg,
+		-- and crucially leaves a non-empty hl table so Neogit's setup_highlights
+		-- (which falls back to its bg1 grey when `is_set` reports false) sees
+		-- our override as already-set.
+		NeogitDiffContext = { link = "Normal" },
+		NeogitDiffContextHighlight = { link = "Normal" },
+		NeogitDiffContextCursor = { link = "Normal" },
+		-- Neogit's status buffer inherits CursorLine (= base01 #603090).
+		-- That reads as a flat dark plum on top of the transparent base and
+		-- doesn't pop. Brighter, more saturated violet for the active row.
+		NeogitCursorLine = { bg = "#7e3aba" },
+		-- Darker tinted bg than Neogit's defaults so add/delete rows don't
+		-- compete with code colors. fg stays green/red on all variants —
+		-- only NeogitHunkHeader*Highlight/Cursor switches to golden for the
+		-- "this hunk is active" cue.
+		NeogitDiffAdd = { bg = "#0e2810", fg = p.base0B },
+		NeogitDiffAddHighlight = { bg = "#0e2810", fg = p.base0B, bold = true },
+		NeogitDiffAddCursor = { bg = "#0e2810", fg = p.base0B, bold = true },
+		NeogitDiffAdditions = { fg = p.base0B },
+		NeogitDiffDelete = { bg = "#3a1212", fg = p.delete_fg },
+		NeogitDiffDeleteHighlight = { bg = "#3a1212", fg = p.delete_fg, bold = true },
+		NeogitDiffDeleteCursor = { bg = "#3a1212", fg = p.delete_fg, bold = true },
+		NeogitDiffDeletions = { fg = p.delete_fg },
+		-- Word-diff (intra-line changed words). Underline + colored squiggle
+		-- color (sp) instead of bold + colored fg, so the changed token reads
+		-- as an annotation over the line's existing diff color rather than
+		-- replacing it.
+		NeogitDiffAddInline = { underline = true, sp = p.base0B },
+		NeogitDiffDeleteInline = { underline = true, sp = p.delete_fg },
+		NeogitHunkHeader = { bg = p.bg_header, fg = p.base0D, bold = true },
+		NeogitHunkHeaderHighlight = { bg = p.statusline_b, fg = p.base0C, bold = true },
+		NeogitHunkHeaderCursor = { bg = p.statusline_b, fg = p.base0C, bold = true },
+		NeogitDiffHeader = { bg = p.bg_header, fg = p.base0D, bold = true },
+		NeogitDiffHeaderHighlight = { bg = p.bg_header, fg = p.base0D, bold = true },
 	}
 
 	-- Apply a group, deriving ctermfg/ctermbg from its gui colors so the theme
