@@ -84,13 +84,32 @@
       # nix.enable = true;
       # TODO: test
 
-      # ()[]{}...
-      # https://github.com/windwp/nvim-autopairs/
-      # https://nix-community.github.io/nixvim/plugins/nvim-autopairs
-      nvim-autopairs = {
+      # auto-pairs + rainbow highlighting in one Rust-parsed plugin
+      # https://github.com/saghen/blink.pairs/
+      # https://nix-community.github.io/nixvim/plugins/blink-pairs
+      blink-pairs = {
         enable = true;
         lazyLoad.enable = config.lazyLoad.enable;
-        lazyLoad.settings.event = "InsertEnter";
+        lazyLoad.settings.event = [
+          "BufReadPost"
+          "BufNewFile"
+        ];
+        settings = {
+          mappings.enabled = true;
+          highlights = {
+            enabled = true;
+            groups = [
+              "RainbowDelimiterRed"
+              "RainbowDelimiterYellow"
+              "RainbowDelimiterBlue"
+              "RainbowDelimiterOrange"
+              "RainbowDelimiterGreen"
+              "RainbowDelimiterViolet"
+            ];
+            unmatched_group = "BlinkPairsUnmatched";
+            matchparen.group = "MatchParen";
+          };
+        };
       };
 
       # better folding UI
@@ -103,10 +122,6 @@
       # https://github.com/tpope/vim-surround/
       # https://nix-community.github.io/nixvim/plugins/vim-surround
       vim-surround.enable = true;
-
-      # https://gitlab.com/HiPhish/rainbow-delimiters.nvim
-      # https://nix-community.github.io/nixvim/plugins/rainbow-delimiters
-      rainbow-delimiters.enable = true;
 
       # todo comment highlighting
       # https://github.com/folke/todo-comments.nvim/

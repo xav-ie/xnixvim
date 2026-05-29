@@ -687,6 +687,15 @@ function M.setup()
 
 		-- nvim-scrollview.nix
 		ScrollView = { bg = p.white },
+
+		-- blink.pairs rainbow brackets + unmatched-pair marker
+		RainbowDelimiterRed = { fg = p.base0F }, -- coral
+		RainbowDelimiterYellow = { fg = p.base0C }, -- yellow
+		RainbowDelimiterBlue = { fg = p.base09 }, -- cyan-blue
+		RainbowDelimiterOrange = { fg = p.base08 }, -- amber
+		RainbowDelimiterGreen = { fg = p.base0B }, -- green
+		RainbowDelimiterViolet = { fg = p.base0D }, -- violet
+		BlinkPairsUnmatched = { fg = p.red, bold = true },
 	}
 
 	-- Apply a group, deriving ctermfg/ctermbg from its gui colors so the theme
