@@ -9,7 +9,6 @@ _: {
             -- https://github.com/ch3n9w/dev/blob/319deb662ff50b58f5b643fbd9327ecb00919886/nvim/lua/autocmd.lua#L26-L34
             vim.api.nvim_create_autocmd('TextYankPost', {
                 callback = function()
-                    vim.highlight.on_yank()
                     local clipboard = require('vim.ui.clipboard.osc52')
                     local copy_to_unnamedplus = clipboard.copy('+')
                     copy_to_unnamedplus(vim.v.event.regcontents)

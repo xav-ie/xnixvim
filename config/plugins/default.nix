@@ -43,6 +43,7 @@
     # ./supermaven.nix
     ./tabscope.nix
     ./telescope
+    ./tiny-glimmer.nix
     ./treesitter.nix
     # TODO: fix
     # ./vim-guise.nix

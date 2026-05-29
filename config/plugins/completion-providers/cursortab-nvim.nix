@@ -182,6 +182,66 @@ in
       ''
         function()
           require'cursortab'.setup ${lib.nixvim.toLuaObject cfg.settings}
+
+          ${lib.optionalString config.plugins.tiny-glimmer.enable ''
+            -- Animate cursortab accepts via tiny-glimmer. The daemon edits
+            -- asynchronously, so we capture the cursor before accept and
+            -- animate the range covered by the resulting TextChanged(I).
+            -- tiny-glimmer is required lazily inside the callbacks because
+            -- cursortab loads on BufReadPost — earlier than tiny-glimmer's
+            -- DeferredUIEnter trigger.
+            local ok_ui, ct_ui = pcall(require, "cursortab.ui")
+            if ok_ui then
+              local pending = nil
+              vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+                group = vim.api.nvim_create_augroup("cursortab_glimmer", { clear = true }),
+                callback = function()
+                  if not pending then return end
+                  local before = pending
+                  pending = nil
+                  local after = vim.api.nvim_win_get_cursor(0)
+                  local before_row, after_row = before[1] - 1, after[1] - 1
+                  local start_row = math.min(before_row, after_row)
+                  local end_row   = math.max(before_row, after_row)
+                  local start_col, end_col
+                  if before_row == after_row then
+                    start_col = math.min(before[2], after[2])
+                    end_col   = math.max(before[2], after[2])
+                  else
+                    start_col = 0
+                    end_col   = vim.fn.col({ end_row + 1, "$" }) - 1
+                  end
+                  if start_row == end_row and start_col == end_col then return end
+                  local ok_gl, glimmer = pcall(require, "tiny-glimmer.lib")
+                  if not ok_gl then return end
+                  glimmer.create_animation({
+                    range = {
+                      start_line = start_row,
+                      start_col  = start_col,
+                      end_line   = end_row,
+                      end_col    = end_col,
+                    },
+                    duration   = 600,
+                    from_color = "#00a0f0", -- palette base09 (cyan-blue)
+                    to_color   = "Normal",
+                    effect     = "fade",
+                    easing     = "linear",
+                  })
+                end,
+              })
+
+              vim.keymap.set("i", "${cfg.settings.keymaps.accept}", function()
+                if ct_ui.has_completion() or ct_ui.has_cursor_prediction() then
+                  pending = vim.api.nvim_win_get_cursor(0)
+                  require("cursortab").accept()
+                  return ""
+                end
+                -- No completion to accept → request one at point.
+                require("cursortab.daemon").send_event_immediate("trigger_completion")
+                return ""
+              end, { expr = true, desc = "Accept cursortab / trigger completion" })
+            end
+          ''}
         end
       '';
   };

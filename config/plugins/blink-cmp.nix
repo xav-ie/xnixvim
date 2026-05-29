@@ -38,6 +38,7 @@ in
         # the preset binds <C-y> to select_and_accept which collides with
         # cursortab's accept keymap.
         keymap = {
+          preset = "none";
           "<C-u>" = [
             "scroll_documentation_up"
             "fallback"
@@ -52,6 +53,7 @@ in
             "hide_documentation"
           ];
           "<C-n>" = [
+            "show"
             "select_next"
             "fallback"
           ];
@@ -60,7 +62,53 @@ in
             "fallback"
           ];
           "<CR>" = [
-            "accept"
+            (
+              if config.plugins.tiny-glimmer.enable then
+                {
+                  __raw = # lua
+                    ''
+                      function(cmp)
+                        local before = vim.api.nvim_win_get_cursor(0)
+                        local accepted = cmp.accept()
+                        if accepted then
+                          vim.schedule(function()
+                            local after = vim.api.nvim_win_get_cursor(0)
+                            local before_row, after_row = before[1] - 1, after[1] - 1
+                            local start_row = math.min(before_row, after_row)
+                            local end_row   = math.max(before_row, after_row)
+                            local start_col, end_col
+                            if before_row == after_row then
+                              start_col = math.min(before[2], after[2])
+                              end_col   = math.max(before[2], after[2])
+                            else
+                              start_col = 0
+                              end_col   = vim.fn.col({ end_row + 1, "$" }) - 1
+                            end
+                            if start_row == end_row and start_col == end_col then return end
+                            local ok, glimmer = pcall(require, "tiny-glimmer.lib")
+                            if not ok then return end
+                            glimmer.create_animation({
+                              range = {
+                                start_line = start_row,
+                                start_col  = start_col,
+                                end_line   = end_row,
+                                end_col    = end_col,
+                              },
+                              duration   = 600,
+                              from_color = "#00a0f0",
+                              to_color   = "Normal",
+                              effect     = "fade",
+                              easing     = "linear",
+                            })
+                          end)
+                        end
+                        return accepted
+                      end
+                    '';
+                }
+              else
+                "accept"
+            )
             "fallback"
           ];
         }
@@ -134,6 +182,9 @@ in
           ++ lib.optional (aiProvider == "minuet") "minuet";
           providers = {
             buffer.opts.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
+            # Default score_offset is -3, which pushes snippets below buffer
+            # matches even on close prefix hits. Bump above buffer (default 0).
+            snippets.score_offset = 5;
           }
           // lib.optionalAttrs (aiProvider == "minuet") {
             minuet = {

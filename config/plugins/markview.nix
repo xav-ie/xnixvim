@@ -10,6 +10,10 @@
       settings = {
         preview = {
           icon_provider = "devicons";
+          enable_hybrid_mode = true;
+          hybrid_modes = [ "n" ];
+          linewise_hybrid_mode = true;
+          edit_range = [ 0 0 ];
         };
         markdown = {
           headings = {
