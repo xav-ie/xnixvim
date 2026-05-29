@@ -177,10 +177,6 @@
           action = "oldfiles";
           options.desc = "[o]ldfiles";
         };
-        "<leader>fr" = {
-          action = "resume";
-          options.desc = "[r]esume Previous Seasch";
-        };
         "<leader>fs" = {
           action = "spell_suggest";
           options.desc = "[s]pell_suggest";

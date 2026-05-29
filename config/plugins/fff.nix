@@ -61,6 +61,12 @@ in
   # https://github.com/dmtrKovalenko/fff.nvim/
   # https://nix-community.github.io/nixvim/plugins/fff
   config = {
+    extraConfigLua = ''
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "TelescopePrompt",
+        callback = function() vim.g.fff_last_picker_tool = "telescope" end,
+      })
+    '';
     plugins.fff = {
       enable = true;
       package = fff-nvim;
@@ -82,15 +88,55 @@ in
       lazyLoad.settings.keys = [
         {
           __unkeyed-1 = "<leader>ff";
-          __unkeyed-2.__raw = "function() require('fff').find_files() end";
+          __unkeyed-2.__raw = ''
+            function()
+              vim.g.fff_last_picker_tool = "fff_files"
+              require('fff').find_files()
+            end
+          '';
           mode = "n";
           desc = "fff find_[f]iles";
         }
         {
           __unkeyed-1 = "<leader>fl";
-          __unkeyed-2.__raw = "function() require('fff').live_grep() end";
+          __unkeyed-2.__raw = ''
+            function()
+              vim.g.fff_last_picker_tool = "fff_grep"
+              require('fff').live_grep()
+            end
+          '';
           mode = "n";
           desc = "fff [l]ive_grep";
+        }
+        {
+          __unkeyed-1 = "<leader>fr";
+          __unkeyed-2.__raw = ''
+            function()
+              local tool = vim.g.fff_last_picker_tool
+              if tool == "fff_files" or tool == "fff_grep" then
+                local ok, fuzzy = pcall(function()
+                  return require('fff.core').ensure_initialized()
+                end)
+                local query
+                if ok then
+                  local fn = tool == "fff_grep"
+                    and fuzzy.get_historical_grep_query
+                    or fuzzy.get_historical_query
+                  local q_ok, q = pcall(fn, 0)
+                  if q_ok then query = q end
+                end
+                if tool == "fff_grep" then
+                  require('fff').live_grep({ query = query })
+                else
+                  require('fff').find_files({ query = query })
+                end
+              else
+                vim.cmd("Telescope resume")
+              end
+            end
+          '';
+          mode = "n";
+          desc = "[r]esume last search (fff/telescope)";
         }
       ];
     };
