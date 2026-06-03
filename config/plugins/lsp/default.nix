@@ -141,17 +141,20 @@ in
           {
             key = "<leader>lc";
             options.desc = "LSP Incoming [c]alls";
-            action = "<cmd>Telescope lsp_incoming_calls<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_incoming_calls() end";
           }
           {
             key = "<leader>lC";
             options.desc = "LSP Outgoing [C]alls";
-            action = "<cmd>Telescope lsp_outgoing_calls<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_outgoing_calls() end";
           }
           {
             key = "<leader>ld";
             options.desc = "LSP [d]efinition";
-            action = "<cmd>Telescope lsp_definitions<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_definitions() end";
           }
           {
             key = "<leader>lf";
@@ -174,12 +177,14 @@ in
           {
             key = "<leader>li";
             options.desc = "LSP [i]mplementations";
-            action = "<cmd>Telescope lsp_implementations<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_implementations() end";
           }
           {
             key = "<leader>lo";
             options.desc = "LSP D[o]cument Symbols";
-            action = "<cmd>Telescope lsp_document_symbols<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_document_symbols() end";
           }
         ]
         ++ (lib.optionals (!config.plugins.inc-rename.enable) [
@@ -194,22 +199,26 @@ in
           {
             key = "<leader>lr";
             options.desc = "LSP [r]eferences";
-            action = "<cmd>Telescope lsp_references<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_references() end";
           }
           {
             key = "<leader>lt";
             options.desc = "LSP [t]ype Definitions";
-            action = "<cmd>Telescope lsp_type_definitions<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_type_definitions() end";
           }
           {
             key = "<leader>lw";
             options.desc = "LSP [w]orkspace Symbols";
-            action = "<cmd>Telescope lsp_workspace_symbols<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_workspace_symbols() end";
           }
           {
             key = "<leader>ly";
             options.desc = "LSP D[y]namic Symbols";
-            action = "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>";
+            action.__raw = # lua
+              "function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end";
           }
 
           # Global maps
@@ -261,7 +270,37 @@ in
         # https://github.com/arduino/arduino-language-server
         arduino_language_server.enable = true;
         # https://github.com/withastro/language-tools
-        astro.enable = true;
+        # astro-language-server needs TypeScript at Node.js startup (require() at module load time),
+        # so NODE_PATH must be set before the process starts — init_options.typescript.tsdk alone
+        # is not enough. Wrap the binary and also point tsdk at the project's TypeScript so
+        # the server uses the correct version for type-checking.
+        astro = {
+          enable = true;
+          package = pkgs.symlinkJoin {
+            name = "astro-language-server";
+            paths = [ pkgs.astro-language-server ];
+            buildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/astro-ls \
+                --set NODE_PATH "${pkgs.typescript}/lib/node_modules"
+            '';
+          };
+          extraOptions = {
+            on_new_config.__raw = ''
+              function(new_config, new_root_dir)
+                new_config.init_options = new_config.init_options or {}
+                new_config.init_options.typescript = new_config.init_options.typescript or {}
+                local project_tsdk = new_root_dir .. "/node_modules/typescript/lib"
+                -- prefer project TypeScript if it exists, fall back to the bundled nixpkgs one
+                if vim.uv.fs_stat(project_tsdk) then
+                  new_config.init_options.typescript.tsdk = project_tsdk
+                else
+                  new_config.init_options.typescript.tsdk = "${pkgs.typescript}/lib/node_modules/typescript/lib"
+                end
+              end
+            '';
+          };
+        };
         # https://clangd.llvm.org/
         clangd = {
           enable = true;
