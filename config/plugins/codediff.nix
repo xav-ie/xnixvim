@@ -43,6 +43,14 @@ let
         exit 1
       fi
       install -Dm644 "$built" "$out/libvscode_diff_$version.${libExt}"
+    ''
+    + pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
+      # codediff's loader (core/installer.lua:check_system_libgomp) refuses to
+      # load when nvim is from the Nix store unless a libgomp.so.1 sits next to
+      # the plugin root — otherwise it tries (and on Nix fails) to download one.
+      # The built libvscode_diff.so already finds libgomp via its RPATH; this
+      # symlink only exists to satisfy that filereadable() pre-flight check.
+      ln -s ${pkgs.stdenv.cc.cc.lib}/lib/libgomp.so.1 "$out/libgomp.so.1"
     '';
 
     doCheck = false;
