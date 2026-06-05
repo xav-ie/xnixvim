@@ -46,6 +46,7 @@
     ./tabscope.nix
     ./telescope
     ./tiny-glimmer.nix
+    ./toggleterm.nix
     ./treesitter.nix
     # TODO: fix
     # ./vim-guise.nix
