@@ -9,6 +9,7 @@
     ./bgwinch.nix
     ./blink-cmp.nix
     ./bufferline.nix
+    ./codediff.nix
     ./colorful-menu.nix
     ./conform-nvim.nix
     ./direnv.nix

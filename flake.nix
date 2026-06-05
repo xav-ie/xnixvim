@@ -16,6 +16,8 @@
     # vendored
     bgwinch.flake = false;
     bgwinch.url = "github:will/bgwinch.nvim";
+    codediff-nvim.flake = false;
+    codediff-nvim.url = "github:esmuellert/codediff.nvim";
     cursortab-nvim.flake = false;
     cursortab-nvim.url = "github:leonardcser/cursortab.nvim";
     minuet-ai-nvim.flake = false;

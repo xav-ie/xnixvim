@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "codediff-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780035034,
+        "narHash": "sha256-1F6z/rhZxiuI6W1ReyHP6EQFxys4qm3fbINxoy1hQZA=",
+        "owner": "esmuellert",
+        "repo": "codediff.nvim",
+        "rev": "29b06f37251f2e010f53a0892573b2ec03d165e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "esmuellert",
+        "repo": "codediff.nvim",
+        "type": "github"
+      }
+    },
     "cursortab-nvim": {
       "flake": false,
       "locked": {
@@ -318,6 +334,7 @@
     "root": {
       "inputs": {
         "bgwinch": "bgwinch",
+        "codediff-nvim": "codediff-nvim",
         "cursortab-nvim": "cursortab-nvim",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",

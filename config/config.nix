@@ -109,6 +109,10 @@
         "friendly-snippets"
         "luasnip"
         "minuet-ai.nvim"
+        # Keeps VERSION + libvscode_diff_*.dylib at the plugin root where
+        # codediff's runtime expects them (the combined plugin-pack only
+        # copies lua/, plugin/, doc/, etc.).
+        "codediff.nvim"
       ];
     };
   };

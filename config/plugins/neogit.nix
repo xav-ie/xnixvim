@@ -4,20 +4,8 @@
     # magit-like git interface for neovim
     # https://github.com/NeogitOrg/neogit
     # https://nix-community.github.io/nixvim/plugins/neogit
-    # Required by Neogit's diffview integration; opens hunks/files in a proper
-    # side-by-side diff with filetype syntax highlighting.
-    # https://github.com/sindrets/diffview.nvim
-    plugins.diffview = {
-      enable = true;
-      settings = {
-        enhanced_diff_hl = true;
-        view = {
-          default.winbar_info = true;
-          merge_tool.layout = "diff3_mixed";
-        };
-      };
-    };
-
+    # The diff_viewer integration is provided by codediff.nvim — see
+    # ./codediff.nix.
     plugins.neogit = {
       enable = true;
       lazyLoad.enable = config.lazyLoad.enable;
@@ -49,8 +37,9 @@
         };
         integrations = {
           telescope = true;
-          diffview = true;
+          codediff = true;
         };
+        diff_viewer = "codediff";
         mappings.status = {
           # Free <Tab> for global BufferLineCycleNext.
           "<tab>" = false;
