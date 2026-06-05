@@ -15,6 +15,7 @@
     ./direnv.nix
     ./fff.nix
     ./flash.nix
+    ./flatten.nix
 
     # ./firenvim.nix
     ./fugitive.nix
