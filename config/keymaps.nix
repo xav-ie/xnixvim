@@ -16,11 +16,9 @@ in
           "-" = "<cmd>Oil<CR>";
           # remove highlights
           "<Esc>" = ":noh <CR>";
-          # window navigation
-          "<C-h>" = "<C-w>h";
-          "<C-l>" = "<C-w>l";
-          "<C-j>" = "<C-w>j";
-          "<C-k>" = "<C-w>k";
+          # window navigation: <C-h/j/k/l> are installed by tmux-navigator
+          # (./plugins/default.nix) and forward to tmux at split edges.
+          # Defining plain <C-w>{h,j,k,l} here would shadow them.
           # tab navigation
           "<C-t>l" = ":tabnext <CR>";
           "<C-t>h" = ":tabprev <CR>";
