@@ -251,12 +251,16 @@
               i(2)
             })),
           -- https://github.com/L3MON4D3/LuaSnip/wiki/Cool-Snippets
-          s({trig = "table(%d+)x(%d+)", regTrig = true}, {
+          -- `hidden` keeps this regex-only snippet out of completion menus
+          -- (blink's luasnip source filters `snip.hidden`): picking it from a
+          -- menu yields no %d+ captures, so the dynamicNode below would have no
+          -- dimensions. It stays expandable by typing e.g. `table3x2`.
+          s({trig = "table(%d+)x(%d+)", regTrig = true, hidden = true}, {
               d(1, function(_, snip)
                   local nodes = {}
                   local i_counter = 0
                   local hlines = ""
-                  for _ = 1, tonumber(snip.captures[2]) do
+                  for _ = 1, tonumber(snip.captures[2]) or 1 do
                       i_counter = i_counter + 1
                       table.insert(nodes, t("| "))
                       table.insert(nodes, i(i_counter, "Column".. i_counter))
@@ -266,8 +270,8 @@
                   table.insert(nodes, t{"|", ""})
                   hlines = hlines .. "|"
                   table.insert(nodes, t{hlines, ""})
-                  for _ = 1, tonumber(snip.captures[1]) do
-                      for _ = 1, tonumber(snip.captures[2]) do
+                  for _ = 1, tonumber(snip.captures[1]) or 1 do
+                      for _ = 1, tonumber(snip.captures[2]) or 1 do
                           i_counter = i_counter + 1
                           table.insert(nodes, t("| "))
                           table.insert(nodes, i(i_counter))

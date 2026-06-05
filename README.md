@@ -37,9 +37,8 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
 - [x] separate theme out and share
 - [x] local completions
       Thanks to minuet-ai-nvim.
-- [ ] better large file support
+- [x] better large file support
 - [ ] proper spelling and dictionary support to add new words
-- [ ] org concealment
 - [x] checkout ts-auto-tag:
 - [x] checkout these other plugins:
   - [Alexnortung/nollevim/config/appearance/treesitter.nix#L2](https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/appearance/treesitter.nix#L2)
@@ -58,5 +57,5 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
 - [ ] Find better manager, check out these:
   - [ ] [mhinz/vim-startify](https://github.com/mhinz/vim-startify)
   - [ ] [tpope/vim-obsession](https://github.com/tpope/vim-obsession)
-- [ ] set up [blink.cmp](https://cmp.saghen.dev/installation)
-- [ ] set up [toggleterm](https://github.com/akinsho/toggleterm.nvim/)
+- [x] set up [blink.cmp](https://cmp.saghen.dev/installation)
+- [x] set up [toggleterm](https://github.com/akinsho/toggleterm.nvim/)
