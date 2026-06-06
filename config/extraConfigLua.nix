@@ -310,6 +310,40 @@ _: {
             end, { desc = "[D]iagnostic [I]nline all" })
           '';
 
+        # Spell check, prose only. Enabling `spell` globally underlines every
+        # identifier and keyword in code, so scope it to prose filetypes via a
+        # FileType autocmd instead. `zg` (add word) / `z=` (suggest) write to the
+        # spellfile configured in config.nix.
+        proseSpell = # lua
+          ''
+            local spell_filetypes = {
+              "markdown",
+              "gitcommit",
+              "jjdescription",
+              "text",
+              "tex",
+            }
+
+            -- Ensure the user spellfile directory exists so `zg` doesn't error.
+            -- The nix-run config dir is read-only, but ~/.config/nvim is a
+            -- writable user path.
+            local spellfile = vim.fn.expand(vim.o.spellfile)
+            if spellfile ~= "" then
+              vim.fn.mkdir(vim.fn.fnamemodify(spellfile, ":h"), "p")
+            end
+
+            vim.api.nvim_create_autocmd("FileType", {
+              pattern = spell_filetypes,
+              callback = function()
+                vim.opt_local.spell = true
+                -- Split camelCase / PascalCase so embedded words are checked
+                -- (and don't all flag as misspelled) on the rare code-y line.
+                vim.opt_local.spelloptions = "camel"
+              end,
+              desc = "Enable spell check in prose buffers",
+            })
+          '';
+
         # Automatically remove empty [No Name] buffers when a file is opened
         autoDeleteNoNameBuffer = # lua
           ''
@@ -345,6 +379,7 @@ _: {
         ${forceTabstop}
         ${skipDeletedFileDelay}
         ${inlineDiagnostics}
+        ${proseSpell}
         ${autoDeleteNoNameBuffer}
       '';
   };

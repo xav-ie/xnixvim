@@ -43,7 +43,10 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
 - [x] local completions
       Thanks to minuet-ai-nvim.
 - [x] better large file support
-- [ ] proper spelling and dictionary support to add new words
+- [x] proper spelling and dictionary support to add new words
+      Prose-only: `spell` is enabled per-buffer for markdown/gitcommit/text-type
+      filetypes via the proseSpell autocmd (`config/extraConfigLua.nix`), leaving
+      code buffers untouched. `zg`/`z=` write to a user spellfile.
 - [x] checkout ts-auto-tag:
 - [x] checkout these other plugins:
   - [Alexnortung/nollevim/config/appearance/treesitter.nix#L2](https://github.com/Alexnortung/nollevim/blob/fcc35456c567c6108774e839d617c97832217e67/config/appearance/treesitter.nix#L2)

@@ -74,9 +74,9 @@
       showbreak = "→"; # prefix for wrapped lines
       smartindent = true;
       softtabstop = 2;
-      # spell = true;
-      # Not currently working.
-      # TODO: See other configurations on GitHub.
+      # `spell` is intentionally left off globally — it would underline every
+      # identifier/keyword in code. It's enabled per-buffer for prose filetypes
+      # via the proseSpell autocmd in extraConfigLua.nix.
       spellfile = "~/.config/nvim/spell/en_us.utf-8.add";
       spelllang = "en_us";
       tabstop = 2;
