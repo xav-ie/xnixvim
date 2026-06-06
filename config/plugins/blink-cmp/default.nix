@@ -16,6 +16,10 @@ in
   ];
 
   config = {
+    # Custom spell-suggestion source (./spell-source.lua), wired into `sources`
+    # below. Dropped onto the rtp so its `module` string resolves.
+    extraFiles."lua/blink_spell.lua".source = ./spell-source.lua;
+
     # Stub blink-cmp module early so the setup call (and the LSP capabilities
     # snippet) don't error at startup when the plugin is lazy-loaded into opt/
     # via lz.n. The stub gets cleared right before lz.n's real setup runs.
@@ -183,6 +187,7 @@ in
             "path"
             "snippets"
             "buffer"
+            "spell"
           ]
           ++ lib.optional (aiProvider == "minuet") "minuet";
           providers = {
@@ -190,6 +195,16 @@ in
             # Default score_offset is -3, which pushes snippets below buffer
             # matches even on close prefix hits. Bump above buffer (default 0).
             snippets.score_offset = 5;
+            # Spell-suggestion source (./spell-source.lua). The source self-gates
+            # via its :enabled() to buffers where spell is on (the prose
+            # filetypes in extraConfigLua.nix), so it never fires in code.
+            spell = {
+              module = "blink_spell";
+              name = "Spell";
+              # Rank spell corrections below real completions (snippets are at
+              # +5, lsp/buffer at 0) — they're a fallback, not a priority.
+              score_offset = -5;
+            };
           }
           // lib.optionalAttrs (aiProvider == "minuet") {
             minuet = {
