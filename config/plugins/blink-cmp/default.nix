@@ -10,6 +10,11 @@ in
   # completions
   # https://github.com/Saghen/blink.cmp
   # https://nix-community.github.io/nixvim/plugins/blink-cmp
+  imports = [
+    # Surfaces an active LuaSnip choiceNode's options in the completion menu.
+    ./luasnip-choice.nix
+  ];
+
   config = {
     # Stub blink-cmp module early so the setup call (and the LSP capabilities
     # snippet) don't error at startup when the plugin is lazy-loaded into opt/

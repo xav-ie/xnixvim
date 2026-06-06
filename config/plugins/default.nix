@@ -7,7 +7,7 @@
 {
   imports = [
     ./bgwinch.nix
-    ./blink-cmp.nix
+    ./blink-cmp
     ./bufferline.nix
     ./codediff.nix
     ./colorful-menu.nix

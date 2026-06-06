@@ -26,7 +26,9 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
   - [ ] with CI
 - [x] snippets
   - [x] basic setup
-  - [ ] get cmp_luasnip_choice working or checkout [pysan3/dotfiles/nvim/lua/plugins/70-LuaSnip.lua#L150](https://github.com/pysan3/dotfiles/blob/aff7fc11d3b70b31f4a7727830a07d23a4f37c50/nvim/lua/plugins/70-LuaSnip.lua#L150)
+  - [x] choiceNode options in the completion menu — a blink-native port of
+        cmp_luasnip_choice (`config/plugins/blink-luasnip-choice.lua`), popped
+        on `LuasnipChoiceNodeEnter` via `blink.show`. Ref: [pysan3/dotfiles/nvim/lua/plugins/70-LuaSnip.lua#L150](https://github.com/pysan3/dotfiles/blob/aff7fc11d3b70b31f4a7727830a07d23a4f37c50/nvim/lua/plugins/70-LuaSnip.lua#L150)
 - [ ] write my own or find someone else's snippets for ts. specifically all the
       map, reduce, forEach should have snippets
   - [ ] [TakeTuesday E03: Introduction to LuaSnip](https://www.youtube.com/watch?v=Dn800rlPIho)
