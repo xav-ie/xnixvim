@@ -49,8 +49,9 @@ in
         "BufNewFile"
       ];
       lazyLoad.enable = config.lazyLoad.enable;
-      # TODO: figure out how to make this not open files pre-folded
-      # fold based on AST
+      # Folding is handled by nvim-ufo (see nvim-ufo.nix), which uses
+      # treesitter as a fold provider but with foldlevel=99 so files open
+      # unfolded. Treesitter's own `folding` stays off to avoid double folding.
       # folding = true;
 
       # Lua highlighting for Nixvim Lua sections

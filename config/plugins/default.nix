@@ -35,6 +35,7 @@
     ./neogit.nix
     ./noice.nix
     ./notify.nix
+    ./nvim-ufo.nix
     ./nvim-colorizer.nix
     # ./nvim-lightbulb.nix
     ./nvim-scrollview.nix
@@ -122,11 +123,6 @@
           };
         };
       };
-
-      # better folding UI
-      # https://github.com/kevinhwang91/nvim-ufo/
-      # https://nix-community.github.io/nixvim/plugins/nvim-ufo
-      # nvim-ufo.enable = true;
 
       # tpope === goat
       # add native-like vim surround command

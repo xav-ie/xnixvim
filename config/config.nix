@@ -109,6 +109,12 @@
         "friendly-snippets"
         "luasnip"
         "minuet-ai.nvim"
+        # nvim-ufo's promise-async ships lua/async.lua, which collides with
+        # async.nvim's lua/async.lua when combinePlugins merges everything into
+        # one pack. Keep promise-async separate to avoid the buildEnv conflict;
+        # ufo only requires `promise` (+ promise-async.* submodules), never bare
+        # `async`, so the duplicate is harmless once unmerged.
+        "promise-async"
         # Keeps VERSION + libvscode_diff_*.dylib at the plugin root where
         # codediff's runtime expects them (the combined plugin-pack only
         # copies lua/, plugin/, doc/, etc.).
