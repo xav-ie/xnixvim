@@ -399,26 +399,6 @@ in
         ruff = {
           enable = true;
         };
-        # https://rust-analyzer.github.io/
-        rust_analyzer = {
-          enable = true;
-          installCargo = false;
-          installRustc = false;
-          settings = {
-            # cfg = {
-            #   mobile = "";
-            # };
-            # cargo = {
-            #   # allFeatures = true;
-            #   # features = "all";
-            #   # cfgs.mobile = "";
-            #   cfgs.mobile = null;
-            # };
-            # diagnostics = {
-            #   disabled = [ "inactive-code" ];
-            # };
-          };
-        };
         # https://nix-community.github.io/nixvim/plugins/lsp/servers/shopify_theme_ls
         shopify_theme_ls = {
           enable = true;

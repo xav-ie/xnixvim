@@ -42,6 +42,7 @@
     ./oil.nix
     # ./ollama.nix
     ./quicker.nix
+    ./rustaceanvim.nix
     # ./supermaven.nix
     ./tabscope.nix
     ./telescope
