@@ -23,6 +23,7 @@ _: {
           { "<leader>l", group = "[l]sp", icon = "󰁨 ", },
           { "<leader>n", group = "[n]ode", icon = " ", },
           { "<leader>o", group = "[o]rg", icon = " ", },
+          { "<leader>r", group = "[r]efactor", icon = "󰢱 ", },
           { "<leader>s", group = "fla[s]h", icon = " ", },
           { "<leader>t", group = "[t]oggle", icon = " ", },
         }
