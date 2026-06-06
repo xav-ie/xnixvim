@@ -29,8 +29,11 @@ You might also enjoy [my dotfiles](https://github.com/xav-ie/dots)!
   - [x] choiceNode options in the completion menu — a blink-native port of
         cmp_luasnip_choice (`config/plugins/blink-luasnip-choice.lua`), popped
         on `LuasnipChoiceNodeEnter` via `blink.show`. Ref: [pysan3/dotfiles/nvim/lua/plugins/70-LuaSnip.lua#L150](https://github.com/pysan3/dotfiles/blob/aff7fc11d3b70b31f4a7727830a07d23a4f37c50/nvim/lua/plugins/70-LuaSnip.lua#L150)
-- [ ] write my own or find someone else's snippets for ts. specifically all the
+- [x] write my own or find someone else's snippets for ts. specifically all the
       map, reduce, forEach should have snippets
+      Done via friendly-snippets — its array-method snippets (map/reduce/forEach/
+      filter/find) are javascript-only, so `filetypeExtend` makes the typescript
+      filetypes inherit them (`config/plugins/luasnip.nix`).
   - [ ] [TakeTuesday E03: Introduction to LuaSnip](https://www.youtube.com/watch?v=Dn800rlPIho)
   - [ ] [TakeTuesday E04: LuaSnips - Advanced Configuration](https://www.youtube.com/watch?v=KtQZRAkgLqo)
   - [ ] [L3MON4D3/LuaSnip#resources-for-new-users](https://github.com/L3MON4D3/LuaSnip#resources-for-new-users)

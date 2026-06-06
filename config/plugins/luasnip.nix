@@ -69,6 +69,14 @@
       filetypeExtend = {
         # Enable git commit snippets for jjdescription files (Jujutsu VCS)
         jjdescription = [ "gitcommit" ];
+        # friendly-snippets maps its array-method snippets (map/reduce/forEach/
+        # filter/find) to javascript only, so TS buffers miss them. Inherit the
+        # javascript set into the TypeScript filetypes to surface them in .ts/.tsx.
+        typescript = [ "javascript" ];
+        typescriptreact = [
+          "javascript"
+          "javascriptreact"
+        ];
       };
       settings = {
         # Press <Tab> to cut visual selection and fill in a snippet
