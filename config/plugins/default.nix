@@ -49,6 +49,7 @@
     ./tiny-glimmer.nix
     ./toggleterm.nix
     ./treesitter.nix
+    ./treesitter-textobjects.nix
     # TODO: fix
     # ./vim-guise.nix
     ./vim-matchup.nix
