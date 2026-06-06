@@ -26,6 +26,7 @@ _: {
           { "<leader>r", group = "[r]efactor", icon = "󰢱 ", },
           { "<leader>s", group = "fla[s]h", icon = " ", },
           { "<leader>t", group = "[t]oggle", icon = " ", },
+          { "<leader>y", group = "[y]ank", icon = " ", },
         }
       '';
   };

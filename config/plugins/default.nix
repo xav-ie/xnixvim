@@ -57,6 +57,7 @@
     ./which-key
     ./witt-neovim.nix
     ./xdusk.nix
+    ./yanky.nix
   ];
   # ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 
