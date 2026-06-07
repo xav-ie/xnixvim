@@ -13,7 +13,6 @@ in
         "<C-b>" = ":BufferLinePick <CR>";
       }
     );
-    # TODO: consider barbar.enable instead
     # https://github.com/akinsho/bufferline.nvim
     # https://nix-community.github.io/nixvim/plugins/bufferline
     # tabs
