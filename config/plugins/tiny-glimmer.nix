@@ -110,7 +110,17 @@
     plugins.tiny-glimmer = {
       enable = true;
       lazyLoad.enable = config.lazyLoad.enable;
-      lazyLoad.settings.event = "DeferredUIEnter";
+      # Load on a real-file event, NOT DeferredUIEnter. tiny-glimmer's auto_map
+      # hijack captures the *current buffer's* p/u/etc. at load time and promotes
+      # them to global maps. Booting straight into Neogit (the `g` alias) makes
+      # the neogit status buffer current when DeferredUIEnter fires, so it would
+      # capture neogit's buffer-local p=pull / u=unstage globally — breaking
+      # paste/undo everywhere. BufReadPost only fires for real files (neogit is
+      # nofile), so the hijack always sees a normal buffer's builtin maps.
+      lazyLoad.settings.event = [
+        "BufReadPost"
+        "BufNewFile"
+      ];
       settings = {
         # xdusk's DiffAdd/DiffDelete use bg = base00 (the editor
         # background), so we pass hex colors from the palette instead —
@@ -140,14 +150,12 @@
         };
         overwrite = {
           auto_map = true;
-          yank = {
-            enabled = true;
-            default_animation = "fade";
-          };
-          paste = {
-            enabled = true;
-            default_animation = "fade";
-          };
+          # yank/paste are owned by yanky.nvim (which has its own put/yank
+          # highlight). tiny-glimmer's hijack replays the wrapped mapping with
+          # feedkeys noremap, but yanky's p/P/y are <Plug> maps that need remap
+          # — so wrapping them silently breaks paste. Leave these to yanky.
+          yank.enabled = false;
+          paste.enabled = false;
           # Manual n/N handler above clears CurSearch.bg around the animation.
           search.enabled = false;
           undo = {
