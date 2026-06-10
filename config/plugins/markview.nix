@@ -59,6 +59,10 @@
           };
         };
         markdown_inline = {
+          # Don't treat `#198`, `#357517`, etc. as Obsidian-style hashtags.
+          # markview's tag element strips the leading `#` (conceals it),
+          # mangling inline issue/PR references in prose.
+          tags.enable = false;
           checkboxes = {
             checked.text = " 󰗠 ";
             unchecked.text = " 󰄰 ";
