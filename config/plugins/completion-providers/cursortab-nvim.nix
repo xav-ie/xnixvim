@@ -15,6 +15,11 @@ let
     src = "${inputs.cursortab-nvim}/server";
     vendorHash = "sha256-IvJw+89eZ5Ghppjt0KT9IRL8XPyU6XbiAYL3axQO6u4=";
     doCheck = false;
+    # Quiet the daemon's accept loop on shutdown: closing the listener races
+    # ahead of ctx cancellation, so it busy-spins logging "error accepting
+    # connection: use of closed network connection" on every :CursortabRestart.
+    # Treat net.ErrClosed as a clean shutdown.
+    patches = [ ./cursortab-accept-shutdown.patch ];
   };
 
   cursortab-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -99,6 +104,7 @@ in
               "sweep"
               "sweepapi"
               "zeta"
+              "mercuryapi"
             ] "sweepapi" "Provider type";
             url = defaultNullOpts.mkStr "http://localhost:8000" "URL of the provider server";
             api_key_env = defaultNullOpts.mkStr "" "Env var name for API key";
@@ -130,7 +136,14 @@ in
     };
   };
 
-  # my config - using local vLLM with Sweep model
+  # my config - Sweep next-edit-v2-7B served by Featherless.ai (flat $10/mo Basic
+  # plan, no local GPU). cursortab's `sweep` provider POSTs the next-edit prompt
+  # to Featherless's OpenAI-compatible /v1/completions with FEATHERLESS_TOKEN
+  # (from the shell-env sops secret). v2-7B (≤15B) fits the Basic tier and is a
+  # step up from the old self-hosted 1.5B. Sweep's own hosted API is EOL; the
+  # open weights live on, and Featherless serves them (despite the HF model
+  # card's stale "not deployed by any provider" widget). To self-host again,
+  # set url = "https://llama.lalala.casa" and re-enable dots `services.llama-server`.
   config.programs.cursortab.settings = {
     enabled = true;
     log_level = "info";
@@ -142,8 +155,11 @@ in
 
     provider = {
       type = "sweep";
-      url = "https://llama.lalala.casa";
+      url = "https://api.featherless.ai";
+      model = "sweepai/sweep-next-edit-v2-7B";
+      api_key_env = "FEATHERLESS_TOKEN";
       temperature = 0.2;
+      completion_timeout = 20000;
     };
 
     ui = {

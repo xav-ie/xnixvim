@@ -1,0 +1,25 @@
+diff --git a/daemon.go b/daemon.go
+index 7f1417a..2fdfee3 100644
+--- a/daemon.go
++++ b/daemon.go
+@@ -2,6 +2,7 @@ package main
+ 
+ import (
+ 	"context"
++	"errors"
+ 	"fmt"
+ 	"io"
+ 	"net"
+@@ -211,6 +212,12 @@ func (d *Daemon) acceptConnections() {
+ 	for {
+ 		conn, err := d.listener.Accept()
+ 		if err != nil {
++			// Stop() closes the listener, which races ahead of d.ctx
++			// cancellation; without this the loop busy-spins logging
++			// "error accepting connection" until the ctx select catches up.
++			if errors.Is(err, net.ErrClosed) {
++				return
++			}
+ 			select {
+ 			case <-d.ctx.Done():
+ 				return // Server is shutting down
