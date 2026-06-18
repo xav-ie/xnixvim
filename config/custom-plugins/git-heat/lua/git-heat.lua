@@ -139,6 +139,15 @@ local function run_churn(bufnr)
 		return
 	end
 
+	-- only real files on disk have git history worth walking. synthetic buffer
+	-- names (e.g. Himalaya's "Himalaya/threads [...]") resolve to non-existent
+	-- paths whose parent dir doesn't exist, which makes vim.system below throw
+	-- ENOENT on cwd. filereadable also skips brand-new BufNewFile buffers, which
+	-- aren't tracked yet and have no churn anyway.
+	if vim.fn.filereadable(file) == 0 then
+		return
+	end
+
 	-- the churn walk and per-line signs don't pay off on huge files
 	if vim.api.nvim_buf_line_count(bufnr) > MAX_LINES then
 		return
