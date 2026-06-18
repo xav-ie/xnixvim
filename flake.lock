@@ -126,11 +126,11 @@
     "himalaya-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1772334470,
-        "narHash": "sha256-p8zHFdREV4Xpj97VW2zx6/xIgo/fXYTjPVhwFJa+0mI=",
+        "lastModified": 1781632063,
+        "narHash": "sha256-MYwfZjJBciAFCwC4t9Z5RLtCaIs7XEVV8B3AGVlhQbo=",
         "owner": "xav-ie",
         "repo": "himalaya-nvim",
-        "rev": "bc4db49da4a02575102c45176d18cff76cd95fec",
+        "rev": "576102bd3e1db2285ca3f40b99f3536c254d34db",
         "type": "github"
       },
       "original": {
