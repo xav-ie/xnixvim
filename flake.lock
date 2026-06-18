@@ -139,6 +139,22 @@
         "type": "github"
       }
     },
+    "image-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781628645,
+        "narHash": "sha256-/2jxfsQYAZwRQP+dt+BNjcJghtvKAkf+UFVooUQN7sc=",
+        "owner": "xav-ie",
+        "repo": "image.nvim",
+        "rev": "2233a06b426a10048db13ee0ac56fe851f6f47ec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xav-ie",
+        "repo": "image.nvim",
+        "type": "github"
+      }
+    },
     "minuet-ai-nvim": {
       "flake": false,
       "locked": {
@@ -339,6 +355,7 @@
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "himalaya-nvim": "himalaya-nvim",
+        "image-nvim": "image-nvim",
         "minuet-ai-nvim": "minuet-ai-nvim",
         "nix-auto-follow": "nix-auto-follow",
         "nixpkgs": "nixpkgs_2",

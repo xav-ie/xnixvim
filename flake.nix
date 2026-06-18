@@ -38,6 +38,8 @@
     vscoq.inputs.nixpkgs-unstable.follows = "vscoq/nixpkgs";
     himalaya-nvim.flake = false;
     himalaya-nvim.url = "github:xav-ie/himalaya-nvim";
+    image-nvim.flake = false;
+    image-nvim.url = "github:xav-ie/image.nvim";
     witt-neovim.flake = false;
     witt-neovim.url = "github:typed-rocks/witt-neovim";
   };

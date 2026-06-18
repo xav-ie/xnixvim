@@ -22,6 +22,7 @@
     ./git-heat.nix
     ./gitsigns.nix
     ./himalaya.nix
+    ./image.nix
     ./inc-rename.nix
     ./jjdescription.nix
     ./lsp
