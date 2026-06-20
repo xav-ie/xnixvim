@@ -139,10 +139,6 @@ in
           '';
         in
         {
-          # auto install grammars on encounter
-          auto_install = true;
-
-          ensure_installed = [ ];
           # indent based on ast
           indent = {
             enable = true;
@@ -219,6 +215,79 @@ in
           vim.keymap.set("x", "<BS>", function()
             if has_parser() then shrink() end
           end, { desc = "TS: shrink node selection" })
+        end
+
+        -- On-demand install for languages not in grammarPackages: installs via
+        -- require("nvim-treesitter").install() into stdpath("data")/site at runtime.
+        do
+          -- available: memoizes the costly get_available(). pending: dedupes
+          -- concurrent installs of a lang to one notify/install.
+          local available
+          local pending = {}
+          local warned_toolchain = false
+
+          vim.api.nvim_create_autocmd("FileType", {
+            desc = "TS: install missing parser on demand, then highlight",
+            callback = function(ev)
+              local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
+
+              -- Queries present: just ensure highlighting is on. nixvim's own
+              -- autocmd covers grammarPackages langs, not runtime-installed ones.
+              if vim.treesitter.query.get(lang, "highlights") then
+                if not vim.treesitter.highlighter.active[ev.buf] then
+                  pcall(vim.treesitter.start, ev.buf, lang)
+                end
+                return
+              end
+
+              -- Defer so lz-n has loaded nvim-treesitter (lazy on BufReadPost).
+              vim.schedule(function()
+                local ok, ts = pcall(require, "nvim-treesitter")
+                if not ok then return end
+
+                available = available or ts.get_available()
+                if not vim.tbl_contains(available, lang) then return end
+                if pending[lang] then return end
+
+                -- Missing CLI/compiler makes install hang silently (#7873).
+                if vim.fn.executable("tree-sitter") == 0 or vim.fn.executable("cc") == 0 then
+                  if not warned_toolchain then
+                    warned_toolchain = true
+                    vim.notify(
+                      "Cannot install tree-sitter parsers: `tree-sitter` CLI or `cc` not on PATH.",
+                      vim.log.levels.WARN, { title = "nvim-treesitter" })
+                  end
+                  return
+                end
+
+                pending[lang] = true
+                vim.notify("Installing tree-sitter parser: " .. lang,
+                  vim.log.levels.INFO, { title = "nvim-treesitter" })
+                ts.install({ lang }, { summary = false }):await(function(err)
+                  vim.schedule(function()
+                    pending[lang] = nil
+                    -- query.get cached nil before install; Neovim only clears that
+                    -- cache on an rtp change, so self-assign to force it.
+                    vim.o.runtimepath = vim.o.runtimepath
+                    -- Query presence is the real success signal — install() reports
+                    -- a failed build by return value, not via `err`.
+                    if not vim.treesitter.query.get(lang, "highlights") then
+                      vim.notify(
+                        "Failed to install tree-sitter parser: " .. lang
+                          .. (err and (" (" .. tostring(err) .. ")") or ""),
+                        vim.log.levels.WARN, { title = "nvim-treesitter" })
+                      return
+                    end
+                    -- Buffer may have been deleted or changed filetype during install.
+                    if vim.api.nvim_buf_is_valid(ev.buf)
+                       and vim.treesitter.language.get_lang(vim.bo[ev.buf].filetype) == lang then
+                      pcall(vim.treesitter.start, ev.buf, lang)
+                    end
+                  end)
+                end)
+              end)
+            end,
+          })
         end
       '';
   };

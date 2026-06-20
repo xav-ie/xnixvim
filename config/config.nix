@@ -25,6 +25,7 @@
       nixfmt
       ripgrep
       stylua
+      tree-sitter
       # vimPlugins.friendly-snippets
     ];
 
