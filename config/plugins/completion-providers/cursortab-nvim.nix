@@ -161,8 +161,13 @@ in
     };
 
     behavior = {
-      idle_completion_delay = 50;
-      text_change_debounce = 50;
+      # Lazy, not eager. Mercury fires a ~3k-token request on every trigger, so
+      # 50ms debounce meant ~50 req/min while editing (one Loki session: 9 reqs
+      # in 10s, 2 accepted). Both timers reset on activity, so 5000ms = "only
+      # request after 5s of no typing AND no cursor movement". Force one on
+      # demand any time with <C-y> (the accept key falls back to trigger).
+      idle_completion_delay = 5000;
+      text_change_debounce = 5000;
       cursor_prediction = {
         enabled = true;
         auto_advance = true;
