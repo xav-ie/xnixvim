@@ -19,7 +19,7 @@
     codediff-nvim.flake = false;
     codediff-nvim.url = "github:esmuellert/codediff.nvim";
     cursortab-nvim.flake = false;
-    cursortab-nvim.url = "github:leonardcser/cursortab.nvim";
+    cursortab-nvim.url = "github:xav-ie/cursortab.nvim/usage-logging";
     minuet-ai-nvim.flake = false;
     minuet-ai-nvim.url = "github:milanglacier/minuet-ai.nvim";
     oil-git-status.flake = false;

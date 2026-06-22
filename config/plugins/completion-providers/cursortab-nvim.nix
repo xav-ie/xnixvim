@@ -13,7 +13,7 @@ let
     pname = "cursortab-server";
     version = "unstable";
     src = "${inputs.cursortab-nvim}/server";
-    vendorHash = "sha256-IvJw+89eZ5Ghppjt0KT9IRL8XPyU6XbiAYL3axQO6u4=";
+    vendorHash = "sha256-OD9frnI1CNx62xVCz5k3DRkcUhYU35o8H+7/WKjxsGo=";
     doCheck = false;
     # Quiet the daemon's accept loop on shutdown: closing the listener races
     # ahead of ctx cancellation, so it busy-spins logging "error accepting

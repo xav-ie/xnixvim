@@ -35,15 +35,16 @@
     "cursortab-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1778239348,
-        "narHash": "sha256-DbDK2LgXj+G2DD4R3YnOO6xZkv+1SCLbfkg56K4i3co=",
-        "owner": "leonardcser",
+        "lastModified": 1782161011,
+        "narHash": "sha256-ScWrAauMvbno9WpbtkJG743C0QReqxmchRVvPtW2ZpY=",
+        "owner": "xav-ie",
         "repo": "cursortab.nvim",
-        "rev": "6a5c21079d8c97f276e3c2c5082c0af6e215a7fb",
+        "rev": "1f45de1b160b16e931ed2414e64c7f25319ff026",
         "type": "github"
       },
       "original": {
-        "owner": "leonardcser",
+        "owner": "xav-ie",
+        "ref": "usage-logging",
         "repo": "cursortab.nvim",
         "type": "github"
       }
