@@ -136,14 +136,6 @@ in
     };
   };
 
-  # my config - Sweep next-edit-v2-7B served by Featherless.ai (flat $10/mo Basic
-  # plan, no local GPU). cursortab's `sweep` provider POSTs the next-edit prompt
-  # to Featherless's OpenAI-compatible /v1/completions with FEATHERLESS_TOKEN
-  # (from the shell-env sops secret). v2-7B (≤15B) fits the Basic tier and is a
-  # step up from the old self-hosted 1.5B. Sweep's own hosted API is EOL; the
-  # open weights live on, and Featherless serves them (despite the HF model
-  # card's stale "not deployed by any provider" widget). To self-host again,
-  # set url = "https://llama.lalala.casa" and re-enable dots `services.llama-server`.
   config.programs.cursortab.settings = {
     enabled = true;
     log_level = "info";
@@ -154,10 +146,10 @@ in
     };
 
     provider = {
-      type = "sweep";
-      url = "https://api.featherless.ai";
-      model = "sweepai/sweep-next-edit-v2-7B";
-      api_key_env = "FEATHERLESS_TOKEN";
+      type = "mercuryapi";
+      url = "https://api.inceptionlabs.ai/v1/edit/completions"; # informational; client hard-codes it
+      model = "mercury-edit"; # informational; client hard-codes it
+      api_key_env = "INCEPTION_API_KEY";
       temperature = 0.2;
       completion_timeout = 20000;
     };
