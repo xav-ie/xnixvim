@@ -36,6 +36,7 @@
     ./neogit.nix
     ./noice.nix
     ./notify.nix
+    ./obsidian.nix
     ./nvim-ufo.nix
     ./nvim-colorizer.nix
     # ./nvim-lightbulb.nix

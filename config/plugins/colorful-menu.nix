@@ -9,10 +9,13 @@
         optional = true;
       }
     ];
+    # No load trigger of its own: colorful-menu exists only to render blink's
+    # completion menu, so blink force-loads it via `trigger_load` in its own
+    # `before` hook (see blink-cmp/default.nix). This spec just defines how to
+    # load + set it up when that trigger fires.
     plugins.lz-n.plugins = [
       {
         "__unkeyed-1" = "colorful-menu.nvim";
-        event = "InsertEnter";
         after = # lua
           ''
             function()

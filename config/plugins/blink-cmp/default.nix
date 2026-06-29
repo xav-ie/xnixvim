@@ -35,6 +35,17 @@ in
       enable = true;
       lazyLoad.enable = config.lazyLoad.enable;
       lazyLoad.settings.event = "InsertEnter";
+      # The menu draw functions below hard-require colorful-menu (see the
+      # `components.label` raws). That's a real load-time dependency blink itself
+      # knows nothing about, so make it explicit: pull colorful-menu in before
+      # blink loads, on every load path (InsertEnter, or a force-load from
+      # another plugin like obsidian). Without this it only worked by accident,
+      # because colorful-menu happened to share blink's InsertEnter trigger.
+      lazyLoad.settings.before.__raw = ''
+        function()
+          require("lz.n").trigger_load("colorful-menu.nvim")
+        end
+      '';
 
       # Clear the preload stub so the real blink-cmp module loads on packadd
       luaConfig.pre = ''
