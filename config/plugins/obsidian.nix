@@ -109,6 +109,10 @@ in
             action = "<cmd>Obsidian new<CR>";
             options.desc = "[O]bsidian [n]ew note";
           };
+          "<leader>Om" = {
+            action = "<cmd>Obsidian new_from_template<CR>";
+            options.desc = "[O]bsidian new from te[m]plate";
+          };
           "<leader>Os" = {
             action = "<cmd>Obsidian search<CR>";
             options.desc = "[O]bsidian [s]earch";
