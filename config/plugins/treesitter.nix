@@ -1,10 +1,7 @@
 { config, pkgs, ... }:
 let
-  # Upstream treesitter-context has no per-node filter — every node matched
-  # by a language's context queries shows up, including tiny scopes like a
-  # 2-line object property. Patch context_range() to short-circuit (return
-  # nil) for candidates whose body spans fewer lines than the threshold,
-  # set via vim.g.treesitter_context_min_lines (default 5).
+  # Skip context headers for scopes shorter than
+  # vim.g.treesitter_context_min_lines (default 5) — upstream has no such filter.
   treesitter-context-patched = pkgs.vimPlugins.nvim-treesitter-context.overrideAttrs (old: {
     postPatch = (old.postPatch or "") + ''
       substituteInPlace lua/treesitter-context/context.lua \
@@ -18,13 +15,8 @@ let
   });
 in
 {
-  # beautiful, wonderful, good-enough syntax highlighting/AST parsing
-  # https://github.com/nvim-treesitter/nvim-treesitter/
-  # https://nix-community.github.io/nixvim/plugins/treesitter
   config = {
     # Sticky context header at top of viewport while scrolling.
-    # https://github.com/nvim-treesitter/nvim-treesitter-context
-    # https://nix-community.github.io/nixvim/plugins/treesitter-context
     plugins.treesitter-context = {
       enable = true;
       package = treesitter-context-patched;
@@ -41,7 +33,6 @@ in
       };
     };
 
-    # AST syntax highlighting
     plugins.treesitter = {
       enable = true;
       lazyLoad.settings.event = [
@@ -49,12 +40,8 @@ in
         "BufNewFile"
       ];
       lazyLoad.enable = config.lazyLoad.enable;
-      # Folding is handled by nvim-ufo (see nvim-ufo.nix), which uses
-      # treesitter as a fold provider but with foldlevel=99 so files open
-      # unfolded. Treesitter's own `folding` stays off to avoid double folding.
-      # folding = true;
+      # Folding is left to nvim-ufo (see nvim-ufo.nix), so `folding` stays off.
 
-      # Lua highlighting for Nixvim Lua sections
       nixvimInjections = true;
 
       grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
@@ -127,7 +114,7 @@ in
 
       settings =
         let
-          # fix large file crash
+          # Skip oversized files to avoid parse/redraw stalls.
           disable.__raw = ''
             function(_, buf)
               local max_filesize = 100 * 1024 -- 100 KB
@@ -139,29 +126,22 @@ in
           '';
         in
         {
-          # indent based on ast
           indent = {
             enable = true;
             inherit disable;
           };
-          # `disable` is intentionally omitted here: nixvim's modern treesitter
-          # module flags `settings.highlight.disable` as a legacy option (and
-          # its native replacement only takes a language list, not a size-based
-          # function). Large-file highlighting is guarded by the autocmd below
-          # instead. indent/incremental_selection keep the function — they are
-          # not flagged.
+          # highlight.disable is a legacy option in nixvim's module; the
+          # large-file guard is handled by the autocmd below instead.
           highlight = {
             enable = true;
           };
         };
     };
 
-    # Large-file highlight guard. Replaces the old `highlight.disable` size
-    # callback: tree-sitter attaches via core `vim.treesitter.start`, so once
-    # it has, we stop it for oversized buffers to avoid parse/redraw stalls.
-    # Scheduled so it runs after tree-sitter's own FileType handler.
     extraConfigLua = # lua
       ''
+        -- Large-file guard: stop highlighting on oversized buffers after
+        -- tree-sitter's own FileType handler has attached.
         do
           local max_filesize = 100 * 1024 -- 100 KB
           vim.api.nvim_create_autocmd("FileType", {
@@ -179,13 +159,9 @@ in
           })
         end
 
-        -- Incremental selection. nvim-treesitter's `main` rewrite dropped its
-        -- incremental_selection module; the feature was upstreamed into Neovim
-        -- 0.12 (default visual maps an/in/]n/[n). Remap to the old <C-n>/<bs>
-        -- flow: <C-n> starts then grows the selection, <bs> shrinks it.
-        -- 0.12.x exposes the private vim.treesitter._select module; newer Nvim
-        -- promotes it to public vim.treesitter.select(dir, count) — prefer the
-        -- public API and fall back to the private one.
+        -- Incremental selection (<C-n> grows, <BS> shrinks), remapped onto
+        -- Neovim 0.12's upstreamed node selection. Prefer the public
+        -- vim.treesitter.select, fall back to the private _select module.
         do
           local has_parser = function()
             return vim.treesitter.get_parser(nil, nil, { error = false }) ~= nil
@@ -217,11 +193,10 @@ in
           end, { desc = "TS: shrink node selection" })
         end
 
-        -- On-demand install for languages not in grammarPackages: installs via
-        -- require("nvim-treesitter").install() into stdpath("data")/site at runtime.
+        -- Auto-install parsers for languages not in grammarPackages, then
+        -- start highlighting. `available` memoizes get_available(); `pending`
+        -- dedupes concurrent installs of the same lang.
         do
-          -- available: memoizes the costly get_available(). pending: dedupes
-          -- concurrent installs of a lang to one notify/install.
           local available
           local pending = {}
           local warned_toolchain = false
@@ -231,8 +206,7 @@ in
             callback = function(ev)
               local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
 
-              -- Queries present: just ensure highlighting is on. nixvim's own
-              -- autocmd covers grammarPackages langs, not runtime-installed ones.
+              -- Already have queries: just make sure highlighting is on.
               if vim.treesitter.query.get(lang, "highlights") then
                 if not vim.treesitter.highlighter.active[ev.buf] then
                   pcall(vim.treesitter.start, ev.buf, lang)
@@ -266,11 +240,10 @@ in
                 ts.install({ lang }, { summary = false }):await(function(err)
                   vim.schedule(function()
                     pending[lang] = nil
-                    -- query.get cached nil before install; Neovim only clears that
-                    -- cache on an rtp change, so self-assign to force it.
-                    vim.o.runtimepath = vim.o.runtimepath
-                    -- Query presence is the real success signal — install() reports
-                    -- a failed build by return value, not via `err`.
+                    -- query.get is memoized and cached a nil above; clear it so
+                    -- the freshly installed queries are seen.
+                    pcall(function() vim.treesitter.query.get:clear() end)
+                    -- Query presence, not `err`, is the real success signal.
                     if not vim.treesitter.query.get(lang, "highlights") then
                       vim.notify(
                         "Failed to install tree-sitter parser: " .. lang
