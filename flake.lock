@@ -366,7 +366,6 @@
         "systems": "systems_3",
         "tabscope-nvim": "tabscope-nvim",
         "treefmt-nix": "treefmt-nix",
-        "vim-guise": "vim-guise",
         "vscoq": "vscoq",
         "witt-neovim": "witt-neovim"
       }
@@ -478,22 +477,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "vim-guise": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1766048496,
-        "narHash": "sha256-WgmjJa/pzLSZNy9d/TiwGS2q+GQrFj1ZHfodc3RzPu0=",
-        "owner": "lambdalisue",
-        "repo": "vim-guise",
-        "rev": "eae13cebec562dda4378765da3b9044bde81d07a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lambdalisue",
-        "repo": "vim-guise",
         "type": "github"
       }
     },

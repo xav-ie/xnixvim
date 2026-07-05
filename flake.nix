@@ -28,8 +28,6 @@
     schemastore-nvim.url = "github:b0o/SchemaStore.nvim";
     tabscope-nvim.flake = false;
     tabscope-nvim.url = "github:backdround/tabscope.nvim";
-    vim-guise.flake = false;
-    vim-guise.url = "github:lambdalisue/vim-guise";
     vscoq.url = "github:rocq-prover/vscoq";
     # Pin vscoq's nixpkgs: the latest nixpkgs has a broken coq.ocamlPackages
     # (yojson 2.2.2 masquerading as 3.0.0) that breaks vscoq's build. Pin to

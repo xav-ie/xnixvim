@@ -39,30 +39,24 @@
     ./obsidian.nix
     ./nvim-ufo.nix
     ./nvim-colorizer.nix
-    # ./nvim-lightbulb.nix
     ./nvim-scrollview.nix
     ./oil-git-status.nix
     ./oil.nix
-    # ./ollama.nix
     ./quicker.nix
     ./refactoring.nix
     ./rustaceanvim.nix
-    # ./supermaven.nix
     ./tabscope.nix
     ./telescope
     ./tiny-glimmer.nix
     ./toggleterm.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
-    # TODO: fix
-    # ./vim-guise.nix
     ./vim-matchup.nix
     ./which-key
     ./witt-neovim.nix
     ./xdusk.nix
     ./yanky.nix
   ];
-  # ] ++ (if helpers.enableExceptInTests then [ ./supermaven.nix ] else [ ]);
 
   # Global lazyLoad on/off
   options.lazyLoad.enable = lib.mkEnableOption "lazyLoad";
