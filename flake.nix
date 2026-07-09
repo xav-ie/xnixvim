@@ -8,6 +8,10 @@
     nixvim.url = "github:nix-community/nixvim";
     systems.url = "github:nix-systems/default";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    xdusk.url = "github:xav-ie/xdusk";
+    xdusk.inputs.flake-parts.follows = "flake-parts";
+    xdusk.inputs.nixpkgs.follows = "nixpkgs";
+    xdusk.inputs.treefmt-nix.follows = "treefmt-nix";
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # transitive dependencies pinned for nix-auto-follow

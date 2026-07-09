@@ -231,6 +231,6 @@ in
       };
     };
     # Completion-menu kind colors were extracted into the xdusk colorscheme
-    # (custom-plugins/xdusk).
+    # (the xdusk flake).
   };
 }

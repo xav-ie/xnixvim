@@ -6,7 +6,7 @@
 }:
 {
   config = {
-    # Colorscheme lives in plugins/xdusk.nix (custom-plugins/xdusk). The base16
+    # Colorscheme lives in plugins/xdusk.nix (the xdusk flake). The base16
     # palette and every per-plugin highlight tweak were extracted into that
     # self-contained theme; the slot meanings are documented in its palette.lua.
 

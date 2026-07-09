@@ -156,6 +156,21 @@
         "type": "github"
       }
     },
+    "import-tree": {
+      "locked": {
+        "lastModified": 1778781969,
+        "narHash": "sha256-Jjuz5CmSkur8KvLDoGa+vylEp+RkQtv4mt/qcMznpH0=",
+        "owner": "vic",
+        "repo": "import-tree",
+        "rev": "d321337efd0f23a9eb14a42adb7b2c29313ab274",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vic",
+        "repo": "import-tree",
+        "type": "github"
+      }
+    },
     "minuet-ai-nvim": {
       "flake": false,
       "locked": {
@@ -367,7 +382,8 @@
         "tabscope-nvim": "tabscope-nvim",
         "treefmt-nix": "treefmt-nix",
         "vscoq": "vscoq",
-        "witt-neovim": "witt-neovim"
+        "witt-neovim": "witt-neovim",
+        "xdusk": "xdusk"
       }
     },
     "schemastore-nvim": {
@@ -517,6 +533,33 @@
       "original": {
         "owner": "typed-rocks",
         "repo": "witt-neovim",
+        "type": "github"
+      }
+    },
+    "xdusk": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "import-tree": "import-tree",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783590439,
+        "narHash": "sha256-Ng2VohGiBapC/OGPQ7uwHX6AgTNIFwkYb8hMzAyDIN8=",
+        "owner": "xav-ie",
+        "repo": "xdusk",
+        "rev": "7caac82cf955cd1bf9fe564237d63f6dc50d677b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xav-ie",
+        "repo": "xdusk",
         "type": "github"
       }
     }

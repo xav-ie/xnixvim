@@ -1,17 +1,12 @@
-{ pkgs, ... }:
-let
-  # xdusk: the custom colorscheme, extracted from the former base16 palette
-  # plus all the per-plugin highlight tuning. Self-contained Lua (no base16
-  # dependency); src lives in custom-plugins/xdusk and can be lifted into its
-  # own repo unchanged.
-  xdusk = pkgs.vimUtils.buildVimPlugin {
-    name = "xdusk";
-    src = ../custom-plugins/xdusk;
-  };
-in
+# xdusk: the custom colorscheme, now maintained in its own flake
+# (`path:/Users/x/Projects/xdusk`). The Neovim plugin is generated there from a
+# shared palette that also drives the VS Code theme, so the two editors stay in
+# lockstep. To change colors, edit palette.nix in the xdusk flake and
+# `nix flake update xdusk` here.
+{ pkgs, inputs, ... }:
 {
   config = {
-    extraPlugins = [ xdusk ];
+    extraPlugins = [ inputs.xdusk.packages.${pkgs.stdenv.hostPlatform.system}.nvim ];
     colorscheme = "xdusk";
   };
 }

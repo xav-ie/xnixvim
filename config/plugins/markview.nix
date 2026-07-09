@@ -71,6 +71,6 @@
       };
     };
     # Markdown heading / code / bullet colors live in the xdusk colorscheme
-    # (custom-plugins/xdusk) — see the Markview* groups there.
+    # (the xdusk flake) — see the Markview* groups there.
   };
 }
