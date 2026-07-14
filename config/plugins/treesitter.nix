@@ -223,6 +223,11 @@ in
                 if not vim.tbl_contains(available, lang) then return end
                 if pending[lang] then return end
 
+                -- force=true relinks queries: nvim-treesitter symlinks runtime
+                -- queries into the plugin's nix store path, which a rebuild+GC
+                -- leaves dangling. We only get here when a query is missing
+                -- (i.e. the symlink dangled), so forcing self-heals it.
+
                 -- Missing CLI/compiler makes install hang silently (#7873).
                 if vim.fn.executable("tree-sitter") == 0 or vim.fn.executable("cc") == 0 then
                   if not warned_toolchain then
@@ -237,7 +242,7 @@ in
                 pending[lang] = true
                 vim.notify("Installing tree-sitter parser: " .. lang,
                   vim.log.levels.INFO, { title = "nvim-treesitter" })
-                ts.install({ lang }, { summary = false }):await(function(err)
+                ts.install({ lang }, { summary = false, force = true }):await(function(err)
                   vim.schedule(function()
                     pending[lang] = nil
                     -- query.get is memoized and cached a nil above; clear it so
