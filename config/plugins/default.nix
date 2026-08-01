@@ -45,6 +45,7 @@
     ./quicker.nix
     ./refactoring.nix
     ./rustaceanvim.nix
+    ./sops-mask.nix
     ./tabscope.nix
     ./telescope
     ./tiny-glimmer.nix
