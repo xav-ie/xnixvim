@@ -11,7 +11,7 @@
     # https://nix-community.github.io/nixvim/plugins/image
     plugins.image = {
       enable = true;
-      # ~7ms of requires (image + utils + tmux probe) off the critical path.
+      # ~7ms of requires (image + utils) off the critical path.
       # integrations = {} below means nothing hooks markdown on load, so the
       # plugin only acts on demand — safe to defer until the UI is up.
       lazyLoad.enable = config.lazyLoad.enable;
@@ -29,7 +29,6 @@
         backend = "kitty";
         kitty_method = "normal";
         integrations = { };
-        tmux_show_only_in_active_window = true;
         # Don't shrink images to a fraction of the window height: render at
         # natural size and let the renderer's crop logic clip when the window
         # is too short (otherwise a short window scales the image way down).

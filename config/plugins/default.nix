@@ -139,8 +139,6 @@
         ];
       };
 
-      tmux-navigator.enable = true;
-
       # diagnostics buffer
       # https://github.com/folke/trouble.nvim/
       # https://nix-community.github.io/nixvim/plugins/trouble

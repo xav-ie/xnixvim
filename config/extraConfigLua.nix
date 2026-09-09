@@ -16,9 +16,7 @@ _: {
                     copy_to_unnamed(vim.v.event.regcontents)
                 end
             })
-            -- I also want paste synchronized, too, but Zellij is preventing this >:(
-            -- https://github.com/zellij-org/zellij/issues/2647
-            -- https://github.com/zellij-org/zellij/issues/3135
+            -- Paste is NOT synchronized: see the register-based fallback below.
 
             -- Fix copy/paste for Neovide
             -- https://neovide.dev/faq.html?highlight=clipboard#how-can-i-use-cmd-ccmd-v-to-copy-and-paste
@@ -49,7 +47,7 @@ _: {
                 paste = {
                   ['+'] = paste,
                   ['*'] = paste,
-                  -- TODO: get OSC paste working for Zellij first
+                  -- herdr drops OSC 52 read requests. Use the terminal's paste key.
                   -- ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
                   -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
                 },
