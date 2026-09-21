@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   # status line
   # https://github.com/nvim-lualine/lualine.nvim/
   # https://nix-community.github.io/nixvim/plugins/lualine
@@ -13,6 +14,19 @@ _: {
     '';
     plugins.lualine = {
       enable = true;
+
+      # Upstream drives redraws from four repeating libuv timers that never
+      # stop, so an idle or unfocused nvim keeps waking the event loop. The
+      # patch makes lualine fully event-driven:
+      #   - the redraw queue is flushed by a one-shot `vim.schedule` armed on
+      #     demand, instead of the periodic `refresh_time` tick
+      #   - a 0 interval for statusline/tabline/winbar arms no timer at all
+      # Redraws land on the next event-loop iteration, which is sooner than
+      # any tick, so this is also more responsive than the stock 16ms default.
+      package = pkgs.vimPlugins.lualine-nvim.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./lualine-event-driven.patch ];
+      });
+
       settings = {
         options = {
           # idk if this does anything
@@ -26,6 +40,44 @@ _: {
           };
           globalstatus = true;
           theme = "auto";
+
+          # Upstream runs a periodic redraw for each of statusline, tabline and
+          # winbar (default 1000ms each) on top of the refresh_time tick, all
+          # of which keep firing while nvim is idle or unfocused.
+          #
+          # Every section below derives from state that fires an autocmd, so
+          # nothing needs polling. The patch above treats a 0 interval as
+          # "event-driven only" and arms no timer; the event list is widened to
+          # cover the sections upstream's defaults miss.
+          refresh = {
+            # 0 = no periodic timer; redraws come only from the events below.
+            statusline = 0;
+            tabline = 0;
+            winbar = 0;
+            events = [
+              # upstream defaults
+              "WinEnter"
+              "BufEnter"
+              "BufWritePost"
+              "SessionLoadPost"
+              "FileChangedShellPost"
+              "VimResized"
+              "Filetype"
+              "CursorMoved"
+              "CursorMovedI"
+              "ModeChanged"
+              # added: sections above that the defaults do not cover
+              "DirChanged" # lualine_c cwd component
+              "TextChanged" # modified flag (fg = #FFAA00)
+              "TextChangedI"
+              "DiagnosticChanged" # lualine_x diagnostics
+              # gitsigns publishes diff/head updates as `User GitSignsUpdate`.
+              # lualine registers its autocmd with pattern `*`, so this matches
+              # every User event; each one only sets a queued flag that the
+              # scheduled flush coalesces, so the cost is negligible.
+              "User"
+            ];
+          };
         };
 
         # Available Sections:
