@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   # keybindings assistant
   # https://github.com/folke/which-key.nvim/
   # https://nix-community.github.io/nixvim/plugins/which-key
@@ -6,6 +7,15 @@ _: {
     plugins.which-key = {
       enable = true;
       settings.delay = 1000;
+
+      # Upstream keeps a 50ms uv timer running for the lifetime of the process
+      # to work around ModeChanged not always firing (folke/which-key.nvim#787).
+      # It never stops, so every nvim instance wakes 20x/sec forever, focused or
+      # not. The patch swaps it for a `SafeState` + `ModeChanged` autocmd, which
+      # runs the identical check at the same moment but costs nothing when idle.
+      package = pkgs.vimPlugins.which-key-nvim.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./event-driven-mode-check.patch ];
+      });
     };
 
     # Stolen from:

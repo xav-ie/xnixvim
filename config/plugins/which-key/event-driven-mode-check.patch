@@ -1,0 +1,41 @@
+--- a/lua/which-key/state.lua
++++ b/lua/which-key/state.lua
+@@ -150,18 +150,26 @@
+     end,
+   })
+ 
+-  -- HACK: ModeChanged does not always trigger, so we need to manually
+-  -- check for mode changes. This seems to be due to the usage of `:norm` in autocmds.
+-  -- See https://github.com/folke/which-key.nvim/issues/787
+-  local timer = uv.new_timer()
+-  timer:start(0, 50, function()
+-    local mode = Util.mapmode()
+-    -- check if the mode exists for the current buffer
+-    if Buf.bufs[current_buf] and Buf.bufs[current_buf].modes[mode] then
+-      return
+-    end
+-    vim.schedule(Buf.get)
+-  end)
++  -- Upstream used a 50ms uv timer here to work around ModeChanged not always
++  -- firing (`:norm` inside autocmds). See
++  -- https://github.com/folke/which-key.nvim/issues/787
++  --
++  -- That timer repeats for the lifetime of the process, so every instance
++  -- wakes 20x/sec forever even when unfocused or fully idle. `SafeState`
++  -- fires when nvim has finished processing and is about to block waiting
++  -- for input -- the exact moment the poll was checking for -- and does not
++  -- fire while idle. ModeChanged is kept as a cheap early signal.
++  vim.api.nvim_create_autocmd({ "SafeState", "ModeChanged" }, {
++    group = group,
++    callback = function()
++      local mode = Util.mapmode()
++      -- check if the mode exists for the current buffer
++      if Buf.bufs[current_buf] and Buf.bufs[current_buf].modes[mode] then
++        return
++      end
++      vim.schedule(Buf.get)
++    end,
++  })
+ end
+ 
+ function M.stop()
