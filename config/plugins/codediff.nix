@@ -60,11 +60,25 @@ in
   config = {
     extraPlugins = [ codediff-nvim ];
 
-    extraConfigLua = # lua
-      ''
-        require('codediff').setup({
-          -- TODO(human)
-        })
-      '';
+    # No setup() call on purpose.
+    #
+    # codediff is already lazy by design -- its plugin/codediff.lua loads only
+    # highlights + the virtual file scheme at startup and defers the UI, diff
+    # engine, explorer and history until the first :CodeDiff. Calling
+    # `require('codediff').setup()` defeats that: setup() does
+    # `require("codediff.ui")`, which drags the whole heavy tree back in (47
+    # modules, ~6ms of startup).
+    #
+    # And the call was doing nothing else. With no options it was:
+    #   config.setup({})        -> merges an empty table; config.lua already
+    #                              does `M.options = vim.deepcopy(M.defaults)`
+    #                              at module level, so this is a no-op
+    #   render.setup_highlights -> an alias for codediff.ui.highlights.setup
+    #                              (ui/init.lua:10), which plugin/codediff.lua
+    #                              has already called at startup
+    #
+    # If options are ever needed here, defer the call rather than restoring it
+    # at the top level, e.g. from a `User DeferredUIEnter` autocmd like
+    # himalaya.nix does, or lazily on first :CodeDiff.
   };
 }
