@@ -1,0 +1,56 @@
+diff -ur a/lua/noice/message/manager.lua b/lua/noice/message/manager.lua
+--- a/lua/noice/message/manager.lua
++++ b/lua/noice/message/manager.lua
+@@ -2,8 +2,17 @@
+ 
+ local _tick = 1
+ 
++-- Patched: the router used to poll `M.tick()` on a timer to notice new
++-- messages. `on_tick` lets it be told instead, so nothing has to spin while
++-- idle. Set by noice.message.router on enable.
++---@type fun()|nil
++M.on_tick = nil
++
+ local function next_tick()
+   _tick = _tick + 1
++  if M.on_tick then
++    M.on_tick()
++  end
+   return _tick
+ end
+ 
+diff -ur a/lua/noice/message/router.lua b/lua/noice/message/router.lua
+--- a/lua/noice/message/router.lua
++++ b/lua/noice/message/router.lua
+@@ -29,12 +29,30 @@
+ 
+ function M.enable()
+   if not M._updater then
+-    M._updater = Util.interval(Config.options.throttle, Util.protect(M.update))
++    -- Patched: upstream ran this interval unconditionally for the lifetime of
++    -- the process, so an idle nvim woke `1000/throttle` times a second purely
++    -- to compare two integers (see the `M._tick == Manager.tick()` early
++    -- return in M.update). `enabled` lets the interval stop once it has caught
++    -- up; Manager.on_tick restarts it the moment there is work again.
++    --
++    -- A view that failed to render leaves M._tick behind Manager.tick(), so
++    -- the existing retry path keeps the loop alive on its own.
++    M._updater = Util.interval(Config.options.throttle, Util.protect(M.update), {
++      enabled = function()
++        return M._tick ~= Manager.tick()
++      end,
++    })
++  end
++  Manager.on_tick = function()
++    if M._updater then
++      M._updater()
++    end
+   end
+   M._updater()
+ end
+ 
+ function M.disable()
++  Manager.on_tick = nil
+   if M._updater then
+     M._updater.stop()
+     M._updater = nil
