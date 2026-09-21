@@ -140,20 +140,54 @@ in
 
     extraConfigLua = # lua
       ''
-        -- Large-file guard: stop highlighting on oversized buffers after
-        -- tree-sitter's own FileType handler has attached.
+        -- Large-file guard.
+        --
+        -- This used to be a FileType autocmd that called `vim.treesitter.stop`
+        -- from a `vim.schedule`. That is reactive: FileType fires, tree-sitter
+        -- attaches and parses the whole buffer, and only then does the stop
+        -- run. The parse is the expensive part, so the guard paid the full
+        -- cost and then discarded the result. On a 180 KB markdown file that
+        -- was ~400ms of parsing thrown away on every open.
+        --
+        -- Wrapping `vim.treesitter.start` instead makes it preventive, and
+        -- does so regardless of which handler calls it (nixvim generates one
+        -- from `highlight.enable`, and the on-demand installer below is
+        -- another). Ordering between those autocmds is registration order,
+        -- which we do not control from here, so gating the entry point is the
+        -- only reliable place.
         do
           local max_filesize = 100 * 1024 -- 100 KB
+
+          local function too_big(bufnr)
+            local name = vim.api.nvim_buf_get_name(bufnr)
+            if name == "" then
+              return false
+            end
+            local ok, stats = pcall((vim.uv or vim.loop).fs_stat, name)
+            return ok and stats ~= nil and stats.size > max_filesize
+          end
+
+          local orig_start = vim.treesitter.start
+          vim.treesitter.start = function(bufnr, lang)
+            bufnr = bufnr or vim.api.nvim_get_current_buf()
+            if vim.api.nvim_buf_is_valid(bufnr) and too_big(bufnr) then
+              return
+            end
+            return orig_start(bufnr, lang)
+          end
+
+          -- Fallback for anything that attaches a highlighter without going
+          -- through vim.treesitter.start.
           vim.api.nvim_create_autocmd("FileType", {
             callback = function(args)
-              local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
-              if ok and stats and stats.size > max_filesize then
-                vim.schedule(function()
-                  if vim.api.nvim_buf_is_valid(args.buf) then
-                    pcall(vim.treesitter.stop, args.buf)
-                  end
-                end)
+              if not too_big(args.buf) then
+                return
               end
+              vim.schedule(function()
+                if vim.api.nvim_buf_is_valid(args.buf) then
+                  pcall(vim.treesitter.stop, args.buf)
+                end
+              end)
             end,
             desc = "Disable tree-sitter highlighting on large files",
           })
