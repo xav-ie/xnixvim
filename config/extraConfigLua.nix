@@ -1,5 +1,60 @@
-_: {
+{ lib, ... }:
+{
   config = {
+    # Opt-in diagnostic for background CPU wakeups.
+    #
+    # nvim has no idle or blur detection: a repeating libuv timer fires forever
+    # once started, whether or not the terminal is focused or visible. To see
+    # which timers a running instance holds:
+    #
+    #   :lua vim.uv.walk(function(h)
+    #          if h:get_type() == "timer" then
+    #            print(h:get_repeat(), h:is_active())
+    #          end
+    #        end)
+    #
+    # That gives intervals but not owners. Launching with NVIM_TRACE_TIMERS=1
+    # attributes each repeating timer to the code that started it. Must run
+    # before any plugin loads, hence extraConfigLuaPre + mkBefore.
+    extraConfigLuaPre =
+      lib.mkBefore # lua
+        ''
+          if vim.env.NVIM_TRACE_TIMERS ~= nil then
+            local uv = vim.uv or vim.loop
+            -- Timer handles are userdata sharing one metatable, so patching
+            -- `start` on the method table covers every timer in the process.
+            local ok, probe = pcall(uv.new_timer)
+            if ok and probe then
+              local mt = getmetatable(probe)
+              local methods = mt and mt.__index
+              if type(methods) == "table" and type(methods.start) == "function" then
+                _G.__timer_trace = {}
+                local orig_start = methods.start
+                methods.start = function(self, timeout, repeat_ms, cb)
+                  -- One-shots are not the problem; only repeating timers keep
+                  -- the event loop waking up while idle.
+                  if type(repeat_ms) == "number" and repeat_ms > 0 then
+                    local entry = {
+                      repeat_ms = repeat_ms,
+                      timeout = timeout,
+                      traceback = debug.traceback("", 2),
+                    }
+                    table.insert(_G.__timer_trace, entry)
+                    vim.schedule(function()
+                      vim.notify(
+                        string.format("libuv timer repeat=%dms%s", repeat_ms, entry.traceback),
+                        vim.log.levels.WARN
+                      )
+                    end)
+                  end
+                  return orig_start(self, timeout, repeat_ms, cb)
+                end
+              end
+              probe:close()
+            end
+          end
+        '';
+
     extraConfigLua =
       let
         clipBoardConfig = # lua
