@@ -30,8 +30,8 @@
     ./lsp-lines.nix
     ./lualine.nix
     ./luasnip.nix
+    ./markdown-conceal.nix
     ./markdown-table-sorter.nix
-    ./markview.nix
     ./completion-providers
     ./neogit.nix
     ./noice.nix

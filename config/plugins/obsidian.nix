@@ -53,8 +53,9 @@ in
           min_chars = 2;
         };
 
-        # Use obsidian's own UI (concealed links, checkboxes, refs). This
-        # overlaps with markview.nvim on markdown buffers — see ./markview.nix.
+        # Use obsidian's own UI (concealed links, checkboxes, refs). Pairs
+        # with the conceal queries in ./markdown-conceal.nix, which also rely
+        # on the conceallevel set at the bottom of this file.
         ui.enable = true;
 
         # Daily notes live in ~/Notes/daily/, named YYYY-MM-DD.md, scaffolded
